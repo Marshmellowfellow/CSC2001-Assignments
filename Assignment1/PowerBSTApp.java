@@ -10,13 +10,10 @@ public class PowerBSTApp {
    public static void main(String[] args) {
 		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
 		List<timeStamp> powerReadings = CSVread(CSVName);
-		
 		Collections.sort(powerReadings);
-
-		
-//		for(timeStamp reading: powerReadings ) {
-//		  System.out.println(reading);
-//		}
+		for(timeStamp reading: powerReadings ) {
+		  System.out.println(reading);
+		}
 	}
     
    
