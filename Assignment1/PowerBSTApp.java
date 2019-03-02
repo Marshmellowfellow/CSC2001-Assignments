@@ -10,7 +10,13 @@ public class PowerBSTApp {
    public static void main(String[] args) {
 		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
 		List<timeStamp> powerReadings = CSVread(CSVName);
+		
 		Collections.sort(powerReadings);
+
+		
+//		for(timeStamp reading: powerReadings ) {
+//		  System.out.println(reading);
+//		}
 	}
     
    
@@ -47,25 +53,23 @@ public class PowerBSTApp {
 	
    public static List<timeStamp> CSVread(String FileName){
        String line = "";
-
-   //Declaring array
-   List<timeStamp> powerValues = new ArrayList<>();
-
-   
-   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
-
+	   List<timeStamp> powerValues = new ArrayList<>();
 	   int lineNo = 0;
-       while ((line = br.readLine()) != null) {
-           String[] Element = line.split(",");
-           powerValues.add(new timeStamp(Element[3],Element[1],Element[0]));
-
-       }
-
-       } 
-       catch (IOException e) {
-           e.printStackTrace();
-       }
-       return powerValues;
+	   
+	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
+	
+	       while ((line = br.readLine()) != null) {
+	    	   	if(lineNo > 0) {
+		           String[] Element = line.split(",");
+		           powerValues.add(new timeStamp(Element[3],Element[1],Element[0]));
+	       		}
+	    	   	lineNo ++;
+	       }
+	       } 
+	       catch (IOException e) {
+	           e.printStackTrace();
+	       }
+	       return powerValues;
    }
 }
 

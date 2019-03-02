@@ -9,7 +9,7 @@ public class PowerArrayApp {
 		timeStamp[] powerReadings = CSVread(CSVName);
 //		String Search = "16/12/2006/17:32:00";
 //		printDateTime(powerReadings, Search);
-		printAllDateTimes(powerReadings);
+	//	printAllDateTimes(powerReadings);
 	}
     
    

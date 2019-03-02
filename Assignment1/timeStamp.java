@@ -27,11 +27,10 @@ public class timeStamp implements Comparable<timeStamp>{
 	}
 	@Override
 	public int compareTo(timeStamp time) {
-		String time1 = this.getTime().replaceAll("[^\\d.]", "");
-		String time2 = time.getTime().replaceAll("[^\\d.]", "");		
-		int time1int = Integer.parseInt(time1);
-		int time2int = Integer.parseInt(time2);
-		
+		String time1 = this.getTime().replaceAll("[/:.,]|12/2006/", "");
+		String time2 = time.getTime().replaceAll("[/:.,]|12/2006/", "");
+		int time1int = Integer.valueOf(time1);
+		int time2int = Integer.valueOf(time2);
 		if(time1int > time2int) 
 			return 1;
 		else
