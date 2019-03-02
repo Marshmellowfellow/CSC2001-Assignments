@@ -6,7 +6,8 @@ JC = javac
 .java.class:
 	$(JC) $(JFLAGS) $*.java
 
-CLASSES = MyTest.java\
+CLASSES = timeStamp.java\
+	  PowerArrayApp.java\
 
 default: classes
 

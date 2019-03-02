@@ -1,15 +1,16 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
 
-public class PowerArrayApp {
+public class PowerBSTApp {
 	
    public static void main(String[] args) {
 		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
-		timeStamp[] powerReadings = CSVread(CSVName);
-//		String Search = "16/12/2006/17:32:00";
-//		printDateTime(powerReadings, Search);
-		printAllDateTimes(powerReadings);
+		List<timeStamp> powerReadings = CSVread(CSVName);
+		Collections.sort(powerReadings);
 	}
     
    
@@ -44,12 +45,11 @@ public class PowerArrayApp {
 		}
    }
 	
-   public static timeStamp[] CSVread(String FileName){
+   public static List<timeStamp> CSVread(String FileName){
        String line = "";
 
    //Declaring array
-   timeStamp[] powerValues;
-   powerValues = new timeStamp[510];
+   List<timeStamp> powerValues = new ArrayList<>();
 
    
    try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
@@ -57,16 +57,8 @@ public class PowerArrayApp {
 	   int lineNo = 0;
        while ((line = br.readLine()) != null) {
            String[] Element = line.split(",");
-       
-       int i = 0;
-       int size = Element.length;
-	       while(i < size) {
-	    	   	if (lineNo > 0) {
-		   	       powerValues[lineNo] = new timeStamp(Element[3],Element[1],Element[0]);
-	    	   	}	   	       
-	    	   	i ++;	
-	       }               
-       lineNo ++;
+           powerValues.add(new timeStamp(Element[3],Element[1],Element[0]));
+
        }
 
        } 
