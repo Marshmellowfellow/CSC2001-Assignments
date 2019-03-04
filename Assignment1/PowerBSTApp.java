@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Collections;
@@ -34,7 +35,7 @@ public class PowerBSTApp {
     	if(end > powerReadings.size()) {
     		end = powerReadings.size();
     	}
-
+    	
     	
     	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
     	count.opCount = count.opCount + 1;
@@ -43,11 +44,38 @@ public class PowerBSTApp {
     		if("-c" .contains(args[0])) {
     			theTree.inOrderTraverseTree(theTree.root);
     			System.out.println("Total operation count = " +count.opCount);
+	  			if(args.length > 1) {
+	  				String fileName = args[1];
+	  				FileWriter fileWriter;
+					try {
+						fileWriter = new FileWriter(fileName, true);
+		  				String text = ("Op count total :" + String.valueOf(count.opCount));
+		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+		  				textWriter.write(fileWriter, fileName, text);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	  				
+	  			}
+    			
     		}else if("-l" .contains(args[0])) {
     			theTree.inOrderTraverseTree(theTree.root);
 	  			if(args.length > 2) {
 		  			if("-c" .equals(args[2])) {
-			  			System.out.println("Total operation count = " +count.opCount);	
+			  			System.out.println("Total operation count = " +count.opCount);
+			  			if(args.length > 1) {
+			  				String fileName = args[1];
+			  				FileWriter fileWriter;
+							try {
+								fileWriter = new FileWriter(fileName, true);
+				  				String text = ("Op count total :" + String.valueOf(count.opCount));
+				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+				  				textWriter.write(fileWriter, fileName, text);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+			  				
+			  			}
 			  		}
 	  			}
     		}else {
@@ -61,7 +89,21 @@ public class PowerBSTApp {
 		    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
 			  		for(int i = 0; i < (args.length) ; i++) {
 			  			if("-c" .contains(args[i])) {
-			  				System.out.println("Total operation count = " +count.opCount);	
+			  				System.out.println("Total operation count = " +count.opCount);
+				  			if(args.length > 1) {
+				  				String fileName = args[1];
+				  				FileWriter fileWriter;
+								try {
+									fileWriter = new FileWriter(fileName, true);
+					  				String text = ("Op count total :" + String.valueOf(count.opCount));
+					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+					  				textWriter.write(fileWriter, fileName, text);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+				  				
+				  			}
+			  				
 			  			}
 			  		}
 	    		}else {
