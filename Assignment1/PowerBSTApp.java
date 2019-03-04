@@ -13,35 +13,34 @@ public class PowerBSTApp {
 		List<timeStamp> powerReadings = CSVread(CSVName);
 		Collections.sort(powerReadings);
 		
+		//Creating the BST
 		BinaryTree theTree = new BinaryTree();
-		int listLength = (powerReadings.size());
-		
-		
-//		int i = 0;
-//		while(i < listLength) {
-//			String time = ((powerReadings.get(i)).getTime()).replaceAll("[/:.,]|12/2006/", "");
-//			int key = Integer.valueOf(time);
-////			System.out.print(key);
-////			System.out.println(powerReadings.get(i));
-////			System.out.println(key);
-//			theTree.addNode(key, powerReadings.get(i));
-//			i ++;
-//		}
-
-		
-		
     	int start = 0;
     	int end = powerReadings.size();
     	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
-//    	System.out.println(((theTree.root).leftChild));
-//    	System.out.println((theTree.root).rightChild);
-    	theTree.inOrderTraverseTree(theTree.root);	
-    	System.out.println(end);
+    	
+    	if(args.length > 0) {
+    		String time = args[0].replaceAll("[/:.,]|12/2006/", "");
+    		int key = Integer.valueOf(time);
+    		Node search = theTree.findNode(key);
+    		if(search !=null) {
+	    		System.out.println("");
+	    		System.out.println("Date/Time            Global Avtive Power  Voltage");
+	    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
+    		}else {
+    			System.out.println("Search for " + args[0]);
+    			System.out.println("Date/Time not found");  			
+    		}
+    	}else {
+    		theTree.inOrderTraverseTree(theTree.root);
+    	}
+    	
+    	
+    	
+    	
+    	
 	}
-    
-   
-   
-   
+
    public static void printDateTime(timeStamp[] powerReadings, String Search) {
 	   int i = 0;	
 	   int j = 0;

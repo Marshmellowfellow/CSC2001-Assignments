@@ -5,11 +5,16 @@ import java.io.IOException;
 public class PowerArrayApp {
 	
    public static void main(String[] args) {
-//	String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
-//		timeStamp[] powerReadings = CSVread(CSVName);
-//		String Search = "16/12/2006/17:32:00";
-//		printDateTime(powerReadings, Search);
-//		printAllDateTimes(powerReadings);
+	  String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
+	  timeStamp[] powerReadings = CSVread(CSVName);
+	  
+  	if(args.length > 0) {
+  		printDateTime(powerReadings, args[0]);
+	}else {
+		  printAllDateTimes(powerReadings);
+	}
+	  
+
 	}
     
    
@@ -20,8 +25,8 @@ public class PowerArrayApp {
 			if(powerReadings[i] != null) {
 				if( powerReadings[i].time.contains(Search)) {
 					System.out.println("Search :" + Search);
-					System.out.println("Date/Time :          " + "Global active power : " + "voltage :");
-					System.out.println(powerReadings[i].time +"  "+ powerReadings[i].global_active_power +"               "+ powerReadings[i].voltage);
+					System.out.println("Date/Time            " + "Global active power  " + "voltage  ");
+					System.out.println(powerReadings[i].time +"  "+ powerReadings[i].global_active_power +"              "+ powerReadings[i].voltage);
 					i = powerReadings.length;
 					j = 1;
 				}
@@ -38,9 +43,9 @@ public class PowerArrayApp {
 		int i = 1;
 		while(i < powerReadings.length) { 
 			if(powerReadings[i] != null) {
-				System.out.println(powerReadings[i].time +"   "+ powerReadings[i].global_active_power +"   "+powerReadings[i].voltage ); 
-				i ++; 	
+				System.out.println(powerReadings[i].time +"   "+ powerReadings[i].global_active_power +"   "+powerReadings[i].voltage ); 	
 			}
+			i ++; 
 		}
    }
 	
@@ -49,7 +54,7 @@ public class PowerArrayApp {
 
    //Declaring array
    timeStamp[] powerValues;
-   powerValues = new timeStamp[510];
+   powerValues = new timeStamp[510];	
 
    
    try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
