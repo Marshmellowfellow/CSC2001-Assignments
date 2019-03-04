@@ -21,24 +21,33 @@ public class PowerBSTApp {
     	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
     	count.opCount = count.opCount + 1;
     	if(args.length > 0) {
-    		String time = args[0].replaceAll("[/:.,]|12/2006/", "");
-    		int key = Integer.valueOf(time);
-    		Node search = theTree.findNode(key);
-    		count.opCount = count.opCount + 1;
-    		if(search !=null) {
-	    		System.out.println("");
-	    		System.out.println("Date/Time            Global Avtive Power  Voltage");
-	    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
-	    		System.out.println("Total operation count = " +count.opCount);
-    		}else {
-    			System.out.println("Search for " + args[0]);
-    			System.out.println("Date/Time not found"); 
+    		if("-c" .equals(args[0])) {
+    			theTree.inOrderTraverseTree(theTree.root);
     			System.out.println("Total operation count = " +count.opCount);
-		}
-    	}else {
+    		}else {
+	    		String time = args[0].replaceAll("[/:.,]|12/2006/", "");
+	    		int key = Integer.valueOf(time);
+	    		Node search = theTree.findNode(key);
+	    		count.opCount = count.opCount + 1;
+	    		if(search !=null) {
+		    		System.out.println("");
+		    		System.out.println("Date/Time            Global Avtive Power  Voltage");
+		    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
+			  		for(int i = 0; i < (args.length) ; i++) {
+			  			if("-c" .equals(args[i])) {
+			  				System.out.println("Total operation count = " +count.opCount);	
+			  			}
+			  		}
+	    		}else {
+	    			System.out.println("Search for " + args[0]);
+	    			System.out.println("Date/Time not found"); 
+	    		}
+    		
+    		}
+    	}
+    	else {	
     		theTree.inOrderTraverseTree(theTree.root);
     	}
-    	
     	
     	
     	

@@ -10,11 +10,25 @@ public class PowerArrayApp {
 	    timeStamp[] powerReadings = CSVread(CSVName, count);
 	    count.opCount = count.opCount + 1;
 	  	if(args.length > 0) {
-	  		printDateTime(powerReadings, args[0], count);
-	  		System.out.println("Total operation count = " +count.opCount);
+	  		if("-c" .equals(args[0])) {
+	  			printAllDateTimes(powerReadings, count);
+	  			System.out.println("Total operation count = " +count.opCount);	
+	  		}else {
+		  		printDateTime(powerReadings, args[0], count);  		
+		  		for(int i = 0; i < (args.length) ; i++) {
+		  			if("-c" .equals(args[i])) {
+		  				System.out.println("Total operation count = " +count.opCount);	
+		  			}
+		  		}
+	  			
+	  		}	
 		}else {
 			  printAllDateTimes(powerReadings, count);
-		  	  System.out.println("Total operation count = " +count.opCount);
+		  		for(int i = 0; i < (args.length) ; i++) {
+		  			if(args[i] == "-c") {
+		  				System.out.println("Total operation count = " +count.opCount);	
+		  			}
+		  		}
 		}
    }
     
@@ -29,6 +43,7 @@ public class PowerArrayApp {
 			if(powerReadings[i] != null) {
 				count.opCount = count.opCount + 1;
 				if( powerReadings[i].time.contains(Search)) {
+					System.out.println("");
 					System.out.println("Search :" + Search);
 					System.out.println("Date/Time            " + "Global active power  " + "voltage  ");
 					System.out.println(powerReadings[i].time +"  "+ powerReadings[i].global_active_power +"              "+ powerReadings[i].voltage);
