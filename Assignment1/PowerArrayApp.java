@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class PowerArrayApp {
@@ -31,12 +32,39 @@ public class PowerArrayApp {
 	  	if(args.length > 0) {
 	  		if("-c" .equals(args[0])) {
 	  			printAllDateTimes(powerReadings, count);
-	  			System.out.println("Total operation count = " +count.opCount);	
+	  			System.out.println("Total operation count = " +count.opCount);
+	  			if(args.length > 1) {
+	  				String fileName = args[1];
+	  				FileWriter fileWriter;
+					try {
+						fileWriter = new FileWriter(fileName, true);
+		  				String text = ("Op count total :" + String.valueOf(count.opCount));
+		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+		  				textWriter.write(fileWriter, fileName, text);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	  				
+	  			}
+	  			
 	  		}else if("-l" .equals(args[0])){
 	  			printAllDateTimes(powerReadings, count);
 	  			if(args.length > 2) {
 		  			if("-c" .equals(args[2])) {
-			  			System.out.println("Total operation count = " +count.opCount);	
+			  			System.out.println("Total operation count = " +count.opCount);
+			  			if(args.length > 3) {
+			  				String fileName = args[3];
+			  				FileWriter fileWriter;
+							try {
+								fileWriter = new FileWriter(fileName, true);
+				  				String text = ("Op count total :" + String.valueOf(count.opCount));
+				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+				  				textWriter.write(fileWriter, fileName, text);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+			  				
+			  			}
 			  		}
 	  			}
 	  		}

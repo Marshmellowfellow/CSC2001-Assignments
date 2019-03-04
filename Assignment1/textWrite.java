@@ -14,7 +14,7 @@ public class textWrite {
 	
 	public void write(FileWriter writer, String fileName, String text) {
 		try {
-			writer.write(text);
+			writer.write(text + "\n");
 			writer.close();
 			
 		} catch (IOException e) {
