@@ -8,9 +8,10 @@ import java.util.ArrayList;
 public class PowerBSTApp {
 	
    public static void main(String[] args) {
+  	    opCount count = new opCount(0);
 		//Reading in the CSV file, creating a list of objects and sorting the list.
 	    String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
-		List<timeStamp> powerReadings = CSVread(CSVName);
+		List<timeStamp> powerReadings = CSVread(CSVName, count);
 		Collections.sort(powerReadings);
 		
 		//Creating the BST
@@ -18,19 +19,22 @@ public class PowerBSTApp {
     	int start = 0;
     	int end = powerReadings.size();
     	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
-    	
+    	count.opCount = count.opCount + 1;
     	if(args.length > 0) {
     		String time = args[0].replaceAll("[/:.,]|12/2006/", "");
     		int key = Integer.valueOf(time);
     		Node search = theTree.findNode(key);
+    		count.opCount = count.opCount + 1;
     		if(search !=null) {
 	    		System.out.println("");
 	    		System.out.println("Date/Time            Global Avtive Power  Voltage");
 	    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
+	    		System.out.println("Total operation count = " +count.opCount);
     		}else {
     			System.out.println("Search for " + args[0]);
-    			System.out.println("Date/Time not found");  			
-    		}
+    			System.out.println("Date/Time not found"); 
+    			System.out.println("Total operation count = " +count.opCount);
+		}
     	}else {
     		theTree.inOrderTraverseTree(theTree.root);
     	}
@@ -41,11 +45,14 @@ public class PowerBSTApp {
     	
 	}
 
-   public static void printDateTime(timeStamp[] powerReadings, String Search) {
+   public static void printDateTime(timeStamp[] powerReadings, String Search, opCount count) {
 	   int i = 0;	
 	   int j = 0;
 		while(i < powerReadings.length) { 
+			count.opCount = count.opCount + 1;
+			count.opCount = count.opCount + 1;
 			if(powerReadings[i] != null) {
+				count.opCount = count.opCount + 1;
 				if( powerReadings[i].time.contains(Search)) {
 					System.out.println("Search :" + Search);
 					System.out.println("Date/Time :          " + "Global active power : " + "voltage :");
@@ -56,15 +63,19 @@ public class PowerBSTApp {
 			}
 			i++;
 		}
+		count.opCount = count.opCount + 1;
 		if(j ==0 ) {
 			System.out.println("Search for " + Search);
 			System.out.println("Date/Time not found");
 		}
    }
 	
-   public static void printAllDateTimes(timeStamp[] powerReadings){
+   public static void printAllDateTimes(timeStamp[] powerReadings, opCount count){
 		int i = 1;
+		count.opCount = count.opCount + 1;
 		while(i < powerReadings.length) { 
+			count.opCount = count.opCount + 1;
+			count.opCount = count.opCount + 1;
 			if(powerReadings[i] != null) {
 				System.out.println(powerReadings[i].time +"   "+ powerReadings[i].global_active_power +"   "+powerReadings[i].voltage ); 
 				i ++; 	
@@ -72,14 +83,16 @@ public class PowerBSTApp {
 		}
    }
 	
-   public static List<timeStamp> CSVread(String FileName){
+   public static List<timeStamp> CSVread(String FileName, opCount count){
        String line = "";
 	   List<timeStamp> powerValues = new ArrayList<>();
 	   int lineNo = 0;
 	   
 	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
-	
+		   count.opCount = count.opCount + 1;
 	       while ((line = br.readLine()) != null) {
+	    	   count.opCount = count.opCount + 1;
+	    	   count.opCount = count.opCount + 1;
 	    	   	if(lineNo > 0) {
 		           String[] Element = line.split(",");
 		           powerValues.add(new timeStamp(Element[3],Element[1],Element[0]));
