@@ -5,11 +5,11 @@ import java.io.IOException;
 public class PowerArrayApp {
 	
    public static void main(String[] args) {
-		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
-		timeStamp[] powerReadings = CSVread(CSVName);
+//	String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
+//		timeStamp[] powerReadings = CSVread(CSVName);
 //		String Search = "16/12/2006/17:32:00";
 //		printDateTime(powerReadings, Search);
-	//	printAllDateTimes(powerReadings);
+//		printAllDateTimes(powerReadings);
 	}
     
    

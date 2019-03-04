@@ -8,14 +8,38 @@ import java.util.ArrayList;
 public class PowerBSTApp {
 	
    public static void main(String[] args) {
-		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
+		//Reading in the CSV file, creating a list of objects and sorting the list.
+	    String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
 		List<timeStamp> powerReadings = CSVread(CSVName);
 		Collections.sort(powerReadings);
-		for(timeStamp reading: powerReadings ) {
-		  System.out.println(reading);
-		}
+		
+		BinaryTree theTree = new BinaryTree();
+		int listLength = (powerReadings.size());
+		
+		
+//		int i = 0;
+//		while(i < listLength) {
+//			String time = ((powerReadings.get(i)).getTime()).replaceAll("[/:.,]|12/2006/", "");
+//			int key = Integer.valueOf(time);
+////			System.out.print(key);
+////			System.out.println(powerReadings.get(i));
+////			System.out.println(key);
+//			theTree.addNode(key, powerReadings.get(i));
+//			i ++;
+//		}
+
+		
+		
+    	int start = 0;
+    	int end = powerReadings.size();
+    	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
+//    	System.out.println(((theTree.root).leftChild));
+//    	System.out.println((theTree.root).rightChild);
+    	theTree.inOrderTraverseTree(theTree.root);	
 	}
     
+   
+   
    
    public static void printDateTime(timeStamp[] powerReadings, String Search) {
 	   int i = 0;	

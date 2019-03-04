@@ -7,6 +7,8 @@ public class timeStamp implements Comparable<timeStamp>{
    		this.global_active_power = global_active_power;
    		this.voltage = voltage;
    	}
+   	
+   	//Getters and setters
 	public String getTime() {
 		return time;
 	}
@@ -15,7 +17,7 @@ public class timeStamp implements Comparable<timeStamp>{
 	}
 	public String getGlobal_active_power() {
 		return global_active_power;
-	}
+	}	
 	public void setGlobal_active_power(String global_active_power) {
 		this.global_active_power = global_active_power;
 	}
