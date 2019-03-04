@@ -73,8 +73,8 @@ public class PowerBSTApp {
 		  			if("-c" .equals(args[2])) {
 			  			System.out.println("Total operation count = " +count.opCount);
 			  			count.opCount = count.opCount + 1;
-			  			if(args.length > 1) {
-			  				String fileName = args[1];
+			  			if(args.length > 3) {
+			  				String fileName = args[3];
 			  				FileWriter fileWriter;
 							try {
 								fileWriter = new FileWriter(fileName, true);
@@ -103,8 +103,8 @@ public class PowerBSTApp {
 		    			if("-c" .contains(args[i])) {
 			  				System.out.println("Total operation count = " +count.opCount);
 			  				count.opCount = count.opCount + 1;
-			  				if(args.length > 1) {
-				  				String fileName = args[1];
+			  				if(args.length -1 > i) {
+				  				String fileName = args[i];
 				  				FileWriter fileWriter;
 								try {
 									fileWriter = new FileWriter(fileName, true);

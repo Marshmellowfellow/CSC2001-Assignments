@@ -7,6 +7,7 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = timeStamp.java\
+	  textWrite.java\
 	  Node.java\
 	  BinaryTree.java\
 	  opCount.java\
