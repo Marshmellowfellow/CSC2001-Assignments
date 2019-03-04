@@ -45,6 +45,11 @@ public class PowerBSTApp {
     			System.out.println("Total operation count = " +count.opCount);
     		}else if("-l" .contains(args[0])) {
     			theTree.inOrderTraverseTree(theTree.root);
+	  			if(args.length > 2) {
+		  			if("-c" .equals(args[2])) {
+			  			System.out.println("Total operation count = " +count.opCount);	
+			  		}
+	  			}
     		}else {
 	    		String time = args[0].replaceAll("[/:.,]|12/2006/", "");
 	    		int key = Integer.valueOf(time);

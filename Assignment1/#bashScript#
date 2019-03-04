@@ -1,0 +1,4 @@
+{#!/bin/bash}
+clear
+echo "---------Starting Script---------"
+java PowerBSTApp.java

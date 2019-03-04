@@ -7,7 +7,12 @@ JC = javac
 	$(JC) $(JFLAGS) $*.java
 
 CLASSES = timeStamp.java\
+	  Node.java\
+	  BinaryTree.java\
+	  opCount.java\
 	  PowerArrayApp.java\
+	  PowerBSTApp.java\
+	 
 
 default: classes
 
