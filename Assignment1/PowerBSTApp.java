@@ -17,13 +17,34 @@ public class PowerBSTApp {
 		//Creating the BST
 		BinaryTree theTree = new BinaryTree();
     	int start = 0;
+    	
+    	//Control this value to adjust dataSet size using -l.
     	int end = powerReadings.size();
+    	if(args.length > 0) {
+	  		for(int i = 0; i < (args.length) ; i++) {
+	  			if("-l" .contains(args[0])) {
+	  				if(args.length > 1) {
+		  					end = Integer.valueOf(args[1]);
+	  				}
+	  			}
+	  		}
+    	}
+    	
+    	//Set max end value to the total number of elements contained to avoid error.
+    	if(end > powerReadings.size()) {
+    		end = powerReadings.size();
+    	}
+
+    	
     	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
     	count.opCount = count.opCount + 1;
     	if(args.length > 0) {
-    		if("-c" .equals(args[0])) {
+    		//checking for the -c paramater to print the number total number of comparisons. 
+    		if("-c" .contains(args[0])) {
     			theTree.inOrderTraverseTree(theTree.root);
     			System.out.println("Total operation count = " +count.opCount);
+    		}else if("-l" .contains(args[0])) {
+    			theTree.inOrderTraverseTree(theTree.root);
     		}else {
 	    		String time = args[0].replaceAll("[/:.,]|12/2006/", "");
 	    		int key = Integer.valueOf(time);
@@ -34,7 +55,7 @@ public class PowerBSTApp {
 		    		System.out.println("Date/Time            Global Avtive Power  Voltage");
 		    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
 			  		for(int i = 0; i < (args.length) ; i++) {
-			  			if("-c" .equals(args[i])) {
+			  			if("-c" .contains(args[i])) {
 			  				System.out.println("Total operation count = " +count.opCount);	
 			  			}
 			  		}

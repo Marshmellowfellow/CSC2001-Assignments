@@ -77,6 +77,8 @@ public class PowerArrayApp {
        String line = "";
 	   //Declaring array
 	   timeStamp[] powerValues;
+	   
+	   //Adjust this value to control data set size
 	   powerValues = new timeStamp[510];	
 	
 	   
