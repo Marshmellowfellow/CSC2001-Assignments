@@ -36,6 +36,7 @@ public class PowerBSTApp {
 //    	System.out.println(((theTree.root).leftChild));
 //    	System.out.println((theTree.root).rightChild);
     	theTree.inOrderTraverseTree(theTree.root);	
+    	System.out.println(end);
 	}
     
    
