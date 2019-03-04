@@ -21,11 +21,16 @@ public class PowerBSTApp {
     	
     	//Control this value to adjust dataSet size using -l.
     	int end = powerReadings.size();
+    	count.opCount = count.opCount + 1;
     	if(args.length > 0) {
+    		count.opCount = count.opCount + 1;
 	  		for(int i = 0; i < (args.length) ; i++) {
-	  			if("-l" .contains(args[0])) {
-	  				if(args.length > 1) {
-		  					end = Integer.valueOf(args[1]);
+	  			count.opCount = count.opCount + 1;
+	  			if("-l" .contains(args[i])) {
+	  				count.opCount = count.opCount + 1;
+	  				int j = args.length;
+	  				if((i +1) < j) {
+		  					end = Integer.valueOf(args[i + 1]);
 	  				}
 	  			}
 	  		}
@@ -40,10 +45,12 @@ public class PowerBSTApp {
     	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
     	count.opCount = count.opCount + 1;
     	if(args.length > 0) {
-    		//checking for the -c paramater to print the number total number of comparisons. 
+    		//checking for the -c paramater to print the number total number of comparisons.
+    		count.opCount = count.opCount + 1;
     		if("-c" .contains(args[0])) {
     			theTree.inOrderTraverseTree(theTree.root);
     			System.out.println("Total operation count = " +count.opCount);
+    			count.opCount = count.opCount + 1;
 	  			if(args.length > 1) {
 	  				String fileName = args[1];
 	  				FileWriter fileWriter;
@@ -59,10 +66,13 @@ public class PowerBSTApp {
 	  			}
     			
     		}else if("-l" .contains(args[0])) {
+    			
     			theTree.inOrderTraverseTree(theTree.root);
 	  			if(args.length > 2) {
+	  				count.opCount = count.opCount + 1;
 		  			if("-c" .equals(args[2])) {
 			  			System.out.println("Total operation count = " +count.opCount);
+			  			count.opCount = count.opCount + 1;
 			  			if(args.length > 1) {
 			  				String fileName = args[1];
 			  				FileWriter fileWriter;
@@ -87,10 +97,13 @@ public class PowerBSTApp {
 		    		System.out.println("");
 		    		System.out.println("Date/Time            Global Avtive Power  Voltage");
 		    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
-			  		for(int i = 0; i < (args.length) ; i++) {
-			  			if("-c" .contains(args[i])) {
+		    		count.opCount = count.opCount + 1;
+		    		for(int i = 0; i < (args.length) ; i++) {
+		    			count.opCount = count.opCount + 1;
+		    			if("-c" .contains(args[i])) {
 			  				System.out.println("Total operation count = " +count.opCount);
-				  			if(args.length > 1) {
+			  				count.opCount = count.opCount + 1;
+			  				if(args.length > 1) {
 				  				String fileName = args[1];
 				  				FileWriter fileWriter;
 								try {
@@ -134,6 +147,7 @@ public class PowerBSTApp {
 					System.out.println("Search :" + Search);
 					System.out.println("Date/Time :          " + "Global active power : " + "voltage :");
 					System.out.println(powerReadings[i].time +"  "+ powerReadings[i].global_active_power +"               "+ powerReadings[i].voltage);
+					String text = ("Op count total :" + String.valueOf(count.opCount));
 					i = powerReadings.length;
 					j = 1;
 				}
@@ -151,8 +165,7 @@ public class PowerBSTApp {
 		int i = 1;
 		count.opCount = count.opCount + 1;
 		while(i < powerReadings.length) { 
-			count.opCount = count.opCount + 1;
-			count.opCount = count.opCount + 1;
+			count.opCount = count.opCount + 2;
 			if(powerReadings[i] != null) {
 				System.out.println(powerReadings[i].time +"   "+ powerReadings[i].global_active_power +"   "+powerReadings[i].voltage ); 
 				i ++; 	

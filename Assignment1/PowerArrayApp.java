@@ -10,9 +10,18 @@ public class PowerArrayApp {
 	
   		int lines = 509;
   		if(args.length > 0) {
-	  		if("-l" .equals(args[0])) {
-	  			if(args.length > 1) {
-	  				lines = (Integer.valueOf(args[1]));
+  			for(int i = 0; i < (args.length) ; i++) {
+		  		if("-l" .equals(args[i])) {
+		  			if(args.length > 1) {
+		  		  			count.opCount = count.opCount + 1;
+		  		  			if("-l" .contains(args[i])) {
+		  		  				count.opCount = count.opCount + 1;
+		  		  				int j = args.length;
+		  		  				if((i +1) < j) {
+		  		  					lines = (Integer.valueOf(args[i+1]));
+		  		  				}
+		  		  			}
+	  		  		}
 	  			}
 	  		}
   		}
