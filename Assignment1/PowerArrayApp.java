@@ -148,17 +148,12 @@ public class PowerArrayApp {
 	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
 	
 		   int lineNo = 0;
-		   count.opCount = count.opCount + 1;
 		   if (lineNo < (end + 1)) {
 			   while ((line = br.readLine()) != null) {
-		    	   count.opCount = count.opCount + 1;
 		           String[] Element = line.split(",");				       		
 			       int i = 0;
-			       int size = Element.length;
-			       count.opCount = count.opCount + 1;
+			       int size = Element.length;;
 			       while(i < size) {
-			   	    	count.opCount = count.opCount + 1;
-			   	    	count.opCount = count.opCount + 1;
 			    	   	if (lineNo <(end) ) {
 				   	       powerValues[lineNo] = new timeStamp(Element[3],Element[1],Element[0]);
 			    	   	}	   	       

@@ -1,4 +1,34 @@
-{#!/bin/bash}
 clear
+
+
 echo "---------Starting Script---------"
-java  PowerBSTApp -c test.txt
+
+echo "------------Testing------------"
+
+for i in {1..501..20}
+    do
+	echo "Data size :"$i >>arrayTest.txt
+	java PowerArrayApp 16/12/2006/19:27:0 -l $i -c arrayTest.txt
+	java PowerArrayApp 17/12/2006/01:36:00 -l $i -c arrayTest.txt
+	java PowerArrayApp 16/12/2006/20:47:00 -l $i -c arrayTest.txt
+	java PowerArrayApp 13/2013/20:32:00 -l $i -c arrayTest.txt
+    java PowerArrayApp 77899 -l $i -c arrayTest.txt
+
+done;
+
+for i in {1..501..20}
+    do
+	echo "Data size :"$i >>bstTest.txt
+	java PowerBSTApp 16/12/2006/19:27:00 -l $i -c bstTest.txt
+	java PowerBSTApp 17/12/2006/01:36:00 -l $i -c bstTest.txt
+	java PowerBSTApp 16/12/2006/20:47:00 -l $i -c bstTest.txt
+	java PowerBSTApp 13/2013/20:32:00 -l $i -c bstTest.txt
+	java PowerBSTApp 77899 -l $i -c bstTest.txt
+
+done;
+
+
+
+
+
+echo "----------End of script----------"

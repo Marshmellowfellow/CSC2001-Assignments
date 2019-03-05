@@ -1,0 +1,156 @@
+Data size :1
+Op count total :17
+Op count total :17
+Op count total :17
+Op count total :17
+Op count total :17
+Data size :21
+Op count total :29
+Op count total :29
+Op count total :29
+Op count total :26
+Op count total :26
+Data size :41
+Op count total :32
+Op count total :32
+Op count total :32
+Op count total :29
+Op count total :29
+Data size :61
+Op count total :32
+Op count total :32
+Op count total :32
+Op count total :29
+Op count total :29
+Data size :81
+Op count total :35
+Op count total :35
+Op count total :35
+Op count total :32
+Op count total :32
+Data size :101
+Op count total :35
+Op count total :35
+Op count total :35
+Op count total :32
+Op count total :32
+Data size :121
+Op count total :35
+Op count total :35
+Op count total :35
+Op count total :32
+Op count total :32
+Data size :141
+Op count total :21
+Op count total :38
+Op count total :38
+Op count total :35
+Op count total :35
+Data size :161
+Op count total :33
+Op count total :38
+Op count total :38
+Op count total :35
+Op count total :35
+Data size :181
+Op count total :24
+Op count total :38
+Op count total :38
+Op count total :35
+Op count total :35
+Data size :201
+Op count total :33
+Op count total :38
+Op count total :38
+Op count total :35
+Op count total :35
+Data size :221
+Op count total :24
+Op count total :38
+Op count total :30
+Op count total :35
+Op count total :35
+Data size :241
+Op count total :30
+Op count total :38
+Op count total :36
+Op count total :35
+Op count total :35
+Data size :261
+Op count total :33
+Op count total :41
+Op count total :27
+Op count total :38
+Op count total :38
+Data size :281
+Op count total :36
+Op count total :41
+Op count total :33
+Op count total :38
+Op count total :38
+Data size :301
+Op count total :33
+Op count total :41
+Op count total :33
+Op count total :38
+Op count total :38
+Data size :321
+Op count total :39
+Op count total :41
+Op count total :36
+Op count total :38
+Op count total :38
+Data size :341
+Op count total :39
+Op count total :41
+Op count total :33
+Op count total :38
+Op count total :38
+Data size :361
+Op count total :36
+Op count total :41
+Op count total :36
+Op count total :38
+Op count total :38
+Data size :381
+Op count total :39
+Op count total :41
+Op count total :39
+Op count total :38
+Op count total :38
+Data size :401
+Op count total :39
+Op count total :41
+Op count total :33
+Op count total :38
+Op count total :38
+Data size :421
+Op count total :30
+Op count total :41
+Op count total :30
+Op count total :38
+Op count total :38
+Data size :441
+Op count total :36
+Op count total :41
+Op count total :39
+Op count total :38
+Op count total :38
+Data size :461
+Op count total :39
+Op count total :41
+Op count total :39
+Op count total :38
+Op count total :38
+Data size :481
+Op count total :39
+Op count total :41
+Op count total :36
+Op count total :38
+Op count total :38
+Data size :501
+Op count total :39
+Op count total :30
+Op count total :36
+Op count total :38
+Op count total :38

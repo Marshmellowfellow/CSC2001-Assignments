@@ -43,10 +43,8 @@ public class PowerBSTApp {
     	
     	
     	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
-    	count.opCount = count.opCount + 1;
     	if(args.length > 0) {
     		//checking for the -c paramater to print the number total number of comparisons.
-    		count.opCount = count.opCount + 1;
     		if("-c" .contains(args[0])) {
     			theTree.inOrderTraverseTree(theTree.root);
     			System.out.println("Total operation count = " +count.opCount);
@@ -90,8 +88,14 @@ public class PowerBSTApp {
 	  			}
     		}else {
 	    		String time = args[0].replaceAll("[/:.,]|12/2006/", "");
-	    		int key = Integer.valueOf(time);
-	    		Node search = theTree.findNode(key);
+	    		int key;
+	    		if(time.length() > 8 ) {
+	    			key = 0;
+	    		}else {
+	    			key = Integer.valueOf(time);
+	    		}
+	    		Node search = theTree.findNode(key, count);
+	    		
 	    		count.opCount = count.opCount + 1;
 	    		if(search !=null) {
 		    		System.out.println("");
@@ -108,51 +112,48 @@ public class PowerBSTApp {
 				  				FileWriter fileWriter;
 								try {
 									fileWriter = new FileWriter(fileName, true);
-					  				String text = ("Op count total :" + String.valueOf(count.opCount));
+									String text = ("Op count total :" + String.valueOf(count.opCount));
 					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+					  				
 					  				textWriter.write(fileWriter, fileName, text);
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
-				  				
+				  			}else {
 				  			}
-			  				
 			  			}
 			  		}
 	    		}else {
-		    		
-		    			System.out.println("Search for " + args[0]);
-		    			System.out.println("Date/Time not found"); 
-		    			for(int i = 0; i < (args.length) ; i++) {
+	    			System.out.println("");
+	    			System.out.println("Search for " + args[0]);
+	    			System.out.println("Date/Time not found");
+		    		for(int i = 0; i < (args.length) ; i++) {
 		    			count.opCount = count.opCount + 1;
-		    			if("-c" .contains(args[i])) {
-
-		    				if(args.length > (i+1)) {
-			  					
-				  				String fileName = args[i+1];
-				  				
+		    			if("-c" .contains(args[i])) { 
+			  				System.out.println("Total operation count = " +count.opCount);
+			  				count.opCount = count.opCount + 1;
+			  				if(args.length > (i+1)) { 
+				  				String fileName = args[i + 1];
 				  				FileWriter fileWriter;
 								try {
 									fileWriter = new FileWriter(fileName, true);
-					  				String text = ("Op count total :" + String.valueOf(count.opCount));
+									String text = ("Op count total :" + String.valueOf(count.opCount));
 					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 					  				textWriter.write(fileWriter, fileName, text);
-					  				i = args.length;
+					  				
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
-				  				
-				  			}else {
-				  				System.out.println("Total operation count = " +count.opCount);
 				  			}
 			  				
+			  			}else {
 			  			}
 			  		}
 	    		}
     		
     		}
     	}
-    	else {	
+    	else {
     		theTree.inOrderTraverseTree(theTree.root);
     	}
     	
@@ -170,10 +171,10 @@ public class PowerBSTApp {
 			if(powerReadings[i] != null) {
 				count.opCount = count.opCount + 1;
 				if( powerReadings[i].time.contains(Search)) {
+					System.out.println("");
 					System.out.println("Search :" + Search);
 					System.out.println("Date/Time :          " + "Global active power : " + "voltage :");
 					System.out.println(powerReadings[i].time +"  "+ powerReadings[i].global_active_power +"               "+ powerReadings[i].voltage);
-					String text = ("Op count total :" + String.valueOf(count.opCount));
 					i = powerReadings.length;
 					j = 1;
 				}
@@ -205,10 +206,7 @@ public class PowerBSTApp {
 	   int lineNo = 0;
 	   
 	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
-		   count.opCount = count.opCount + 1;
 	       while ((line = br.readLine()) != null) {
-	    	   count.opCount = count.opCount + 1;
-	    	   count.opCount = count.opCount + 1;
 	    	   	if(lineNo > 0) {
 		           String[] Element = line.split(",");
 		           powerValues.add(new timeStamp(Element[3],Element[1],Element[0]));

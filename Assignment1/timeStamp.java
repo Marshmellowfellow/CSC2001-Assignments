@@ -35,7 +35,7 @@ public class timeStamp implements Comparable<timeStamp>{
 		int time2int = Integer.valueOf(time2);
 		if(time1int > time2int) 
 			return 1;
-		else
+		else	
 			return -1;
 		
 	}

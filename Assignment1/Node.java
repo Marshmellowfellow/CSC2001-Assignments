@@ -2,11 +2,12 @@ class Node {
 
 	int key;
 	timeStamp name;
-	
+	int counter;
 
 	Node leftChild;
 	Node rightChild;
-
+	
+	
 	Node(int key, timeStamp name) {
 
 		this.key = key;

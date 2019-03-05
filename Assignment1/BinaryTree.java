@@ -123,7 +123,7 @@ public class BinaryTree {
 
 	}
 
-	public Node findNode(int key) {
+	public Node findNode(int key, opCount count) {
 
 		// Start at the top of the tree
 
@@ -135,7 +135,8 @@ public class BinaryTree {
 		while (focusNode.key != key) {
 
 			// If we should search to the left
-
+			
+			count.opCount = count.opCount + 2;
 			if (key < focusNode.key) {
 
 				// Shift the focus Node to the left child
@@ -151,12 +152,12 @@ public class BinaryTree {
 			}
 
 			// The node wasn't found
-
+			count.opCount = count.opCount + 1;
 			if (focusNode == null)
 				return null;
 
 		}
-
+		focusNode.counter = count.opCount;
 		return focusNode;
 
 	}
