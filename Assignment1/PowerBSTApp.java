@@ -100,11 +100,11 @@ public class PowerBSTApp {
 		    		count.opCount = count.opCount + 1;
 		    		for(int i = 0; i < (args.length) ; i++) {
 		    			count.opCount = count.opCount + 1;
-		    			if("-c" .contains(args[i])) {
+		    			if("-c" .contains(args[i])) { 
 			  				System.out.println("Total operation count = " +count.opCount);
 			  				count.opCount = count.opCount + 1;
-			  				if(args.length -1 > i) {
-				  				String fileName = args[i];
+			  				if(args.length > (i+1)) { 
+				  				String fileName = args[i + 1];
 				  				FileWriter fileWriter;
 								try {
 									fileWriter = new FileWriter(fileName, true);
@@ -120,8 +120,34 @@ public class PowerBSTApp {
 			  			}
 			  		}
 	    		}else {
-	    			System.out.println("Search for " + args[0]);
-	    			System.out.println("Date/Time not found"); 
+		    		
+		    			System.out.println("Search for " + args[0]);
+		    			System.out.println("Date/Time not found"); 
+		    			for(int i = 0; i < (args.length) ; i++) {
+		    			count.opCount = count.opCount + 1;
+		    			if("-c" .contains(args[i])) {
+
+		    				if(args.length > (i+1)) {
+			  					
+				  				String fileName = args[i+1];
+				  				
+				  				FileWriter fileWriter;
+								try {
+									fileWriter = new FileWriter(fileName, true);
+					  				String text = ("Op count total :" + String.valueOf(count.opCount));
+					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+					  				textWriter.write(fileWriter, fileName, text);
+					  				i = args.length;
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+				  				
+				  			}else {
+				  				System.out.println("Total operation count = " +count.opCount);
+				  			}
+			  				
+			  			}
+			  		}
 	    		}
     		
     		}

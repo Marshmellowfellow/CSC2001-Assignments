@@ -72,7 +72,20 @@ public class PowerArrayApp {
 		  		printDateTime(powerReadings, args[0], count);  		
 		  		for(int i = 0; i < (args.length) ; i++) {
 		  			if("-c" .equals(args[i])) {
-		  				System.out.println("Total operation count = " +count.opCount);	
+		  				System.out.println("Total operation count = " +count.opCount);
+			  			if(args.length > (i +1)) {
+			  				String fileName = args[i+1];
+			  				FileWriter fileWriter;
+							try {
+								fileWriter = new FileWriter(fileName, true);
+				  				String text = ("Op count total :" + String.valueOf(count.opCount));
+				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+				  				textWriter.write(fileWriter, fileName, text);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+			  				
+			  			}
 		  			}
 		  		}
 	  			
@@ -164,7 +177,6 @@ public class PowerArrayApp {
 	       return powerValues;
    }
 }
-
 
 
 
