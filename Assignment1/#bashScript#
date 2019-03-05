@@ -25,6 +25,7 @@ for i in {1..501..20}
 	java PowerBSTApp 13/2013/20:32:00 -l $i -c bstTest4.txt
 	java PowerBSTApp 77899 -l $i -c bstTest5.txt
 
+
 done;
 
 

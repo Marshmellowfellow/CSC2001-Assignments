@@ -2,7 +2,6 @@ class Node {
 
 	int key;
 	timeStamp name;
-	int counter;
 
 	Node leftChild;
 	Node rightChild;

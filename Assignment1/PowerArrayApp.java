@@ -14,9 +14,7 @@ public class PowerArrayApp {
   			for(int i = 0; i < (args.length) ; i++) {
 		  		if("-l" .equals(args[i])) {
 		  			if(args.length > 1) {
-		  		  			count.opCount = count.opCount + 1;
 		  		  			if("-l" .contains(args[i])) {
-		  		  				count.opCount = count.opCount + 1;
 		  		  				int j = args.length;
 		  		  				if((i +1) < j) {
 		  		  					lines = (Integer.valueOf(args[i+1]));
@@ -28,7 +26,6 @@ public class PowerArrayApp {
   		}
   		timeStamp[] powerValues = new timeStamp[Integer.valueOf(lines)];
 	    timeStamp[] powerReadings = CSVread(CSVName, count,powerValues, lines);
-	    count.opCount = count.opCount + 1;
 	  	if(args.length > 0) {
 	  		if("-c" .equals(args[0])) {
 	  			printAllDateTimes(powerReadings, count);
@@ -38,7 +35,7 @@ public class PowerArrayApp {
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
-		  				String text = ("Op count total :" + String.valueOf(count.opCount));
+		  				String text = (String.valueOf(count.opCount));
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {
@@ -57,7 +54,7 @@ public class PowerArrayApp {
 			  				FileWriter fileWriter;
 							try {
 								fileWriter = new FileWriter(fileName, true);
-				  				String text = ("Op count total :" + String.valueOf(count.opCount));
+				  				String text = (String.valueOf(count.opCount));
 				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 				  				textWriter.write(fileWriter, fileName, text);
 							} catch (IOException e) {
@@ -78,7 +75,7 @@ public class PowerArrayApp {
 			  				FileWriter fileWriter;
 							try {
 								fileWriter = new FileWriter(fileName, true);
-				  				String text = ("Op count total :" + String.valueOf(count.opCount));
+				  				String text = (String.valueOf(count.opCount));
 				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 				  				textWriter.write(fileWriter, fileName, text);
 							} catch (IOException e) {
@@ -94,7 +91,7 @@ public class PowerArrayApp {
 			  printAllDateTimes(powerReadings, count);
 		  		for(int i = 0; i < (args.length) ; i++) {
 		  			if(args[i] == "-c") {
-		  				System.out.println("Total operation count = " +count.opCount);	
+		  				System.out.println(count.opCount);	
 		  		}
 		  		}
 		}
@@ -130,10 +127,7 @@ public class PowerArrayApp {
 	
    public static void printAllDateTimes(timeStamp[] powerReadings, opCount count){
 		int i = 1;
-		count.opCount = count.opCount + 1;
 		while(i < powerReadings.length) {
-		    count.opCount = count.opCount + 1;
-		    count.opCount = count.opCount + 1;
 			if(powerReadings[i] != null) {
 				System.out.println(powerReadings[i].time +"   "+ powerReadings[i].global_active_power +"   "+powerReadings[i].voltage ); 	
 			}

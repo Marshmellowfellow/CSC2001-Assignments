@@ -146,7 +146,7 @@ public class BinaryTree {
 			} else {
 
 				// Shift the focus Node to the right child
-
+				
 				focusNode = focusNode.rightChild;
 
 			}
@@ -157,7 +157,6 @@ public class BinaryTree {
 				return null;
 
 		}
-		focusNode.counter = count.opCount;
 		return focusNode;
 
 	}
