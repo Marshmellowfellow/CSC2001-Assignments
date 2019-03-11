@@ -1,0 +1,11 @@
+
+
+Run make to produce class files.
+
+Run the bash script (./bashscript) to repoduce the tests from the report.
+
+Run either: java PowerArrayApp or java PowerBSTApp without any arguments to print all the dates and information. Or optionally run them with any of  additional arguments.
+
+|Arguments:
+|    -l <size>, adjust the size of the subset of data being searched through
+|    -c <optional filename>, display number of operations completed for that search, with optional writing output to a file.
