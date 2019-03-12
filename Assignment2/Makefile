@@ -8,6 +8,8 @@ JC = javac
 
 CLASSES = AVLTreeRecursiveOptimized.java\
 	  TreePrinter.java\
+       timeStamp.java\
+       opCount.java\
 
 
 default: classes

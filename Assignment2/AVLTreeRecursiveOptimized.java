@@ -1,3 +1,10 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 /**
  * This file contains an implementation of an AVL tree. An AVL tree
  * is a special type of binary tree which self balances itself to keep
@@ -7,11 +14,33 @@
  **/
 
 public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iterable<T> {
-
+	
+  public static void main(String[] args) {
+	  
+	  	AVLTreeRecursiveOptimized<Integer> tree = new AVLTreeRecursiveOptimized<>();
+		opCount count = new opCount(0);
+		
+		//Reading in the CSV file, creating a list of objects and sorting the list.
+		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
+		List<timeStamp> powerReadings = CSVread(CSVName, count);
+		Collections.sort(powerReadings);
+	  
+		for (int i = 0; i < powerReadings.size(); i ++) {
+	        String time = ((powerReadings.get(i)).getTime()).replaceAll("[/:.,]|12/2006/", "");
+	        int key = Integer.valueOf(time);
+			tree.insert(key, powerReadings.get(i));
+		}
+		System.out.println(tree);
+		System.out.println(tree.search(16194100));
+		System.out.println(tree.search(16232000));
+  }
+  	
   public class Node implements TreePrinter.PrintableNode { 
     
     // 'bf' is short for Balance Factor
     public int bf;
+    
+    public timeStamp timeData;
 
     // The value/data contained within the node.
     public T value;
@@ -22,8 +51,9 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
     // The left and the right children of this node.    
     public Node left, right;
 
-    public Node(T value) {
+    public Node(T value, timeStamp timeData) {
       this.value = value;
+      this.timeData = timeData;
     }
 
     @Override 
@@ -36,7 +66,6 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
       return right;
     }
 
-    @Override
     public String getText() {
       return value.toString();
     }
@@ -91,14 +120,40 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
 
     // Found value in tree.
     return true;
-
   }
+  public timeStamp search(T value) {
+	    return search(root, value);
+	  }
 
+  // Recursive contains helper method.
+  private timeStamp search(Node node, T value) {
+    
+    if (node == null) return null;
+
+    // Compare current value to the value in the node.
+    int cmp = value.compareTo(node.value);
+    System.out.println(cmp);
+    System.out.println(value);
+    System.out.println(node.value);
+    // Dig into left subtree.
+    if (cmp < 0) return search(node.left, value);
+
+    // Dig into right subtree.
+    if (cmp > 0) return search(node.right, value);
+
+    if (cmp == 0) {
+    	return node.timeData;
+    }
+    
+    return null;
+    
+  }
+  
   // Insert/add a value to the AVL tree. The value must not be null, O(log(n))
-  public boolean insert(T value) {
+  public boolean insert(T value,timeStamp timeData) {
     if (value == null) return false;
     if (!contains(root, value)) {
-      root = insert(root, value);
+      root = insert(root, value, timeData);
       nodeCount++;
       return true;
     }
@@ -106,20 +161,18 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
   }
 
   // Inserts a value inside the AVL tree.
-  private Node insert(Node node, T value) {
+  private Node insert(Node node, T value, timeStamp timeData) {
     // Base case.
-    if (node == null) return new Node(value);
-
+    if (node == null) return new Node(value, timeData);
     // Compare current value to the value in the node.
     int cmp = value.compareTo(node.value);
 
     // Insert node in left subtree.
     if (cmp < 0) {
-      node.left = insert(node.left, value);;
-
+      node.left = insert(node.left, value, timeData);
     // Insert node in right subtree.
     } else {
-      node.right = insert(node.right, value);
+      node.right = insert(node.right, value, timeData);
     }
 
     // Update balance factor and height values.
@@ -147,10 +200,10 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
   // Re-balance a node if its balance factor is +2 or -2.
   private Node balance(Node node) {
     // Left heavy subtree.
-    if (node.bf <= -1) {
+    if (node.bf ==-2) {
 
       // Left-Left case.
-      if (node.left.bf <= 0) {
+      if (node.left.bf < 0) {
         return leftLeftCase(node);
         
       // Left-Right case.
@@ -159,10 +212,10 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
       }
 
     // Right heavy subtree needs balancing.
-    } else if (node.bf >= 1) {
+    } else if (node.bf ==+2) {
 
       // Right-Right case.
-      if (node.right.bf >= 0) {
+      if (node.right.bf > 0) {
         return rightRightCase(node);
 
       // Right-Left case.
@@ -354,12 +407,8 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
 
   @Override
   public String toString() {
-	  System.out.println(root.bf);
-	 update(root);
-	 balance(root);
-	 System.out.println(root.bf);
-    return (TreePrinter.getTreeDisplay(root) + TreePrinter.getTreeDisplay(balance(root)));
-  }
+    return (TreePrinter.getTreeDisplay(root));
+   }
 
   // Make sure all left child nodes are smaller in value than their parent and
   // make sure all right child nodes are greater in value than their parent.
@@ -372,12 +421,28 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
     if (node.right != null) isValid = isValid && node.right.value.compareTo(val) > 0;
     return isValid && validateBSTInvarient(node.left) && validateBSTInvarient(node.right);
   }
-  public static void main(String[] args) {
-	  AVLTreeRecursiveOptimized<Integer> tree = new AVLTreeRecursiveOptimized<>();
-	  for (int i = 9; i < 22; i ++) {
-		  tree.insert((int)(Math.random() * 100));
-	  }
-	  System.out.println(tree);
+  
+  public static List<timeStamp> CSVread(String FileName, opCount count){
+      String line = "";
+	   List<timeStamp> powerValues = new ArrayList<>();
+	   int lineNo = 0;
+	   
+	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
+	       while ((line = br.readLine()) != null) {
+	    	   	if(lineNo > 0) {
+		           String[] Element = line.split(",");
+		           powerValues.add(new timeStamp(Element[3],Element[1],Element[0]));
+		           if(lineNo >= 20) {
+		        	   break;
+		           }
+	       		}
+	    	   	lineNo ++;
+	       }
+	       } 
+	       catch (IOException e) {
+	           e.printStackTrace();
+	       }
+	       return powerValues;
   }
 }
 
