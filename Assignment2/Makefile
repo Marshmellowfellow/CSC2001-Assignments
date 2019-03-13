@@ -6,7 +6,7 @@ JC = javac
 .java.class:
 	$(JC) $(JFLAGS) $<
 
-CLASSES = AVLTreeRecursiveOptimized.java\
+CLASSES = PowerAVLApp.java\
 	  TreePrinter.java\
        timeStamp.java\
        opCount.java\

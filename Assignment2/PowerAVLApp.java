@@ -14,16 +14,16 @@ import java.io.IOException;
  * @author William Fiset, william.alexandre.fiset@gmail.com
  **/
 
-public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iterable<T> {
+public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	
   public static void main(String[] args) {
 	  
-	  	AVLTreeRecursiveOptimized<Integer> tree = new AVLTreeRecursiveOptimized<>();
+	  	PowerAVLApp<Integer> tree = new PowerAVLApp<>();
 		opCount count = new opCount(0);
 		
 		//Reading in the CSV file, creating a list of objects and sorting the list.
-		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
-		List<timeStamp> powerReadings = CSVread(CSVName, count);
+		String CSVName = "cleaned_data.csv";
+		List<timeStamp> powerReadings = CSVread(CSVName);
 		Collections.sort(powerReadings);
 		
     	int end = powerReadings.size();
@@ -94,6 +94,42 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
 //	  			}
     		}
     		else if("-k" .contains(args[0])) {
+    			List<String> keys = KEYread(args[1]);
+    			System.out.println("Date/Time            Global Avtive Power  Voltage");
+    			for(int i = 0; i< keys.size();i++) {
+    	    		String time = (keys.get(i)).replaceAll("[/:.,]|12/2006/", "");
+    	    		int key;
+    	    		if(time.length() > 8 ) {
+    	    			key = 0;
+    	    		}else {
+    	    			key = Integer.valueOf(time);
+    	    		}
+    	    		timeStamp search = tree.search(key);
+    	    		if(search !=null) {
+    		    		System.out.println((search).getTime() + "  " + (search).getGlobal_active_power() + "              " + (search).getVoltage());
+//    		    		for(int i = 0; i < (args.length) ; i++) {
+//    		    			if("-c" .contains(args[i])) { 
+//    			  				System.out.println("Total operation count = " +count.opCount);
+//    			  				if(args.length > (i+1)) { 
+//    				  				String fileName = args[i + 1];
+//    				  				FileWriter fileWriter;
+//    								try {
+//    									fileWriter = new FileWriter(fileName, true);
+//    									String text = (String.valueOf(count.opCount));
+//    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+//    					  				
+//    					  				textWriter.write(fileWriter, fileName, text);
+//    								} catch (IOException e) {
+//    									e.printStackTrace();
+//    								}
+//    				  			}else {
+//    				  			}
+//    			  			}
+//    			  		}
+    	    		}
+    				
+    			}
+    			
     			
     		}else if("-s" .contains(args[0])){
 	    		String time = args[1].replaceAll("[/:.,]|12/2006/", "");
@@ -157,7 +193,7 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
     	}
     	else {
     		for (int i = 0; i < end; i ++) {
-    			System.out.println(powerReadings.get(i));
+    			System.out.println((powerReadings.get(i)).time  + "  " + (powerReadings.get(i)).global_active_power + "   		  " + (powerReadings.get(i)).getVoltage());
     		}
     	}
 		
@@ -559,7 +595,7 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
     return isValid && validateBSTInvarient(node.left) && validateBSTInvarient(node.right);
   }
   
-  public static List<timeStamp> CSVread(String FileName, opCount count){
+  public static List<timeStamp> CSVread(String FileName){
       String line = "";
 	   List<timeStamp> powerValues = new ArrayList<>();
 	   int lineNo = 0;
@@ -569,9 +605,6 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
 	    	   	if(lineNo > 0) {
 		           String[] Element = line.split(",");
 		           powerValues.add(new timeStamp(Element[3],Element[1],Element[0]));
-		           if(lineNo >= 20) {
-		        	   break;
-		           }
 	       		}
 	    	   	lineNo ++;
 	       }
@@ -580,6 +613,25 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
 	           e.printStackTrace();
 	       }
 	       return powerValues;
+  }
+  public static List<String> KEYread(String FileName){
+      String line = "";
+	   List<String> keys = new ArrayList<>();
+	   int lineNo = 0;
+	   
+	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
+	       while ((line = br.readLine()) != null) {
+	    	   	if(lineNo > 0) {
+		           String[] Element = line.split(",");
+		           keys.add(Element[0]);
+	       		}
+	    	   	lineNo ++;
+	       }
+	       } 
+	       catch (IOException e) {
+	           e.printStackTrace();
+	       }
+	       return keys;
   }
 }
 
