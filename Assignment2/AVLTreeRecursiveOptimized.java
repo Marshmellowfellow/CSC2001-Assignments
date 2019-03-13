@@ -4,6 +4,7 @@ import java.util.List;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 /**
  * This file contains an implementation of an AVL tree. An AVL tree
@@ -24,17 +25,159 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
 		String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
 		List<timeStamp> powerReadings = CSVread(CSVName, count);
 		Collections.sort(powerReadings);
-	  
-		for (int i = 0; i < powerReadings.size(); i ++) {
+		
+    	int end = powerReadings.size();
+    	if(args.length > 0) {
+	  		for(int i = 0; i < (args.length) ; i++) {
+	  			if("-l" .contains(args[i])) {
+	  				int j = args.length;
+	  				if((i +1) < j) {
+		  					end = Integer.valueOf(args[i + 1]);
+	  				}
+	  			}
+	  		}
+    	}
+    	//Set max end value to the total number of elements contained to avoid error.
+    	if(end > powerReadings.size()) {
+    		end = powerReadings.size();
+    	}
+		
+		for (int i = 0; i < end; i ++) {
 	        String time = ((powerReadings.get(i)).getTime()).replaceAll("[/:.,]|12/2006/", "");
 	        int key = Integer.valueOf(time);
 			tree.insert(key, powerReadings.get(i));
 		}
-		System.out.println(tree);
-		System.out.println(tree.search(16194100));
-		System.out.println(tree.search(16232000));
+		
+		
+    	if(args.length > 0) {
+    		//checking for the -c paramater to print the number total number of comparisons.
+    		if("-c" .contains(args[0])) {
+//    			theTree.inOrderTraverseTree(theTree.root);
+//    			System.out.println("Total operation count = " +count.opCount);
+//    			count.opCount = count.opCount + 1;
+//	  			if(args.length > 1) {
+//	  				String fileName = args[1];
+//	  				FileWriter fileWriter;
+//					try {
+//						fileWriter = new FileWriter(fileName, true);
+//		  				String text = (String.valueOf(count.opCount));
+//		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+//		  				textWriter.write(fileWriter, fileName, text);
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//	  				
+//	  			}
+//    			
+    		}else if("-l" .contains(args[0])) {
+//    			
+//    			theTree.inOrderTraverseTree(theTree.root);
+//	  			if(args.length > 2) {
+//	  				count.opCount = count.opCount + 1;
+//		  			if("-c" .equals(args[2])) {
+//			  			System.out.println("Total operation count = " +count.opCount);
+//			  			count.opCount = count.opCount + 1;
+//			  			if(args.length > 3) {
+//			  				String fileName = args[3];
+//			  				FileWriter fileWriter;
+//							try {
+//								fileWriter = new FileWriter(fileName, true);
+//				  				String text = ( String.valueOf(count.opCount));
+//				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+//				  				textWriter.write(fileWriter, fileName, text);
+//							} catch (IOException e) {
+//								e.printStackTrace();
+//							}
+//			  				
+//			  			}
+//			  		}
+//	  			}
+    		}
+    		else if("-k" .contains(args[0])) {
+    			
+    		}else if("-s" .contains(args[0])){
+	    		String time = args[1].replaceAll("[/:.,]|12/2006/", "");
+	    		int key;
+	    		if(time.length() > 8 ) {
+	    			key = 0;
+	    		}else {
+	    			key = Integer.valueOf(time);
+	    		}
+	    		timeStamp search = tree.search(key);
+	    		if(search !=null) {
+	    			System.out.println("");
+	    			System.out.println("Date/Time            Global Avtive Power  Voltage");
+		    		System.out.println((search).getTime() + "  " + (search).getGlobal_active_power() + "              " + (search).getVoltage());
+//		    		for(int i = 0; i < (args.length) ; i++) {
+//		    			if("-c" .contains(args[i])) { 
+//			  				System.out.println("Total operation count = " +count.opCount);
+//			  				if(args.length > (i+1)) { 
+//				  				String fileName = args[i + 1];
+//				  				FileWriter fileWriter;
+//								try {
+//									fileWriter = new FileWriter(fileName, true);
+//									String text = (String.valueOf(count.opCount));
+//					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+//					  				
+//					  				textWriter.write(fileWriter, fileName, text);
+//								} catch (IOException e) {
+//									e.printStackTrace();
+//								}
+//				  			}else {
+//				  			}
+//			  			}
+//			  		}
+	    		}//else {
+//	    			System.out.println("");
+//	    			System.out.println("Search for " + args[0]);
+//	    			System.out.println("Date/Time not found");
+//		    		for(int i = 0; i < (args.length) ; i++) {
+//		    			if("-c" .contains(args[i])) { 
+//			  				System.out.println("Total operation count = " +count.opCount);
+//			  				if(args.length > (i+1)) { 
+//				  				String fileName = args[i + 1];
+//				  				FileWriter fileWriter;
+//								try {
+//									fileWriter = new FileWriter(fileName, true);
+//									String text = (String.valueOf(count.opCount));
+//					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+//					  				textWriter.write(fileWriter, fileName, text);
+//					  				
+//								} catch (IOException e) {
+//									e.printStackTrace();
+//								}
+//				  			}
+//			  				
+//			  			}else {
+//			  			}
+//			  		}
+//	    		}
+    		
+    		}
+    	}
+    	else {
+    		for (int i = 0; i < end; i ++) {
+    			System.out.println(powerReadings.get(i));
+    		}
+    	}
+		
+		
+		
+		
+//		System.out.println(tree);
+//		System.out.println("Search for :16194100");
+//		System.out.println(tree.search(16194100));
+//		System.out.println("Search for :16232000");
+//		System.out.println(tree.search(16232000));
+//		System.out.println("Search for :162");
+//		System.out.println(tree.search(162));
   }
-  	
+  
+  @Override
+  public String toString() {
+    return (TreePrinter.getTreeDisplay(root));
+   }
+  
   public class Node implements TreePrinter.PrintableNode { 
     
     // 'bf' is short for Balance Factor
@@ -132,9 +275,6 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
 
     // Compare current value to the value in the node.
     int cmp = value.compareTo(node.value);
-    System.out.println(cmp);
-    System.out.println(value);
-    System.out.println(node.value);
     // Dig into left subtree.
     if (cmp < 0) return search(node.left, value);
 
@@ -366,7 +506,7 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
   }
 
   // Returns as iterator to traverse the tree in order.
-  public java.util.Iterator<T> iterator () {
+  public java.util.Iterator<T> iterator() {
 
     final int expectedNodeCount = nodeCount;
     final java.util.Stack<Node> stack = new java.util.Stack<>();
@@ -405,10 +545,7 @@ public class AVLTreeRecursiveOptimized <T extends Comparable<T>> implements Iter
     };
   }
 
-  @Override
-  public String toString() {
-    return (TreePrinter.getTreeDisplay(root));
-   }
+
 
   // Make sure all left child nodes are smaller in value than their parent and
   // make sure all right child nodes are greater in value than their parent.
