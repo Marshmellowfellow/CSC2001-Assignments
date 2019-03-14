@@ -51,46 +51,42 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     	if(args.length > 0) {
     		//checking for the -c paramater to print the number total number of comparisons.
     		if("-c" .contains(args[0])) {
-//    			theTree.inOrderTraverseTree(theTree.root);
-//    			System.out.println("Total operation count = " +count.opCount);
-//    			count.opCount = count.opCount + 1;
-//	  			if(args.length > 1) {
-//	  				String fileName = args[1];
-//	  				FileWriter fileWriter;
-//					try {
-//						fileWriter = new FileWriter(fileName, true);
-//		  				String text = (String.valueOf(count.opCount));
-//		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-//		  				textWriter.write(fileWriter, fileName, text);
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//	  				
-//	  			}
-//    			
+    			System.out.println("Total operation count = " +count.opCount);
+    			count.opCount = count.opCount + 1;
+	  			if(args.length > 1) {
+	  				String fileName = args[1];
+	  				FileWriter fileWriter;
+					try {
+						fileWriter = new FileWriter(fileName, true);
+		  				String text = (String.valueOf(count.opCount));
+		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+		  				textWriter.write(fileWriter, fileName, text);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	  				
+	  			}
+    			
     		}else if("-l" .contains(args[0])) {
-//    			
-//    			theTree.inOrderTraverseTree(theTree.root);
-//	  			if(args.length > 2) {
-//	  				count.opCount = count.opCount + 1;
-//		  			if("-c" .equals(args[2])) {
-//			  			System.out.println("Total operation count = " +count.opCount);
-//			  			count.opCount = count.opCount + 1;
-//			  			if(args.length > 3) {
-//			  				String fileName = args[3];
-//			  				FileWriter fileWriter;
-//							try {
-//								fileWriter = new FileWriter(fileName, true);
-//				  				String text = ( String.valueOf(count.opCount));
-//				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-//				  				textWriter.write(fileWriter, fileName, text);
-//							} catch (IOException e) {
-//								e.printStackTrace();
-//							}
-//			  				
-//			  			}
-//			  		}
-//	  			}
+	  			if(args.length > 2) {
+		  			if("-c" .equals(args[2])) {
+			  			System.out.println("Total operation count = " +count.opCount);
+			  			count.opCount = count.opCount + 1;
+			  			if(args.length > 3) {
+			  				String fileName = args[3];
+			  				FileWriter fileWriter;
+							try {
+								fileWriter = new FileWriter(fileName, true);
+				  				String text = ( String.valueOf(count.opCount));
+				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+				  				textWriter.write(fileWriter, fileName, text);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+			  				
+			  			}
+			  		}
+	  			}
     		}
     		else if("-k" .contains(args[0])) {
     			List<String> keys = KEYread(args[1]);
@@ -144,50 +140,50 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	    			System.out.println("");
 	    			System.out.println("Date/Time            Global Avtive Power  Voltage");
 		    		System.out.println((search).getTime() + "  " + (search).getGlobal_active_power() + "              " + (search).getVoltage());
-//		    		for(int i = 0; i < (args.length) ; i++) {
-//		    			if("-c" .contains(args[i])) { 
-//			  				System.out.println("Total operation count = " +count.opCount);
-//			  				if(args.length > (i+1)) { 
-//				  				String fileName = args[i + 1];
-//				  				FileWriter fileWriter;
-//								try {
-//									fileWriter = new FileWriter(fileName, true);
-//									String text = (String.valueOf(count.opCount));
-//					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-//					  				
-//					  				textWriter.write(fileWriter, fileName, text);
-//								} catch (IOException e) {
-//									e.printStackTrace();
-//								}
-//				  			}else {
-//				  			}
-//			  			}
-//			  		}
-	    		}//else {
-//	    			System.out.println("");
-//	    			System.out.println("Search for " + args[0]);
-//	    			System.out.println("Date/Time not found");
-//		    		for(int i = 0; i < (args.length) ; i++) {
-//		    			if("-c" .contains(args[i])) { 
-//			  				System.out.println("Total operation count = " +count.opCount);
-//			  				if(args.length > (i+1)) { 
-//				  				String fileName = args[i + 1];
-//				  				FileWriter fileWriter;
-//								try {
-//									fileWriter = new FileWriter(fileName, true);
-//									String text = (String.valueOf(count.opCount));
-//					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-//					  				textWriter.write(fileWriter, fileName, text);
-//					  				
-//								} catch (IOException e) {
-//									e.printStackTrace();
-//								}
-//				  			}
-//			  				
-//			  			}else {
-//			  			}
-//			  		}
-//	    		}
+		    		for(int i = 0; i < (args.length) ; i++) {
+		    			if("-c" .contains(args[i])) { 
+			  				System.out.println("Total operation count = " +count.opCount);
+			  				if(args.length > (i+1)) { 
+				  				String fileName = args[i + 1];
+				  				FileWriter fileWriter;
+								try {
+									fileWriter = new FileWriter(fileName, true);
+									String text = (String.valueOf(count.opCount));
+					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+					  				
+					  				textWriter.write(fileWriter, fileName, text);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+				  			}else {
+				  			}
+			  			}
+			  		}
+	    		}else {
+	    			System.out.println("");
+	    			System.out.println("Search for " + args[0]);
+	    			System.out.println("Date/Time not found");
+		    		for(int i = 0; i < (args.length) ; i++) {
+		    			if("-c" .contains(args[i])) { 
+			  				System.out.println("Total operation count = " +count.opCount);
+			  				if(args.length > (i+1)) { 
+				  				String fileName = args[i + 1];
+				  				FileWriter fileWriter;
+								try {
+									fileWriter = new FileWriter(fileName, true);
+									String text = (String.valueOf(count.opCount));
+					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+					  				textWriter.write(fileWriter, fileName, text);
+					  				
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+				  			}
+			  				
+			  			}else {
+			  			}
+			  		}
+	    		}
     		
     		}
     	}
@@ -197,16 +193,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     		}
     	}
 		
-		
-		
-		
-//		System.out.println(tree);
-//		System.out.println("Search for :16194100");
-//		System.out.println(tree.search(16194100));
-//		System.out.println("Search for :16232000");
-//		System.out.println(tree.search(16232000));
-//		System.out.println("Search for :162");
-//		System.out.println(tree.search(162));
+
   }
   
   @Override
