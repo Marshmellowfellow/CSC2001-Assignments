@@ -17,7 +17,6 @@ import java.io.IOException;
 public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	
   public static void main(String[] args) {
-	  
 	  	PowerAVLApp<Integer> tree = new PowerAVLApp<>();
 		opCount count = new opCount(0);
 		
@@ -95,9 +94,10 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     		}
     		else if("-k" .contains(args[0])) {
     			List<String> keys = KEYread(args[1]);
+    			if(keys !=null) {
     			System.out.println("Date/Time            Global Avtive Power  Voltage");
-    			for(int i = 0; i< keys.size();i++) {
-    	    		String time = (keys.get(i)).replaceAll("[/:.,]|12/2006/", "");
+    			for(int j = 0; j< keys.size();j++) {
+    	    		String time = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
     	    		int key;
     	    		if(time.length() > 8 ) {
     	    			key = 0;
@@ -106,30 +106,30 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     	    		}
     	    		timeStamp search = tree.search(key);
     	    		if(search !=null) {
-    		    		System.out.println((search).getTime() + "  " + (search).getGlobal_active_power() + "              " + (search).getVoltage());
-//    		    		for(int i = 0; i < (args.length) ; i++) {
-//    		    			if("-c" .contains(args[i])) { 
-//    			  				System.out.println("Total operation count = " +count.opCount);
-//    			  				if(args.length > (i+1)) { 
-//    				  				String fileName = args[i + 1];
-//    				  				FileWriter fileWriter;
-//    								try {
-//    									fileWriter = new FileWriter(fileName, true);
-//    									String text = (String.valueOf(count.opCount));
-//    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-//    					  				
-//    					  				textWriter.write(fileWriter, fileName, text);
-//    								} catch (IOException e) {
-//    									e.printStackTrace();
-//    								}
-//    				  			}else {
-//    				  			}
-//    			  			}
-//    			  		}
+    		    		System.out.println(search.getTime() + "  " + search.getGlobal_active_power() + "              " + search.getVoltage());
+    		    		for(int i = 0; i < (args.length) ; i++) {
+    		    			if("-c" .contains(args[i])) { 
+    			  				System.out.println("Total operation count = " +count.opCount);
+    			  				if(args.length > (i+1)) { 
+    				  				String fileName = args[i + 1];
+    				  				FileWriter fileWriter;
+    								try {
+    									fileWriter = new FileWriter(fileName, true);
+    									String text = (String.valueOf(count.opCount));
+    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+    					  				
+    					  				textWriter.write(fileWriter, fileName, text);
+    								} catch (IOException e) {
+    									e.printStackTrace();
+    								}
+    				  			}else {
+    				  			}
+    			  			}
+    			  		}
     	    		}
     				
     			}
-    			
+    		}	
     			
     		}else if("-s" .contains(args[0])){
 	    		String time = args[1].replaceAll("[/:.,]|12/2006/", "");
@@ -629,7 +629,8 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	       }
 	       } 
 	       catch (IOException e) {
-	           e.printStackTrace();
+	           System.out.println("No such file or directory");	
+	           return null;
 	       }
 	       return keys;
   }

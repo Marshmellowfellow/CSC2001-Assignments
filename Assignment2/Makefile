@@ -8,8 +8,13 @@ JC = javac
 
 CLASSES = PowerAVLApp.java\
 	  TreePrinter.java\
-       timeStamp.java\
-       opCount.java\
+	  timeStamp.java\
+	  textWrite.java\
+	  Node.java\
+	  opCount.java\
+	  BinaryTree.java\
+	  PowerArrayApp.java\
+	  PowerBSTApp.java\
 
 
 default: classes
