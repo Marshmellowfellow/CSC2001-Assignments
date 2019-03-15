@@ -18,6 +18,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	
   public static void main(String[] args) {
 	  	PowerAVLApp<Integer> tree = new PowerAVLApp<>();
+		opCount addCount = new opCount(0);
 		opCount count = new opCount(0);
 		
 		//Reading in the CSV file, creating a list of objects and sorting the list.
@@ -44,16 +45,15 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 		for (int i = 0; i < end; i ++) {
 	        String time = ((powerReadings.get(i)).getTime()).replaceAll("[/:.,]|12/2006/", "");
 	        int key = Integer.valueOf(time);
-			tree.insert(key, powerReadings.get(i));
+			tree.insert(key, powerReadings.get(i), addCount);
 		}
 		
 		
     	if(args.length > 0) {
     		//checking for the -c paramater to print the number total number of comparisons.
     		if("-c" .contains(args[0])) {
-    			System.out.println("Total operation count = " +count.opCount);
-    			count.opCount = count.opCount + 1;
 	  			if(args.length > 1) {
+	    			System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
 	  				String fileName = args[1];
 	  				FileWriter fileWriter;
 					try {
@@ -64,14 +64,17 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-	  				
+	  			}else {
+	  	    		for (int i = 0; i < end; i ++) {
+	  	    			System.out.println((powerReadings.get(i)).time  + "  " + (powerReadings.get(i)).global_active_power + "   		  " + (powerReadings.get(i)).getVoltage());
+	  	    		}
+	    			System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
 	  			}
     			
     		}else if("-l" .contains(args[0])) {
 	  			if(args.length > 2) {
 		  			if("-c" .equals(args[2])) {
-			  			System.out.println("Total operation count = " +count.opCount);
-			  			count.opCount = count.opCount + 1;
+		  				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
 			  			if(args.length > 3) {
 			  				String fileName = args[3];
 			  				FileWriter fileWriter;
@@ -100,12 +103,12 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     	    		}else {
     	    			key = Integer.valueOf(time);
     	    		}
-    	    		timeStamp search = tree.search(key);
+    	    		timeStamp search = tree.search(key, count);
     	    		if(search !=null) {
     		    		System.out.println(search.getTime() + "  " + search.getGlobal_active_power() + "              " + search.getVoltage());
     		    		for(int i = 0; i < (args.length) ; i++) {
     		    			if("-c" .contains(args[i])) { 
-    			  				System.out.println("Total operation count = " +count.opCount);
+    		    				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
     			  				if(args.length > (i+1)) { 
     				  				String fileName = args[i + 1];
     				  				FileWriter fileWriter;
@@ -122,6 +125,29 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     				  			}
     			  			}
     			  		}
+    	    		}else {
+    	    			System.out.println("Search for " + args[0]);
+    	    			System.out.println("Date/Time not found");
+    		    		for(int i = 0; i < (args.length) ; i++) {
+    		    			if("-c" .contains(args[i])) { 
+    			  				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
+    			  				if(args.length > (i+1)) { 
+    				  				String fileName = args[i + 1];
+    				  				FileWriter fileWriter;
+    								try {
+    									fileWriter = new FileWriter(fileName, true);
+    									String text = (String.valueOf(count.opCount));
+    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+    					  				textWriter.write(fileWriter, fileName, text);
+    					  				
+    								} catch (IOException e) {
+    									e.printStackTrace();
+    								}
+    				  			}
+    			  				
+    			  			}else {
+    			  			}
+    			  		}
     	    		}
     				
     			}
@@ -135,14 +161,14 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	    		}else {
 	    			key = Integer.valueOf(time);
 	    		}
-	    		timeStamp search = tree.search(key);
-	    		if(search !=null) {
+	    		timeStamp search = tree.search(key, count);
+	    		if(search != null) {
 	    			System.out.println("");
 	    			System.out.println("Date/Time            Global Avtive Power  Voltage");
 		    		System.out.println((search).getTime() + "  " + (search).getGlobal_active_power() + "              " + (search).getVoltage());
 		    		for(int i = 0; i < (args.length) ; i++) {
 		    			if("-c" .contains(args[i])) { 
-			  				System.out.println("Total operation count = " +count.opCount);
+		    				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
 			  				if(args.length > (i+1)) { 
 				  				String fileName = args[i + 1];
 				  				FileWriter fileWriter;
@@ -165,7 +191,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	    			System.out.println("Date/Time not found");
 		    		for(int i = 0; i < (args.length) ; i++) {
 		    			if("-c" .contains(args[i])) { 
-			  				System.out.println("Total operation count = " +count.opCount);
+			  				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
 			  				if(args.length > (i+1)) { 
 				  				String fileName = args[i + 1];
 				  				FileWriter fileWriter;
@@ -287,23 +313,27 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     // Found value in tree.
     return true;
   }
-  public timeStamp search(T value) {
-	    return search(root, value);
+  public timeStamp search(T value, opCount count) {
+	    return search(root, value, count);
 	  }
 
   // Recursive contains helper method.
-  private timeStamp search(Node node, T value) {
+  private timeStamp search(Node node, T value, opCount count) {
     
+ 	count.opCount = count.opCount + 1;
     if (node == null) return null;
 
     // Compare current value to the value in the node.
     int cmp = value.compareTo(node.value);
     // Dig into left subtree.
-    if (cmp < 0) return search(node.left, value);
+    count.opCount = count.opCount + 1;
+    if (cmp < 0) return search(node.left, value, count);
 
     // Dig into right subtree.
-    if (cmp > 0) return search(node.right, value);
+    count.opCount = count.opCount + 1;
+    if (cmp > 0) return search(node.right, value, count);
 
+    count.opCount = count.opCount + 1;
     if (cmp == 0) {
     	return node.timeData;
     }
@@ -313,10 +343,12 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
   }
   
   // Insert/add a value to the AVL tree. The value must not be null, O(log(n))
-  public boolean insert(T value,timeStamp timeData) {
+  public boolean insert(T value,timeStamp timeData, opCount addCount) {
+	addCount.opCount = addCount.opCount + 1;
     if (value == null) return false;
+    addCount.opCount = addCount.opCount + 1;
     if (!contains(root, value)) {
-      root = insert(root, value, timeData);
+      root = insert(root, value, timeData, addCount);
       nodeCount++;
       return true;
     }
@@ -324,18 +356,20 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
   }
 
   // Inserts a value inside the AVL tree.
-  private Node insert(Node node, T value, timeStamp timeData) {
+  private Node insert(Node node, T value, timeStamp timeData, opCount addCount) {
     // Base case.
+	addCount.opCount = addCount.opCount + 1;
     if (node == null) return new Node(value, timeData);
     // Compare current value to the value in the node.
     int cmp = value.compareTo(node.value);
 
     // Insert node in left subtree.
+    addCount.opCount = addCount.opCount + 1;
     if (cmp < 0) {
-      node.left = insert(node.left, value, timeData);
+      node.left = insert(node.left, value, timeData, addCount);
     // Insert node in right subtree.
     } else {
-      node.right = insert(node.right, value, timeData);
+      node.right = insert(node.right, value, timeData, addCount);
     }
 
     // Update balance factor and height values.

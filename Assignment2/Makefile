@@ -22,4 +22,5 @@ default: classes
 classes: $(CLASSES:.java=.class)
 
 clean:
-	$(RM) -f  *.class
+	$(RM) -f  *.class 
+	$(RM) -f  *.test
