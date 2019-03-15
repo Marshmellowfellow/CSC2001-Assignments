@@ -9,7 +9,8 @@ import java.util.ArrayList;
 public class PowerBSTApp {
 	
    public static void main(String[] args) {
-  	    opCount count = new opCount(0);
+		opCount count = new opCount(0);
+		opCount addCount = new opCount(0);
 		//Reading in the CSV file, creating a list of objects and sorting the list.
 	    String CSVName = "/home/marshmewllow/Desktop/Engineering/2019/CSC2001F/MyRepo/Assignment1/cleaned_data.csv";
 		List<timeStamp> powerReadings = CSVread(CSVName, count);
@@ -37,20 +38,17 @@ public class PowerBSTApp {
     		end = powerReadings.size();
     	}
     	
-    	
-    	theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1));
+    	addCount.opCount = addCount.opCount + theTree.addNode(theTree.sortedArrayToBST(powerReadings, start, end -1, addCount), addCount);
     	if(args.length > 0) {
-    		//checking for the -c paramater to print the number total number of comparisons.
+    		//checking for the -c paramater to print the number total number of comparisons.,
     		if("-c" .contains(args[0])) {
     			theTree.inOrderTraverseTree(theTree.root);
-    			System.out.println("Total operation count = " +count.opCount);
-    			count.opCount = count.opCount + 1;
 	  			if(args.length > 1) {
 	  				String fileName = args[1];
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
-		  				String text = (String.valueOf(count.opCount));
+						String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {
@@ -63,16 +61,13 @@ public class PowerBSTApp {
     			
     			theTree.inOrderTraverseTree(theTree.root);
 	  			if(args.length > 2) {
-	  				count.opCount = count.opCount + 1;
 		  			if("-c" .equals(args[2])) {
-			  			System.out.println("Total operation count = " +count.opCount);
-			  			count.opCount = count.opCount + 1;
 			  			if(args.length > 3) {
 			  				String fileName = args[3];
 			  				FileWriter fileWriter;
 							try {
 								fileWriter = new FileWriter(fileName, true);
-				  				String text = ( String.valueOf(count.opCount));
+								String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 				  				textWriter.write(fileWriter, fileName, text);
 							} catch (IOException e) {
@@ -84,44 +79,62 @@ public class PowerBSTApp {
 	  			}
     		}else if("-k" .contains(args[0])) {
     			List<String> keys = KEYread(args[1]);
-    			System.out.println("boom");
     			if(keys !=null) {
-    			System.out.println("Date/Time            Global Avtive Power  Voltage");
-    			for(int j = 0; j< keys.size();j++) {
-    	    		String time = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
-    	    		int key;
-    	    		if(time.length() > 8 ) {
-    	    			key = 0;
-    	    		}else {
-    	    			key = Integer.valueOf(time);
-    	    		}
-    	    		Node search = theTree.findNode(key, count);
-    	    		if(search !=null) {
-    	    			System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
-    		    		for(int i = 0; i < (args.length) ; i++) {
-    		    			if("-c" .contains(args[i])) { 
-    			  				System.out.println("Total operation count = " +count.opCount);
-    			  				if(args.length > (i+1)) { 
-    				  				String fileName = args[i + 1];
-    				  				FileWriter fileWriter;
-    								try {
-    									fileWriter = new FileWriter(fileName, true);
-    									String text = (String.valueOf(count.opCount));
-    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-    					  				
-    					  				textWriter.write(fileWriter, fileName, text);
-    								} catch (IOException e) {
-    									e.printStackTrace();
-    								}
-    				  			}else {
-    				  			}
-    			  			}
-    			  		}
-    	    		}
-    				
-    			}
-    		}	
-    			
+	    			System.out.println("Date/Time            Global Avtive Power  Voltage");
+	    			for(int j = 0; j< keys.size();j++) {
+	    	    		String time = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
+	    	    		int key;
+	    	    		if(time.length() > 8 ) {
+	    	    			key = 0;
+	    	    		}else {
+	    	    			key = Integer.valueOf(time);
+	    	    		}
+	    	    		Node search = theTree.findNode(key, count);
+	    	    		if(search !=null) {
+	    	    			System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
+	    		    		for(int i = 0; i < (args.length) ; i++) {
+	    		    			if("-c" .contains(args[i])) { 
+	    			  				if(args.length > (i+1)) { 
+	    				  				String fileName = args[i + 1];
+	    				  				FileWriter fileWriter;
+	    								try {
+	    									fileWriter = new FileWriter(fileName, true);
+	    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
+	    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+	    					  				
+	    					  				textWriter.write(fileWriter, fileName, text);
+	    								} catch (IOException e) {
+	    									e.printStackTrace();
+	    								}
+	    				  			}else {
+	    				  			}
+	    			  			}
+	    			  		}
+	    	    		}else {
+	    	    			System.out.println("Search for " + keys.get(j));
+	    	    			System.out.println("Date/Time not found");
+	    		    		for(int i = 0; i < (args.length) ; i++) {
+	    		    			if("-c" .contains(args[i])) { 
+	    			  				if(args.length > (i+1)) { 
+	    				  				String fileName = args[i + 1];
+	    				  				FileWriter fileWriter;
+	    								try {
+	    									fileWriter = new FileWriter(fileName, true);
+	    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
+	    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+	    					  				textWriter.write(fileWriter, fileName, text);
+	    					  				
+	    								} catch (IOException e) {
+	    									e.printStackTrace();
+	    								}
+	    				  			}
+	    			  				
+	    			  			}else {
+	    			  			}
+	    			  		}
+	    	    		}
+	    			}
+    			}	
     		}else if("-s" .contains(args[0])){
     			if(args.length > 1) {
 		    		String time = args[1].replaceAll("[/:.,]|12/2006/", "");
@@ -138,13 +151,13 @@ public class PowerBSTApp {
 			    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
 			    		for(int i = 0; i < (args.length) ; i++) {
 			    			if("-c" .contains(args[i])) { 
-				  				System.out.println("Total operation count = " +count.opCount);
+			    				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
 				  				if(args.length > (i+1)) { 
 					  				String fileName = args[i + 1];
 					  				FileWriter fileWriter;
 									try {
 										fileWriter = new FileWriter(fileName, true);
-										String text = (String.valueOf(count.opCount));
+										String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 						  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 						  				
 						  				textWriter.write(fileWriter, fileName, text);
@@ -161,13 +174,13 @@ public class PowerBSTApp {
 		    			System.out.println("Date/Time not found");
 			    		for(int i = 0; i < (args.length) ; i++) {
 			    			if("-c" .contains(args[i])) { 
-				  				System.out.println("Total operation count = " +count.opCount);
+			    				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
 				  				if(args.length > (i+1)) { 
 					  				String fileName = args[i + 1];
 					  				FileWriter fileWriter;
 									try {
 										fileWriter = new FileWriter(fileName, true);
-										String text = (String.valueOf(count.opCount));
+										String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 						  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 						  				textWriter.write(fileWriter, fileName, text);
 						  				
@@ -196,6 +209,7 @@ public class PowerBSTApp {
 	   int i = 0;	
 	   int j = 0;
 		while(i < powerReadings.length) { 
+			count.opCount = count.opCount + 1;
 			if(powerReadings[i] != null) {
 				count.opCount = count.opCount + 1;
 				if( powerReadings[i].time.contains(Search)) {

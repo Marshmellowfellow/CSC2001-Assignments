@@ -108,7 +108,6 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     		    		System.out.println(search.getTime() + "  " + search.getGlobal_active_power() + "              " + search.getVoltage());
     		    		for(int i = 0; i < (args.length) ; i++) {
     		    			if("-c" .contains(args[i])) { 
-    		    				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
     			  				if(args.length > (i+1)) { 
     				  				String fileName = args[i + 1];
     				  				FileWriter fileWriter;
@@ -130,7 +129,6 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     	    			System.out.println("Date/Time not found");
     		    		for(int i = 0; i < (args.length) ; i++) {
     		    			if("-c" .contains(args[i])) { 
-    			  				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
     			  				if(args.length > (i+1)) { 
     				  				String fileName = args[i + 1];
     				  				FileWriter fileWriter;

@@ -4,16 +4,17 @@ public class BinaryTree {
 
 	Node root;
 
-	public void addNode(Node newNode) {
+	public int addNode(Node newNode, opCount addCount) {
 
 		String time = (newNode.name).getTime().replaceAll("[/:.,]|12/2006/", "");
 		int key = Integer.valueOf(time);
 
 		// If there is no root this becomes root
-
+		addCount.opCount = addCount.opCount + 1;
 		if (root == null) {
-
 			root = newNode;
+			addCount.opCount = addCount.opCount + 1;
+			return addCount.opCount; // All Done
 
 		} else {
 
@@ -24,8 +25,7 @@ public class BinaryTree {
 
 			// Future parent for our new Node
 
-			Node parent;
-
+			Node parent;	
 			while (true) {
 
 				// root is the top parent so we start
@@ -35,40 +35,44 @@ public class BinaryTree {
 
 				// Check if the new node should go on
 				// the left side of the parent node
-
+				addCount.opCount = addCount.opCount + 1;
 				if (key < focusNode.key) {
 					// Switch focus to the left child
 
 					focusNode = focusNode.leftChild;
 
 					// If the left child has no children
-
+					addCount.opCount = addCount.opCount + 1;
 					if (focusNode == null) {
 
 						// then place the new node on the left of it
 
 						parent.leftChild = newNode;
-						return; // All Done
+						return addCount.opCount; // All Done
 
 					}
+					return addCount.opCount; // All Done
 
 				} else { // If we get here put the node on the right
 					focusNode = focusNode.rightChild;
 
 					// If the right child has no children
-
+					addCount.opCount = addCount.opCount + 1;
 					if (focusNode == null) {
 
 						// then place the new node on the right of it
 
 						parent.rightChild = newNode;
-						return; // All Done
+						System.out.println("The add count value = " + addCount.opCount);
+						return addCount.opCount; // All Done
 
 					}
+					return addCount.opCount; // All Done
 
 				}
 
 			}
+			
 		}
 
 	}
@@ -161,7 +165,7 @@ public class BinaryTree {
 
 	}
 	
-    Node sortedArrayToBST(List<timeStamp> powerReadings, int start, int end) {     	
+    public Node sortedArrayToBST(List<timeStamp> powerReadings, int start, int end, opCount addCount) {     	
         /* Base Case */
         if (start > end) { 
             return null; 
@@ -175,13 +179,14 @@ public class BinaryTree {
         Node node = new Node(key,powerReadings.get(mid));
         /* Recursively construct the left subtree and make it 
          left child of root */
-        node.leftChild = sortedArrayToBST(powerReadings, start, mid - 1); 
+        node.leftChild = sortedArrayToBST(powerReadings, start, mid - 1, addCount); 
   
         /* Recursively construct the right subtree and make it 
          right child of root */
-        node.rightChild = sortedArrayToBST(powerReadings, mid + 1, end); 
+        node.rightChild = sortedArrayToBST(powerReadings, mid + 1, end, addCount); 
           
-        
+
+		addCount.opCount = addCount.opCount + 1;
         return node; 
     } 
 }

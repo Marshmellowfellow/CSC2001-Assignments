@@ -4,13 +4,13 @@ public class BinaryTree {
 
 	Node root;
 
-	public void addNode(Node newNode) {
+	public void addNode(Node newNode, opCount addCount) {
 
 		String time = (newNode.name).getTime().replaceAll("[/:.,]|12/2006/", "");
 		int key = Integer.valueOf(time);
 
 		// If there is no root this becomes root
-
+		addCount.opCount = addCount.opCount + 1;
 		if (root == null) {
 
 			root = newNode;
@@ -35,14 +35,14 @@ public class BinaryTree {
 
 				// Check if the new node should go on
 				// the left side of the parent node
-
+				addCount.opCount = addCount.opCount + 1;
 				if (key < focusNode.key) {
 					// Switch focus to the left child
 
 					focusNode = focusNode.leftChild;
 
 					// If the left child has no children
-
+					addCount.opCount = addCount.opCount + 1;
 					if (focusNode == null) {
 
 						// then place the new node on the left of it
@@ -56,7 +56,7 @@ public class BinaryTree {
 					focusNode = focusNode.rightChild;
 
 					// If the right child has no children
-
+					addCount.opCount = addCount.opCount + 1;
 					if (focusNode == null) {
 
 						// then place the new node on the right of it
