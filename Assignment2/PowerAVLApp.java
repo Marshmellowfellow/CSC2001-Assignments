@@ -24,7 +24,6 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 		//Reading in the CSV file, creating a list of objects and sorting the list.
 		String CSVName = "cleaned_data.csv";
 		List<timeStamp> powerReadings = CSVread(CSVName);
-		//Collections.sort(powerReadings);
 		
     	int end = powerReadings.size();
     	if(args.length > 0) {
@@ -34,21 +33,8 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	  				if((i +1) < j) {
 		  					end = Integer.valueOf(args[i + 1]);
 	  				}
-	  			}else if("-c" .contains(args[i])) {
-	  				if(args.length > 0) {
-  					String fileName = args[i + 1];
-  					FileWriter fileWriter;
-  						System.out.println("Set size = " + end);
-  						System.out.println("Date/Time            Global Avtive Power  Voltage");
-  						try {
-  							fileWriter = new FileWriter(fileName, true);
-  							String text = (String.valueOf(end));
-  			  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-  			  				textWriter.write(fileWriter, fileName, text);
-  						} catch (IOException e) {
-  							e.printStackTrace();
-	  					}
-	  				}
+	  			}else if("-u" .contains(args[i])) {
+	  			Collections.sort(powerReadings);
 	  			}
 	  		}
     	}
@@ -109,61 +95,43 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     		else if("-k" .contains(args[0])) {
     			List<String> keys = KEYread(args[1]);
     			if(keys !=null) {
-    			
-    			for(int j = 0; j< keys.size();j++) {
-    	    		String time = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
-    	    		int key;
-    	    		if(time.length() > 8 ) {
-    	    			key = 0;
-    	    		}else {
-    	    			key = Integer.valueOf(time);
-    	    		}
-    	    		timeStamp search = tree.search(key, count);
-    	    		if(search !=null) {
-    		    		System.out.println(search.getTime() + "  " + search.getGlobal_active_power() + "              " + search.getVoltage());
-    		    		for(int i = 0; i < (args.length) ; i++) {
-    		    			if("-c" .contains(args[i])) { 
-    			  				if(args.length > (i+1)) { 
-    				  				String fileName = args[i + 1];
-    				  				FileWriter fileWriter;
-    								try {
-    									fileWriter = new FileWriter(fileName, true);
-    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
-    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-    					  				
-    					  				textWriter.write(fileWriter, fileName, text);
-    								} catch (IOException e) {
-    									e.printStackTrace();
-    								}
-    				  			}else {
-    				  			}
-    			  			}
-    			  		}
-    	    		}else {
-    	    			System.out.println("Search for " + args[0]);
-    	    			System.out.println("Date/Time not found");
-    		    		for(int i = 0; i < (args.length) ; i++) {
-    		    			if("-c" .contains(args[i])) { 
-    			  				if(args.length > (i+1)) { 
-    				  				String fileName = args[i + 1];
-    				  				FileWriter fileWriter;
-    								try {
-    									fileWriter = new FileWriter(fileName, true);
-    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
-    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-    					  				textWriter.write(fileWriter, fileName, text);
-    					  				
-    								} catch (IOException e) {
-    									e.printStackTrace();
-    								}
-    				  			}
-    			  				
-    			  			}else {
-    			  			}
-    			  		}
-    	    		}
-    				
-    			}
+	    			opCount searchCount= new opCount(0);
+	    			int sum = 0;
+	    			for(int j = 0; j< keys.size();j++) {
+	    				sum = sum + searchCount.opCount;
+	    				searchCount.opCount = 0;
+	    	    		String time = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
+	    	    		int key;
+	    	    		if(time.length() > 8 ) {
+	    	    			key = 0;
+	    	    		}else {
+	    	    			key = Integer.valueOf(time);
+	    	    		}
+	    	    		timeStamp search = tree.search(key, searchCount);
+	    	    		if(search !=null) {
+	    		    		System.out.println(search.getTime() + "  " + search.getGlobal_active_power() + "              " + search.getVoltage());
+	    	    		}else {
+	    	    			System.out.println("Search for " + args[0]);
+	    	    			System.out.println("Date/Time not found");
+	    	    		}
+	    			}for(int i = 0; i < (args.length) ; i++) {
+		    			if("-c" .contains(args[i])) { 
+			  				if(args.length > (i+1)) { 
+				  				String fileName = args[i + 1];
+				  				FileWriter fileWriter;
+								try {
+									fileWriter = new FileWriter(fileName, true);
+									String text = (String.valueOf(sum/20 + ", " + addCount.opCount));
+					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+					  				
+					  				textWriter.write(fileWriter, fileName, text);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+				  			}else {
+				  			}
+			  			}
+			  		}
     		}	
     			
     		}else if("-s" .contains(args[0])){

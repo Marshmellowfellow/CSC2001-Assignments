@@ -29,21 +29,6 @@ public class PowerBSTApp {
 	  				if(args.length > i) {
 		  					end = Integer.valueOf(args[i + 1]);
 	  				}
-	  			}else if("-c" .contains(args[i])) {
-	  				if(args.length > i) {
-  					String fileName = args[i + 1];
-  					FileWriter fileWriter;
-  						System.out.println("Set size = " + end);
-  						System.out.println("Date/Time            Global Avtive Power  Voltage");
-  						try {
-  							fileWriter = new FileWriter(fileName, true);
-  							String text = (String.valueOf(end));
-  			  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-  			  				textWriter.write(fileWriter, fileName, text);
-  						} catch (IOException e) {
-  							e.printStackTrace();
-	  					}
-	  				}
 	  			}
 	  		}
     	}
@@ -95,8 +80,12 @@ public class PowerBSTApp {
 	  			}
     		}else if("-k" .contains(args[0])) {
     			List<String> keys = KEYread(args[1]);
+    			int sum = 0;
+    			opCount searchCount= new opCount(0);
     			if(keys !=null) {
 	    			for(int j = 0; j< keys.size();j++) {
+	    				sum = sum + searchCount.opCount;
+	    				searchCount.opCount = 0;
 	    	    		String time = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
 	    	    		int key;
 	    	    		if(time.length() > 8 ) {
@@ -104,51 +93,30 @@ public class PowerBSTApp {
 	    	    		}else {
 	    	    			key = Integer.valueOf(time);
 	    	    		}
-	    	    		Node search = theTree.findNode(key, count);
+	    	    		Node search = theTree.findNode(key, searchCount);
 	    	    		if(search !=null) {
 	    	    			System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
-	    		    		for(int i = 0; i < (args.length) ; i++) {
-	    		    			if("-c" .contains(args[i])) { 
-	    			  				if(args.length > (i+1)) { 
-	    				  				String fileName = args[i + 1];
-	    				  				FileWriter fileWriter;
-	    								try {
-	    									fileWriter = new FileWriter(fileName, true);
-	    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
-	    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-	    					  				
-	    					  				textWriter.write(fileWriter, fileName, text);
-	    								} catch (IOException e) {
-	    									e.printStackTrace();
-	    								}
-	    				  			}else {
-	    				  			}
-	    			  			}
-	    			  		}
 	    	    		}else {
 	    	    			System.out.println("Search for " + keys.get(j));
 	    	    			System.out.println("Date/Time not found");
-	    		    		for(int i = 0; i < (args.length) ; i++) {
-	    		    			if("-c" .contains(args[i])) { 
-	    			  				if(args.length > (i+1)) { 
-	    				  				String fileName = args[i + 1];
-	    				  				FileWriter fileWriter;
-	    								try {
-	    									fileWriter = new FileWriter(fileName, true);
-	    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
-	    					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
-	    					  				textWriter.write(fileWriter, fileName, text);
-	    					  				
-	    								} catch (IOException e) {
-	    									e.printStackTrace();
-	    								}
-	    				  			}
-	    			  				
-	    			  			}else {
-	    			  			}
-	    			  		}
 	    	    		}
-	    			}
+	    			}for(int i = 0; i < (args.length) ; i++) {
+		    			if("-c" .contains(args[i])) { 
+			  				if(args.length > (i+1)) { 
+				  				String fileName = args[i + 1];
+				  				FileWriter fileWriter;
+								try {
+									fileWriter = new FileWriter(fileName, true);
+									String text = (String.valueOf(sum/20 + ", " + addCount.opCount));
+					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+					  				textWriter.write(fileWriter, fileName, text);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+				  			}else {
+				  			}
+			  			}
+			  		}
     			}	
     		}else if("-s" .contains(args[0])){
     			if(args.length > 1) {

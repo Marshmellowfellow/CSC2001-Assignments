@@ -8,13 +8,18 @@ echo "------------Testing------------"
 for i in {1..501..20}
     do
 	echo "Data size :"$i
-	java PowerAVLApp -k keys.csv -l $i -c avlTest.test
+	java PowerAVLApp -k keys.csv -l $i -c avlTestUnsorted.test
 done;
 for i in {1..501..20}
     do	echo "Data size :"$i
 	java PowerBSTApp -k keys.csv -l $i -c bstTest.test
 done;
 
+for i in {1..501..20}
+    do
+	echo "Data size :"$i
+	java PowerAVLApp -k keys.csv -l $i -c avlTestSorted.test -u
+done;
 
 
 
