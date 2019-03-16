@@ -1,27 +1,28 @@
 clear
 
 
-echo "---------Starting Script---------"
+echo "---------------------------Starting Script---------------------------"
 
-echo "------------Testing------------"
-
-for i in {1..501..20}
-    do
-	echo "Data size :"$i
-	java PowerAVLApp -k keys.csv -l $i -c avlTestUnsorted.test
-done;
-for i in {1..501..20}
-    do	echo "Data size :"$i
-	java PowerBSTApp -k keys.csv -l $i -c bstTest.test
-done;
+echo "---------------------------Testing---------------------------"
 
 for i in {1..501..20}
     do
 	echo "Data size :"$i
-	java PowerAVLApp -k keys.csv -l $i -c avlTestSorted.test -u
+	java PowerAVLApp -k keys1.csv -l $i -c avlTestUnsorted1.test
+    java PowerBSTApp -k keys1.csv -l $i -c bstTest1.test
+    java PowerAVLApp -k keys1.csv -l $i -c avlTestSorted1.test -u
+
+	java PowerAVLApp -k keys2.csv -l $i -c avlTestUnsorted2.test
+    java PowerBSTApp -k keys2.csv -l $i -c bstTest2.test
+    java PowerAVLApp -k keys2.csv -l $i -c avlTestSorted2.test -u
+
+	java PowerAVLApp -k keys3.csv -l $i -c avlTestUnsorted3.test
+    java PowerBSTApp -k keys3.csv -l $i -c bstTest3.test
+    java PowerAVLApp -k keys3.csv -l $i -c avlTestSorted3.test -u
 done;
 
 
 
 
-echo "----------End of script----------"
+
+echo "---------------------------End of script---------------------------"
