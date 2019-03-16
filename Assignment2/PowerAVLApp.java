@@ -24,7 +24,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 		//Reading in the CSV file, creating a list of objects and sorting the list.
 		String CSVName = "cleaned_data.csv";
 		List<timeStamp> powerReadings = CSVread(CSVName);
-		Collections.sort(powerReadings);
+		//Collections.sort(powerReadings);
 		
     	int end = powerReadings.size();
     	if(args.length > 0) {
@@ -33,6 +33,21 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	  				int j = args.length;
 	  				if((i +1) < j) {
 		  					end = Integer.valueOf(args[i + 1]);
+	  				}
+	  			}else if("-c" .contains(args[i])) {
+	  				if(args.length > 0) {
+  					String fileName = args[i + 1];
+  					FileWriter fileWriter;
+  						System.out.println("Set size = " + end);
+  						System.out.println("Date/Time            Global Avtive Power  Voltage");
+  						try {
+  							fileWriter = new FileWriter(fileName, true);
+  							String text = (String.valueOf(end));
+  			  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+  			  				textWriter.write(fileWriter, fileName, text);
+  						} catch (IOException e) {
+  							e.printStackTrace();
+	  					}
 	  				}
 	  			}
 	  		}
@@ -58,7 +73,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
-		  				String text = (String.valueOf(count.opCount));
+						String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {
@@ -80,7 +95,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 			  				FileWriter fileWriter;
 							try {
 								fileWriter = new FileWriter(fileName, true);
-				  				String text = ( String.valueOf(count.opCount));
+								String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 				  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 				  				textWriter.write(fileWriter, fileName, text);
 							} catch (IOException e) {
@@ -94,7 +109,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     		else if("-k" .contains(args[0])) {
     			List<String> keys = KEYread(args[1]);
     			if(keys !=null) {
-    			System.out.println("Date/Time            Global Avtive Power  Voltage");
+    			
     			for(int j = 0; j< keys.size();j++) {
     	    		String time = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
     	    		int key;
@@ -113,7 +128,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     				  				FileWriter fileWriter;
     								try {
     									fileWriter = new FileWriter(fileName, true);
-    									String text = (String.valueOf(count.opCount));
+    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
     					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
     					  				
     					  				textWriter.write(fileWriter, fileName, text);
@@ -134,7 +149,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     				  				FileWriter fileWriter;
     								try {
     									fileWriter = new FileWriter(fileName, true);
-    									String text = (String.valueOf(count.opCount));
+    									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
     					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
     					  				textWriter.write(fileWriter, fileName, text);
     					  				
@@ -172,7 +187,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 				  				FileWriter fileWriter;
 								try {
 									fileWriter = new FileWriter(fileName, true);
-									String text = (String.valueOf(count.opCount));
+									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 					  				
 					  				textWriter.write(fileWriter, fileName, text);
@@ -195,7 +210,7 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 				  				FileWriter fileWriter;
 								try {
 									fileWriter = new FileWriter(fileName, true);
-									String text = (String.valueOf(count.opCount));
+									String text = (String.valueOf(count.opCount + ", " + addCount.opCount));
 					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 					  				textWriter.write(fileWriter, fileName, text);
 					  				
@@ -317,26 +332,26 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 
   // Recursive contains helper method.
   private timeStamp search(Node node, T value, opCount count) {
-    
- 	count.opCount = count.opCount + 1;
-    if (node == null) return null;
+	 
+	count.opCount = count.opCount + 1;
+    if (node == null) {
+    	return null;
+    }
 
     // Compare current value to the value in the node.
     int cmp = value.compareTo(node.value);
     // Dig into left subtree.
     count.opCount = count.opCount + 1;
-    if (cmp < 0) return search(node.left, value, count);
-
-    // Dig into right subtree.
-    count.opCount = count.opCount + 1;
-    if (cmp > 0) return search(node.right, value, count);
-
-    count.opCount = count.opCount + 1;
-    if (cmp == 0) {
-    	return node.timeData;
+    if (cmp < 0) {
+    	return search(node.left, value, count);
+    }else{
+        count.opCount = count.opCount + 1;
+        if (cmp == 0) {
+        	return node.timeData;
+        }else {
+        	return search(node.right, value, count);	
+        }
     }
-    
-    return null;
     
   }
   
@@ -356,8 +371,9 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
   // Inserts a value inside the AVL tree.
   private Node insert(Node node, T value, timeStamp timeData, opCount addCount) {
     // Base case.
-	addCount.opCount = addCount.opCount + 1;
-    if (node == null) return new Node(value, timeData);
+    if (node == null) {
+    	return new Node(value, timeData);
+    }
     // Compare current value to the value in the node.
     int cmp = value.compareTo(node.value);
 

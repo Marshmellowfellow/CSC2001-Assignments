@@ -24,3 +24,4 @@ classes: $(CLASSES:.java=.class)
 clean:
 	$(RM) -f  *.class 
 	$(RM) -f  *.test
+	$(RM) -f  *.test?
