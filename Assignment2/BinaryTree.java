@@ -130,7 +130,7 @@ public class BinaryTree {
 	public Node findNode(int key, opCount count) {
 
 		// Start at the top of the tree
-
+		count.opCount = count.opCount + 1;
 		Node focusNode = root;
 
 		// While we haven't found the Node

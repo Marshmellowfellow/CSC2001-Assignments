@@ -91,7 +91,11 @@ public class PowerBSTApp {
 	    	    		if(time.length() > 8 ) {
 	    	    			key = 0;
 	    	    		}else {
+	    	    			try {
 	    	    			key = Integer.valueOf(time);
+	    	    			}catch (Exception e) {
+	    	    				key= 0;
+	    	    			}
 	    	    		}
 	    	    		Node search = theTree.findNode(key, searchCount);
 	    	    		if(search !=null) {
@@ -106,7 +110,7 @@ public class PowerBSTApp {
 				  				FileWriter fileWriter;
 								try {
 									fileWriter = new FileWriter(fileName, true);
-									String text = (String.valueOf(sum/20 + ", " + addCount.opCount));
+									String text = (String.valueOf(sum/(keys.size()) + ", " + addCount.opCount));
 					  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 					  				textWriter.write(fileWriter, fileName, text);
 								} catch (IOException e) {
@@ -124,8 +128,12 @@ public class PowerBSTApp {
 		    		if(time.length() > 8 ) {
 		    			key = 0;
 		    		}else {
-		    			key = Integer.valueOf(time);
-		    		}
+    	    			try {
+    	    			key = Integer.valueOf(time);
+    	    			}catch (Exception e) {
+    	    				key= 0;
+    	    			} 	
+    	    		}
 		    		Node search = theTree.findNode(key, count);
 		    		if(search !=null) {
 			    		System.out.println((search.name).getTime() + "  " + (search.name).getGlobal_active_power() + "              " + (search.name).getVoltage());
@@ -149,8 +157,8 @@ public class PowerBSTApp {
 				  			}
 				  		}
 		    		}else {
-		    			System.out.println("");
-		    			//System.out.println("Search for " + args[0]);
+		    			System.out.println("Search for " + args[1]);
+		    			System.out.println("Date/Time not found");
 			    		for(int i = 0; i < (args.length) ; i++) {
 			    			if("-c" .contains(args[i])) { 
 			    				System.out.println("Search count = " + count.opCount + " Add count = " + addCount.opCount);
@@ -192,7 +200,6 @@ public class PowerBSTApp {
 			if(powerReadings[i] != null) {
 				count.opCount = count.opCount + 1;
 				if( powerReadings[i].time.contains(Search)) {
-					System.out.println("");
 					System.out.println("Search :" + Search);
 					System.out.println("Date/Time :          " + "Global active power : " + "voltage :");
 					System.out.println(powerReadings[i].time +"  "+ powerReadings[i].global_active_power +"               "+ powerReadings[i].voltage);
