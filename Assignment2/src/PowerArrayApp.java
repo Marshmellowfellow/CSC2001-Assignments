@@ -138,7 +138,6 @@ public class PowerArrayApp {
    public static timeStamp[] CSVread(String FileName, opCount count, timeStamp[] powerValues, int end){
        String line = "";
 	   //Declaring array
-       
 	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
 	
 		   int lineNo = 0;

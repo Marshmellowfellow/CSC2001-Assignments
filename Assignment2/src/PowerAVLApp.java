@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -216,21 +215,15 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
    }
   
   public class Node implements TreePrinter.PrintableNode { 
-    
     // 'bf' is short for Balance Factor
     public int bf;
-    
     public timeStamp timeData;
-
     // The value/data contained within the node.
     public T value;
-
     // The height of this node in the tree.
     public int height;
-
     // The left and the right children of this node.    
     public Node left, right;
-
     public Node(T value, timeStamp timeData) {
       this.value = value;
       this.timeData = timeData;
@@ -351,19 +344,16 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
     }
     // Compare current value to the value in the node.
     int cmp = value.compareTo(node.value);
-
     // Insert node in left subtree.
     addCount.opCount = addCount.opCount + 1;
     if (cmp < 0) {
-      node.left = insert(node.left, value, timeData, addCount);
+    node.left = insert(node.left, value, timeData, addCount);
     // Insert node in right subtree.
     } else {
       node.right = insert(node.right, value, timeData, addCount);
     }
-
     // Update balance factor and height values.
     update(node);
-
     // Re-balance tree.
     return balance(node);
 
@@ -371,27 +361,21 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 
   // Update a node's height and balance factor.
   private void update(Node node) {
-
     int leftNodeHeight  = (node.left  == null) ? -1 : node.left.height;
     int rightNodeHeight = (node.right == null) ? -1 : node.right.height;
-
     // Update this node's height.
     node.height = 1 + Math.max(leftNodeHeight, rightNodeHeight);
-
     // Update balance factor.
     node.bf = rightNodeHeight - leftNodeHeight;
-
   }
 
   // Re-balance a node if its balance factor is +2 or -2.
   private Node balance(Node node) {
     // Left heavy subtree.
     if (node.bf ==-2) {
-
       // Left-Left case.
       if (node.left.bf < 0) {
         return leftLeftCase(node);
-        
       // Left-Right case.
       } else {
         return leftRightCase(node);
@@ -399,41 +383,31 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
 
     // Right heavy subtree needs balancing.
     } else if (node.bf ==+2) {
-
       // Right-Right case.
       if (node.right.bf > 0) {
         return rightRightCase(node);
-
       // Right-Left case.
       } else {
         return rightLeftCase(node);
       }
-
     }
-
     // Node either has a balance factor of 0, +1 or -1 which is fine.
     return node;
-
   }
-
   private Node leftLeftCase(Node node) {
     return rightRotation(node);
   }
-
   private Node leftRightCase(Node node) {
     node.left = leftRotation(node.left);
     return leftLeftCase(node);
   }
-
   private Node rightRightCase(Node node) {
     return leftRotation(node);
   }
-
   private Node rightLeftCase(Node node) {
     node.right = rightRotation(node.right);
     return rightRightCase(node);
   }
-
   private Node leftRotation(Node node) {
     Node newParent = node.right;
     node.right = newParent.left;
@@ -504,23 +478,17 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
       // subtree. As a heuristic, I will remove from the subtree with
       // the most nodes in hopes that this may help with balancing.
       } else {
-
         // Choose to remove from left subtree
         if (node.left.height > node.right.height) {
-
           // Swap the value of the successor into the node.
           T successorValue = findMax(node.left);
           node.value = successorValue;
-
           // Find the largest node in the left subtree.
           node.left = remove(node.left, successorValue);
-
         } else {
-  
           // Swap the value of the successor into the node.
           T successorValue = findMin(node.right);
           node.value = successorValue;
-
           // Go into the right subtree and remove the leftmost node we
           // found and swapped data with. This prevents us from having
           // two nodes in our tree with the same value.
@@ -567,21 +535,16 @@ public class PowerAVLApp <T extends Comparable<T>> implements Iterable<T> {
       }
       @Override 
       public T next () {
-        
         if (expectedNodeCount != nodeCount) throw new java.util.ConcurrentModificationException();
-
         while(trav != null && trav.left != null) {
           stack.push(trav.left);
           trav = trav.left;
         }
-        
         Node node = stack.pop();
-        
         if (node.right != null) {
           stack.push(node.right);
           trav = node.right;
-        }
-        
+        }  
         return node.value;
       }
       @Override 

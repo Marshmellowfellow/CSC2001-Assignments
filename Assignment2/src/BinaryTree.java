@@ -1,76 +1,54 @@
 import java.util.List;
 
 public class BinaryTree {
-
 	Node root;
-
-	public void addNode(Node newNode, opCount addCount) {
-
+	public int addNode(Node newNode, opCount addCount) {
 		String time = (newNode.name).getTime().replaceAll("[/:.,]|12/2006/", "");
 		int key = Integer.valueOf(time);
-
 		// If there is no root this becomes root
 		addCount.opCount = addCount.opCount + 1;
 		if (root == null) {
-
 			root = newNode;
-
+			addCount.opCount = addCount.opCount + 1;
+			return addCount.opCount; // All Done
 		} else {
-
 			// Set root as the Node we will start
 			// with as we traverse the tree
-
 			Node focusNode = root;
-
 			// Future parent for our new Node
-
-			Node parent;
-
+			Node parent;	
 			while (true) {
-
 				// root is the top parent so we start
 				// there
-
 				parent = focusNode;
-
 				// Check if the new node should go on
 				// the left side of the parent node
 				addCount.opCount = addCount.opCount + 1;
 				if (key < focusNode.key) {
 					// Switch focus to the left child
-
 					focusNode = focusNode.leftChild;
-
 					// If the left child has no children
 					addCount.opCount = addCount.opCount + 1;
 					if (focusNode == null) {
-
 						// then place the new node on the left of it
-
 						parent.leftChild = newNode;
-						return; // All Done
-
+						return addCount.opCount; // All Done
 					}
-
+					return addCount.opCount; // All Done
 				} else { // If we get here put the node on the right
 					focusNode = focusNode.rightChild;
-
 					// If the right child has no children
 					addCount.opCount = addCount.opCount + 1;
 					if (focusNode == null) {
-
 						// then place the new node on the right of it
-
 						parent.rightChild = newNode;
-						return; // All Done
-
+						System.out.println("The add count value = " + addCount.opCount);
+						return addCount.opCount; // All Done
 					}
-
+					return addCount.opCount; // All Done
 				}
-
-			}
+			}	
 		}
-
 	}
 
 	// All nodes are visited in ascending order
@@ -126,31 +104,20 @@ public class BinaryTree {
 	public Node findNode(int key, opCount count) {
 
 		// Start at the top of the tree
-
+		count.opCount = count.opCount + 1;
 		Node focusNode = root;
-
 		// While we haven't found the Node
 		// keep looking
-
 		while (focusNode.key != key) {
-
 			// If we should search to the left
-			
 			count.opCount = count.opCount + 2;
 			if (key < focusNode.key) {
-
 				// Shift the focus Node to the left child
-
 				focusNode = focusNode.leftChild;
-
 			} else {
-
 				// Shift the focus Node to the right child
-				
 				focusNode = focusNode.rightChild;
-
 			}
-
 			// The node wasn't found
 			count.opCount = count.opCount + 1;
 			if (focusNode == null)
@@ -161,12 +128,11 @@ public class BinaryTree {
 
 	}
 	
-    Node sortedArrayToBST(List<timeStamp> powerReadings, int start, int end) {     	
+    public Node sortedArrayToBST(List<timeStamp> powerReadings, int start, int end, opCount addCount) {     	
         /* Base Case */
         if (start > end) { 
             return null; 
         } 
-  
         /* Get the middle element and make it root */
         int mid = (start + end) / 2; 
         String time = ((powerReadings.get(mid)).getTime()).replaceAll("[/:.,]|12/2006/", "");
@@ -175,13 +141,14 @@ public class BinaryTree {
         Node node = new Node(key,powerReadings.get(mid));
         /* Recursively construct the left subtree and make it 
          left child of root */
-        node.leftChild = sortedArrayToBST(powerReadings, start, mid - 1); 
+        node.leftChild = sortedArrayToBST(powerReadings, start, mid - 1, addCount); 
   
         /* Recursively construct the right subtree and make it 
          right child of root */
-        node.rightChild = sortedArrayToBST(powerReadings, mid + 1, end); 
+        node.rightChild = sortedArrayToBST(powerReadings, mid + 1, end, addCount); 
           
-        
+
+		addCount.opCount = addCount.opCount + 1;
         return node; 
     } 
 }

@@ -5,7 +5,6 @@ public class textWrite {
 	public String filename;
 	public String text;
 	public FileWriter writer;
-	
 	textWrite(FileWriter writer, String filename, String text){
 		this.filename = filename;
 		this.text = text;
