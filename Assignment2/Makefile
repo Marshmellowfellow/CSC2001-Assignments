@@ -25,6 +25,6 @@ default: classes
 classes: $(CLASSES:.java=.class)
 
 clean:
-	$(RM) -f  *.class 
-	$(RM) -f  *.test
-	$(RM) -f  *.test?
+	$(RM) -f  $(BINDIR)/*.class 
+	$(RM) -f  $(BINDIR)/*.test
+	$(RM) -f  $(BINDIR)/*.test?
