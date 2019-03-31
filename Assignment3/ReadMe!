@@ -1,0 +1,19 @@
+
+---CSC2001 Assignment 2
+---Nicholas Anotoniades
+---ANTNIC008
+
+
+1) Run make to produce class files.
+2) Run the bash script(./bashscript)  within bin to repoduce the tests from the report in the results 
+directory..
+3)Run either: java PowerAVLApp or java PowerBSTApp without any arguments to print all the dates 
+and information. Or optionally run them with any of additional arguments.
+
+    |Arguments:
+    |    -s <search query>, search for the power information for a particular time stamp.
+    |    -k <keyfile>, search a file of keys for there respective time stamp information.
+    |    -l <size>, adjust the size of the subset of data being searched through.
+    |    -c <optional filename>, display operations completed for that search, with an optional output to a file.
+    |
+    |For the PowerAVLApp including the -u argument indicates if the tree is too be built with a sorted array.    
