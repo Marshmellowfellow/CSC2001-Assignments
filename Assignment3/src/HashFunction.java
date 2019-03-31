@@ -1,35 +1,55 @@
 import java.util.Arrays;
-import java.util.List;
 
-public class Hash {
-	
+// If we think of a Hash Table as an array
+// then a hash function is used to generate
+// a unique key for every item in the array.
+// The position the item goes in is known
+// as the slot. Hashing doesn't work very well
+// in situations in which duplicate data
+// is stored. Also it isn't good for searching
+// for anything except a specific key. 
+// However a Hash Table is a data structure that 
+// offers fast insertion and searching capabilities.
+
+public class HashFunction {
+
 	String[] theArray;
 	int arraySize;
 	int itemsInArray = 0;
-	
+
 	public static void main(String[] args) {
-		String CSVName = "cleaned_data.csv";
-		CSVread dataArray = new CSVread(CSVName);
-		List<timeStamp> dataSet = dataArray.read();
-		
+
 		HashFunction theFunc = new HashFunction(30);
-		
-		for(int i = 0; i<dataSet.size();i++) {
-			System.out.println(dataSet.get(i));	
-		}
-		
-		
+
+		// Simplest Hash Function
+
+		// String[] elementsToAdd = { "1", "5", "17", "21", "26" };
+
+		// theFunc.hashFunction1(elementsToAdd, theFunc.theArray);
+
+		// Mod Hash Function
+		// This contains exactly 30 items to show how collisions
+		// will work
+
 		String[] elementsToAdd2 = { "100", "510", "170", "214", "268", "398",
 				"235", "802", "900", "723", "699", "1", "16", "999", "890",
 				"725", "998", "978", "988", "990", "989", "984", "320", "321",
 				"400", "415", "450", "50", "660", "624" };
 
 		theFunc.hashFunction2(elementsToAdd2, theFunc.theArray);
+
+		// Locate the value 660 in the Hash Table
+
 		theFunc.findKey("660");
+
 		theFunc.displayTheStack();
-  }
-  
-  public void hashFunction1(String[] stringsForArray, String[] theArray) {
+
+	}
+
+	// Simple Hash Function that puts values in the same
+	// index that matches their value
+
+	public void hashFunction1(String[] stringsForArray, String[] theArray) {
 
 		for (int n = 0; n < stringsForArray.length; n++) {
 
@@ -122,9 +142,12 @@ public class Hash {
 
 	}
 
-	void HashFunction(int size) {
+	HashFunction(int size) {
+
 		arraySize = size;
+
 		theArray = new String[size];
+
 		Arrays.fill(theArray, "-1");
 
 	}
@@ -176,5 +199,5 @@ public class Hash {
 		}
 
 	}
-	
+
 }
