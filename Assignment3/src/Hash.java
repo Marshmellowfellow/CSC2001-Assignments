@@ -36,7 +36,9 @@ public class Hash {
 		//theFunc.displayTheStack(setSize);
 		
 		System.out.println(theFunc.findKey("17003000"));
-  }
+		System.out.println(theFunc.findKey("17000900"));
+		
+	}
 
 	// The goal is to make the array big enough to avoid
 	// collisions, but not so big that we waste memory
@@ -45,7 +47,7 @@ public class Hash {
 			timeStamp newElementVal = ((dataSet.get(n)));
 			// Create an index to store the value in by taking the modulus
 			System.out.println(newElementVal);
-			int arrayIndex = Integer.parseInt((newElementVal.time).replaceAll("[/:.,]|12/2006/", "")) % 499;
+			int arrayIndex = Integer.parseInt((newElementVal.getTime()).replaceAll("[/:.,]|12/2006/", "")) % 499;
 			System.out.println("Modulus Index= " + arrayIndex + " for value "+ newElementVal);
 			// Cycle through the array until we find an empty space
 			while (theArray[arrayIndex].getTime() != "-1") {
@@ -59,14 +61,19 @@ public class Hash {
 	}
 
 	// Returns the value stored in the Hash Table
-	public String findKey(String key) {
+	public timeStamp findKey(String key) {
 		// Find the keys original hash key
-		int arrayIndexHash = Integer.parseInt(key) % 499;
+		int intKey = Integer.parseInt(key);
+		int arrayIndexHash = intKey % 499;
 		while (theArray[arrayIndexHash].getTime() != "-1") {
-			if (theArray[arrayIndexHash].getTime() == key) {
+			
+			String hashElement = theArray[arrayIndexHash].getTime();
+			String stringhashKey = hashElement.replaceAll("[/:.,]|12/2006/", "");
+			int inthashKey = Integer.parseInt(stringhashKey); 
+			if (inthashKey == intKey) {
 				// Found the key so return it
 				System.out.println(key + " was found in index "+ arrayIndexHash);
-				return theArray[arrayIndexHash].getTime();
+				return theArray[arrayIndexHash];
 			}
 			// Look in the next index
 			++arrayIndexHash;
