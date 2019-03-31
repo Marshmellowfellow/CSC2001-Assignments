@@ -8,9 +8,11 @@ public class CSVread{
 
   public String FileName;
   public List<timeStamp> dataSet;
+  public int setSize;
 
-  public CSVread(String FileName){
+  public CSVread(String FileName, int setSize){
 	   this.FileName = FileName;
+	   this.setSize = setSize; 
   }
   public List<timeStamp> read(){
 	   dataSet = new ArrayList<>();
@@ -18,11 +20,13 @@ public class CSVread{
 	   int lineNo = 0;
 	   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
 	       while ((line = br.readLine()) != null) {
-			   	if(lineNo > 0) {
-			           String[] Element = line.split(",");
-			           dataSet.add(new timeStamp(Element[3],Element[1],Element[0]));
-				}
-			   	lineNo ++;
+	    	   if(lineNo < setSize) {
+				   	if(lineNo > 0) {
+				           String[] Element = line.split(",");
+				           dataSet.add(new timeStamp(Element[3],Element[1],Element[0]));
+				   	 }
+				   	lineNo ++;
+	    	   }
 	       }
 	   } 
    catch (IOException e) {
