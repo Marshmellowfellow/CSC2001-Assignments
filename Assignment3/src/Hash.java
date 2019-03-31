@@ -1,5 +1,7 @@
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Hash {
 	
@@ -26,39 +28,49 @@ public class Hash {
         //Reading the CSV
 		CSVread dataArray = new CSVread(CSVName, setSize);
 		List<timeStamp> dataSet = dataArray.read();
-		Hash theFunc = new Hash(setSize);
+		Hash hashImplementation = new Hash(setSize);
 
-//		Used to check if data set correctly copied
-//		for(int i = 0; i<dataSet.size();i++) {
-//			System.out.println(dataSet.get(i));	
-//		}
+
 
 		//Building the table
-		theFunc.hashFunction(dataSet, theFunc.theArray);
+		hashImplementation.hashFunction(dataSet, hashImplementation.theArray);
 		
 		//Display table
-		//theFunc.displayTheStack(setSize);
+		// hashImplementation.displayTheStack(setSize);
 
-		
+		//Searching through the input arguments and running necessary functionality
     	if(args.length > 1) {
 	  		for(int i = 0; i < (args.length) ; i++) {
-	  			if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
-						setSize = Integer.parseInt(args[i+1]);
-				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
-					setSize = Integer.parseInt(args[i+1]);
-				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
-					setSize = Integer.parseInt(args[i+1]);
-				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
-					setSize = Integer.parseInt(args[i+1]);
-				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
-					setSize = Integer.parseInt(args[i+1]);
+	  			if(("-s" .contains(args[i])) && (args[i+1]) != null ) {
+	  				hashImplementation.search(args[i+1]);
+	  			}
+//				}else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
+//					hashImplementation.opCount();
+//				}
+	  		else if(("-k" .contains(args[i])) && (args[i+1]) != null ) {
+	  				int size = Integer.parseInt(args[i+1]);
+	  				ArrayList<String> randomKeys = hashImplementation.keysetkeys(dataSet,size);
+	  				//System.out.println(randomKeys);
 				}
 	  		}
+    	}else {
+    		for(int i = 0; i<dataSet.size();i++) {
+    			System.out.println(dataSet.get(i));	
+    		}
     	}
-		
-		System.out.println(theFunc.findKey("17003000"));
-		System.out.println(theFunc.findKey("17000900"));
-		
+	}
+	
+	
+	
+	public ArrayList<String> keysetkeys(List<timeStamp> dataSet, int setSize){
+		Collections.shuffle(dataSet);
+		ArrayList<String> keyList = new ArrayList<String>();
+		for(int i = 0;i< setSize;i++) {
+			keyList.add((dataSet.get(i)).getTime());
+			//searching for each key in the keyset
+			search((dataSet.get(i)).getTime());
+		}
+		return keyList;
 	}
 	
 	public static int isPrime(int setSize) {
@@ -102,9 +114,10 @@ public class Hash {
 	}
 
 	// Returns the value stored in the Hash Table
-	public timeStamp findKey(String key) {
+	public timeStamp search(String key) {
 		// Find the keys original hash key
-		int intKey = Integer.parseInt(key);
+		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
+		int intKey = Integer.parseInt(stringKey);
 		int arrayIndexHash = intKey % 499;
 		while (theArray[arrayIndexHash].getTime() != "-1") {
 			
@@ -114,6 +127,7 @@ public class Hash {
 			if (inthashKey == intKey) {
 				// Found the key so return it
 				System.out.println(key + " was found in index "+ arrayIndexHash);
+				System.out.println(theArray[arrayIndexHash]);
 				return theArray[arrayIndexHash];
 			}
 			// Look in the next index
@@ -122,6 +136,7 @@ public class Hash {
 			arrayIndexHash %= arraySize;
 		}
 		// Couldn't locate the key
+		System.out.println(key + " was not found");
 		return null;
 	}
 
@@ -145,7 +160,7 @@ public class Hash {
 					System.out.print("|      ");
 				}
 				else {
-					System.out.print(String.format("| %3s " + " ", theArray[n]));
+					System.out.print(String.format("| %3s " + " ", theArray[n].getTime()));
 				}
 			}
 			System.out.println("|");
