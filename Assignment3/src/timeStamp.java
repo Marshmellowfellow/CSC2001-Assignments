@@ -47,4 +47,24 @@ public class timeStamp implements Comparable<timeStamp>{
 		return "timeStamp [time=" + time + ", global_active_power=" + global_active_power + ", voltage=" + voltage
 				+ "]";
 	}
+	
+	public int isPrime(int setSize) {
+        int prime = 0;  //next prime will be assigned to this var
+        for(int j = setSize; j<1000; j++){  //outer loop
+
+              int count = 0;
+              for(int i=2; i<=j/2; i++){  //inner loop
+
+                    if(j%i==0){
+                       count++;
+                    }                      
+              }
+              if(count==0){
+
+                    prime = j;   //assign next prime
+                    return prime;
+              }
+        }
+        return setSize;
+	}
 }

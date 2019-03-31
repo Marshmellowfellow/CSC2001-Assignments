@@ -10,34 +10,75 @@ public class Hash {
 	public static void main(String[] args) {
 		String CSVName = "cleaned_data.csv";
 		
+		//Setting the size of the table based on closest prime number
 		int setSize = 500;
-//    	if(args.length > 0) {
-//	  		for(int i = 0; i < (args.length) ; i++) {
-//	  			if("-l" .contains(args[i])) {
-//	  				int j = args.length;
-//	  				if((i +1) < j) {
-//		  					setSize = Integer.valueOf(args[i + 1]);
-//	  				}
-//	  			}
-//	  		}
-//    	}
-		
+    	if(args.length > 1) {
+	  		for(int i = 0; i < (args.length) ; i++) {
+	  			if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
+						setSize = Integer.parseInt(args[i+1]);
+				}
+	  		}
+    	}
+		setSize = isPrime(setSize);
+		if(setSize>500){setSize = isPrime(500);}
+        System.out.println("Set size = " + setSize);
+        
+        //Reading the CSV
 		CSVread dataArray = new CSVread(CSVName, setSize);
 		List<timeStamp> dataSet = dataArray.read();
 		Hash theFunc = new Hash(setSize);
-	  		
-		
+
 //		Used to check if data set correctly copied
 //		for(int i = 0; i<dataSet.size();i++) {
 //			System.out.println(dataSet.get(i));	
 //		}
 
+		//Building the table
 		theFunc.hashFunction(dataSet, theFunc.theArray);
+		
+		//Display table
 		//theFunc.displayTheStack(setSize);
+
+		
+    	if(args.length > 1) {
+	  		for(int i = 0; i < (args.length) ; i++) {
+	  			if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
+						setSize = Integer.parseInt(args[i+1]);
+				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
+					setSize = Integer.parseInt(args[i+1]);
+				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
+					setSize = Integer.parseInt(args[i+1]);
+				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
+					setSize = Integer.parseInt(args[i+1]);
+				}else if(("-l" .contains(args[i])) && (args[i+1]) != null ) {
+					setSize = Integer.parseInt(args[i+1]);
+				}
+	  		}
+    	}
 		
 		System.out.println(theFunc.findKey("17003000"));
 		System.out.println(theFunc.findKey("17000900"));
 		
+	}
+	
+	public static int isPrime(int setSize) {
+        int prime = 0;  //next prime will be assigned to this var
+        for(int j = setSize; j<1000; j++){  //outer loop
+
+              int count = 0;
+              for(int i=2; i<=j/2; i++){  //inner loop
+
+                    if(j%i==0){
+                       count++;
+                    }                      
+              }
+              if(count==0){
+
+                    prime = j;   //assign next prime
+                    return prime;
+              }
+        }
+        return setSize;
 	}
 
 	// The goal is to make the array big enough to avoid
@@ -46,13 +87,13 @@ public class Hash {
 		for (int n = 1; n < dataSet.size(); n++) {
 			timeStamp newElementVal = ((dataSet.get(n)));
 			// Create an index to store the value in by taking the modulus
-			System.out.println(newElementVal);
+			//System.out.println(newElementVal);
 			int arrayIndex = Integer.parseInt((newElementVal.getTime()).replaceAll("[/:.,]|12/2006/", "")) % 499;
-			System.out.println("Modulus Index= " + arrayIndex + " for value "+ newElementVal);
+			//System.out.println("Modulus Index= " + arrayIndex + " for value "+ newElementVal);
 			// Cycle through the array until we find an empty space
 			while (theArray[arrayIndex].getTime() != "-1") {
 				++arrayIndex;
-				System.out.println("Collision Try " + arrayIndex + " Instead");
+				//System.out.println("Collision Try " + arrayIndex + " Instead");
 				// If we get to the end of the array go back to index 0
 				arrayIndex %= arraySize;
 			}
