@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class HashProbe {
 	
 	static timeStamp[] theArray;
-	int arraySize;
+	static int arraySize;
 	int itemsInArray = 0;
 	
 	public static void main(String[] args) {
@@ -22,7 +22,6 @@ public class HashProbe {
 	  		}
     	}
 		setSize = isPrime(setSize);
-		if(setSize>500){setSize = isPrime(500);}
         System.out.println("Set size = " + setSize);
         
         //Reading the CSV
@@ -40,7 +39,7 @@ public class HashProbe {
 		  				if (args[i+1].contains("Q")) {
 		  					set = 1;
 		  					hashImplementation.quadraticProbe(dataSet, hashImplementation.theArray, setSize);
-		  					hashImplementation.displayTheStack(setSize);
+		  					//hashImplementation.displayTheStack(setSize);
 		  					System.out.println("Quadratic Probe");
 		  				}
 	  				}
@@ -50,7 +49,7 @@ public class HashProbe {
     	}
     	if(set ==0) {
 			hashImplementation.linearProbe(dataSet, hashImplementation.theArray, setSize);
-			hashImplementation.displayTheStack(setSize);
+			//hashImplementation.displayTheStack(setSize);
 			System.out.println("Linear Probe");
     	}
 
@@ -58,15 +57,18 @@ public class HashProbe {
     	if(args.length > 1) {
 	  		for(int i = 0; i < (args.length) ; i++) {
 	  			if(("-s" .contains(args[i])) && (args[i+1]) != null ) {
-	  				hashImplementation.search(args[i+1],setSize);
+	  				HashProbe.search(args[i+1],setSize);
 	  			}
 //				}else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
 //					hashImplementation.opCount();
 //				}
 	  			 else if(("-k" .contains(args[i])) && (args[i+1]) != null ) {
 	  				int size = Integer.parseInt(args[i+1]);
-	  				ArrayList<String> randomKeys = hashImplementation.randomKeySet(dataSet,size);
+	  				ArrayList<String> randomKeys = hashImplementation.randomKeySet(size);
 	  				//System.out.println(randomKeys);
+	  				for(int j = 0; j<size;j++) {
+	  					search(randomKeys.get(j), setSize);
+	  				}
 				}
 	  		}
     	}else {
@@ -76,20 +78,22 @@ public class HashProbe {
     	}
 	}
 	
-	public ArrayList<String> randomKeySet(List<timeStamp> dataSet, int setSize){
+	public ArrayList<String> randomKeySet(int size){
+		String CSVName = "cleaned_data.csv";
+		CSVread dataArray = new CSVread(CSVName, 499);
+		List<timeStamp> dataSet = dataArray.read();
 		Collections.shuffle(dataSet);
 		ArrayList<String> keyList = new ArrayList<String>();
-		for(int i = 0;i< setSize;i++) {
+		for(int i = 0;i< size;i++) {
 			keyList.add((dataSet.get(i)).getTime());
 			//searching for each key in the keyset
-			search((dataSet.get(i)).getTime(),setSize);
 		}
 		return keyList;
 	}
 	
 	public static int isPrime(int setSize) {
         int prime = 0;  //next prime will be assigned to this var
-        for(int j = setSize; j<1000; j++){  //outer loop
+        for(int j = setSize; j<10000; j++){  //outer loop
 
               int count = 0;
               for(int i=2; i<=j/2; i++){  //inner loop
@@ -148,10 +152,16 @@ public class HashProbe {
 			theArray[arrayIndex] = newElementVal;
 		}
 	}
+//	public static timeStamp[] hashChaining(List<timeStamp> dataSet, timeStamp[] theArray, int setSize) {
+//		seperateChaining hashTable = new seperateChaining(dataSet, setSize);
+//		hashTable.displayTheArray();
+//		theArray = hashTable.getTheArray();
+//		return theArray;
+//	}
 
 	
 	// Returns the value stored in the HashProbe Table
-	public timeStamp search(String key, int setSize) {
+	public static timeStamp search(String key, int setSize) {
 		// Find the keys original HashProbe key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);

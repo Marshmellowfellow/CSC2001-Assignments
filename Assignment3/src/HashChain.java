@@ -1,12 +1,11 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 class HashChain {
 
 	static dataList[] theArray;
-	int arraySize;
+	static int arraySize;
 	int itemsInArray = 0;
 	public List<timeStamp> elementsToAdd;
 
@@ -23,7 +22,6 @@ class HashChain {
 	  		}
     	}
 		setSize = isPrime(setSize);
-		if(setSize>500){setSize = isPrime(500);}
         System.out.println("Set size = " + setSize);
         
         //Reading the CSV
@@ -51,8 +49,13 @@ class HashChain {
 //				}
 	  			 else if(("-k" .contains(args[i])) && (args[i+1]) != null ) {
 	  				int size = Integer.parseInt(args[i+1]);
-	  				ArrayList<String> randomKeys = hashTable.randomKeySet(dataSet,size);
+	  				ArrayList<String> randomKeys = hashTable.randomKeySet(size);
 	  				//System.out.println(randomKeys);
+	  				for(int j = 0; j<size;j++) {
+	  					String stringKey = (randomKeys.get(j)).replaceAll("[/:.,]|12/2006/", "");
+	  					int intKey = Integer.parseInt(stringKey);
+	  					System.out.println(find(intKey));
+	  				}
 				}
 	  		}
     	}else {
@@ -77,22 +80,16 @@ class HashChain {
 
 	}
 
-	public ArrayList<String> randomKeySet(List<timeStamp> dataSet, int setSize){
+	public ArrayList<String> randomKeySet(int size){
+		String CSVName = "cleaned_data.csv";
+		CSVread dataArray = new CSVread(CSVName, 499);
+		List<timeStamp> dataSet = dataArray.read();
 		Collections.shuffle(dataSet);
 		ArrayList<String> keyList = new ArrayList<String>();
-		for(int i = 0;i< setSize;i++) {
+		for(int i = 0;i< size;i++) {
 			keyList.add((dataSet.get(i)).getTime());
 			//searching for each key in the keyset
-			timeData dataVar;
-			if((dataVar = find(Integer.parseInt(((dataSet.get(i)).getTime()).replaceAll("[/:.,]|12/2006/", "")))) != null){
-				System.out.println("Found at :" + dataVar);
-			}else{
-				System.out.println("Cannot find " + Integer.parseInt(((dataSet.get(i)).getTime()).replaceAll("[/:.,]|12/2006/", "")));
-			}
-			
-			
 		}
-
 		return keyList;
 	}
 
@@ -111,7 +108,7 @@ class HashChain {
 
 	}
 
-	public timeData find(int dataToFind) {
+	public static timeData find(int dataToFind) {
 
 		// Calculate the hash key for the timeData
 
@@ -196,7 +193,7 @@ class timeData {
 
 	public String toString() {
 
-		return timeStampData + " : " + intKey;
+		return "Found at index : " + intKey +" "+ timeStampData;
 
 	}
 
@@ -218,7 +215,7 @@ class dataList {
 
 		while (current != null && newWord.key > current.key) {
 
-			previous = current;
+			previous = current; 
 			current = current.next;
 
 		}
