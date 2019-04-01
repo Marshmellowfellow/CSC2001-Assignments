@@ -3,9 +3,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Hash {
+public class HashProbe {
 	
-	timeStamp[] theArray;
+	static timeStamp[] theArray;
 	int arraySize;
 	int itemsInArray = 0;
 	
@@ -28,7 +28,7 @@ public class Hash {
         //Reading the CSV
 		CSVread dataArray = new CSVread(CSVName, setSize);
 		List<timeStamp> dataSet = dataArray.read();
-		Hash hashImplementation = new Hash(setSize);
+		HashProbe hashImplementation = new HashProbe(setSize);
 		
 		//Input command determining type of probing to use to build the table.
 		int set = 0;
@@ -42,24 +42,17 @@ public class Hash {
 		  					hashImplementation.quadraticProbe(dataSet, hashImplementation.theArray, setSize);
 		  					hashImplementation.displayTheStack(setSize);
 		  					System.out.println("Quadratic Probe");
-		  				}else if (args[i+1] == "C") {
-		  					set = 1;
-		  					//hashImplementation.chainingProbe(dataSet, hashImplementation.theArray);
 		  				}
 	  				}
 				}
 	  		}
 	  		
     	}
-    	
     	if(set ==0) {
 			hashImplementation.linearProbe(dataSet, hashImplementation.theArray, setSize);
 			hashImplementation.displayTheStack(setSize);
 			System.out.println("Linear Probe");
     	}
-		
-		//Display table
-		// hashImplementation.displayTheStack(setSize);
 
 		//Searching through the input arguments and running necessary functionality
     	if(args.length > 1) {
@@ -155,10 +148,11 @@ public class Hash {
 			theArray[arrayIndex] = newElementVal;
 		}
 	}
+
 	
-	// Returns the value stored in the Hash Table
+	// Returns the value stored in the HashProbe Table
 	public timeStamp search(String key, int setSize) {
-		// Find the keys original hash key
+		// Find the keys original HashProbe key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);
 		int arrayIndexHash = intKey % setSize;
@@ -183,7 +177,7 @@ public class Hash {
 		return null;
 	}
 
-	Hash(int size) {
+	HashProbe(int size) {
 		arraySize = size;
 		theArray = new timeStamp[size];
 		Arrays.fill(theArray, new timeStamp("-1","-1","-1"));
@@ -209,4 +203,5 @@ public class Hash {
 			System.out.println("|");
 		}
 	}
+
 }
