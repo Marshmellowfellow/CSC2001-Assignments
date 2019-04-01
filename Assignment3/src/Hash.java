@@ -29,11 +29,34 @@ public class Hash {
 		CSVread dataArray = new CSVread(CSVName, setSize);
 		List<timeStamp> dataSet = dataArray.read();
 		Hash hashImplementation = new Hash(setSize);
-
-
-
-		//Building the table
-		hashImplementation.hashFunction(dataSet, hashImplementation.theArray);
+		
+		//Input command determining type of probing to use to build the table.
+		int set = 0;
+    	if(args.length > 1) {
+	  		for(int i = 0; i < (args.length) -1 ; i++) {
+	  			if(("-p" .contains(args[i]))) {
+	  				if(i < args.length){
+	  					System.out.println("checking " + args[i+1]);
+		  				if (args[i+1].contains("Q")) {
+		  					set = 1;
+		  					hashImplementation.quadraticProbe(dataSet, hashImplementation.theArray, setSize);
+		  					hashImplementation.displayTheStack(setSize);
+		  					System.out.println("Quadratic Probe");
+		  				}else if (args[i+1] == "C") {
+		  					set = 1;
+		  					//hashImplementation.chainingProbe(dataSet, hashImplementation.theArray);
+		  				}
+	  				}
+				}
+	  		}
+	  		
+    	}
+    	
+    	if(set ==0) {
+			hashImplementation.linearProbe(dataSet, hashImplementation.theArray, setSize);
+			hashImplementation.displayTheStack(setSize);
+			System.out.println("Linear Probe");
+    	}
 		
 		//Display table
 		// hashImplementation.displayTheStack(setSize);
@@ -42,14 +65,14 @@ public class Hash {
     	if(args.length > 1) {
 	  		for(int i = 0; i < (args.length) ; i++) {
 	  			if(("-s" .contains(args[i])) && (args[i+1]) != null ) {
-	  				hashImplementation.search(args[i+1]);
+	  				hashImplementation.search(args[i+1],setSize);
 	  			}
 //				}else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
 //					hashImplementation.opCount();
 //				}
-	  		else if(("-k" .contains(args[i])) && (args[i+1]) != null ) {
+	  			 else if(("-k" .contains(args[i])) && (args[i+1]) != null ) {
 	  				int size = Integer.parseInt(args[i+1]);
-	  				ArrayList<String> randomKeys = hashImplementation.keysetkeys(dataSet,size);
+	  				ArrayList<String> randomKeys = hashImplementation.randomKeySet(dataSet,size);
 	  				//System.out.println(randomKeys);
 				}
 	  		}
@@ -60,15 +83,13 @@ public class Hash {
     	}
 	}
 	
-	
-	
-	public ArrayList<String> keysetkeys(List<timeStamp> dataSet, int setSize){
+	public ArrayList<String> randomKeySet(List<timeStamp> dataSet, int setSize){
 		Collections.shuffle(dataSet);
 		ArrayList<String> keyList = new ArrayList<String>();
 		for(int i = 0;i< setSize;i++) {
 			keyList.add((dataSet.get(i)).getTime());
 			//searching for each key in the keyset
-			search((dataSet.get(i)).getTime());
+			search((dataSet.get(i)).getTime(),setSize);
 		}
 		return keyList;
 	}
@@ -95,13 +116,14 @@ public class Hash {
 
 	// The goal is to make the array big enough to avoid
 	// collisions, but not so big that we waste memory
-	public void hashFunction(List<timeStamp> dataSet, timeStamp[] theArray) {
+	public void linearProbe(List<timeStamp> dataSet, timeStamp[] theArray, int setSize) {
 		for (int n = 1; n < dataSet.size(); n++) {
 			timeStamp newElementVal = ((dataSet.get(n)));
+			
 			// Create an index to store the value in by taking the modulus
-			//System.out.println(newElementVal);
-			int arrayIndex = Integer.parseInt((newElementVal.getTime()).replaceAll("[/:.,]|12/2006/", "")) % 499;
-			//System.out.println("Modulus Index= " + arrayIndex + " for value "+ newElementVal);
+			int arrayIndex = Integer.parseInt((newElementVal.getTime()).replaceAll("[/:.,]|12/2006/", "")) % setSize;
+
+			// This is where linear/quadratic and chaining  probing makes a difference
 			// Cycle through the array until we find an empty space
 			while (theArray[arrayIndex].getTime() != "-1") {
 				++arrayIndex;
@@ -112,13 +134,34 @@ public class Hash {
 			theArray[arrayIndex] = newElementVal;
 		}
 	}
+	
+	public void quadraticProbe(List<timeStamp> dataSet, timeStamp[] theArray, int setSize) {
+		for (int n = 1; n < dataSet.size(); n++) {
+			timeStamp newElementVal = ((dataSet.get(n)));
+			
+			// Create an index to store the value in by taking the modulus
+			int arrayIndex = Integer.parseInt((newElementVal.getTime()).replaceAll("[/:.,]|12/2006/", "")) % setSize;
 
+			// This is where linear/quadratic and chaining  probing makes a difference
+			// Cycle through the array until we find an empty space
+			int factor = 0;
+			while (theArray[arrayIndex].getTime() != "-1") {
+				arrayIndex = arrayIndex + factor^2;
+				factor++;
+				//System.out.println("Collision Try " + arrayIndex + " Instead");
+				// If we get to the end of the array go back to index 0
+				arrayIndex %= arraySize;
+			}
+			theArray[arrayIndex] = newElementVal;
+		}
+	}
+	
 	// Returns the value stored in the Hash Table
-	public timeStamp search(String key) {
+	public timeStamp search(String key, int setSize) {
 		// Find the keys original hash key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);
-		int arrayIndexHash = intKey % 499;
+		int arrayIndexHash = intKey % setSize;
 		while (theArray[arrayIndexHash].getTime() != "-1") {
 			
 			String hashElement = theArray[arrayIndexHash].getTime();
