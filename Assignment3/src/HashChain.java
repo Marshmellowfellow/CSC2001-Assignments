@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,14 +38,15 @@ class HashChain {
 		//hashTable.displayTheArray();
 		
 		
-		if(args.length > 1) {
+		if(args.length > 0) {
 			for(int i = 0; i < (args.length) ; i++) {
-				if(("-s" .contains(args[i])) && (args[i+1]) != null ) {
-					if(hashTable.find(Integer.parseInt(args[i+1])) != null){
-						System.out.println("Found my nughaaa");
-					}else{
-						System.out.println("Cannot find " + Integer.parseInt(args[i+1]));
-					}
+				if(("-s" .contains(args[i]))) {
+	  				List<String> keys = KEYread("keys.txt");
+	  				for(int j = 0; j<keys.size();j++) {
+	  					String stringKey = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
+	  					int intKey = Integer.parseInt(stringKey);
+	  					System.out.println(find(intKey));
+	  				}
 				}
 				//else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
 //					hashImplementation.opCount();
@@ -166,6 +170,26 @@ class HashChain {
     }
     return setSize;
 	}
+	  public static List<String> KEYread(String FileName){
+	      String line = "";
+		   List<String> keys = new ArrayList<>();
+		   int lineNo = 0;
+		   
+		   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
+		       while ((line = br.readLine()) != null) {
+		    	   	if(lineNo > 0) {
+			           String[] Element = line.split(",");
+			           keys.add(Element[0]);
+		       		}
+		    	   	lineNo ++;
+		       }
+		       } 
+		       catch (IOException e) {
+		           System.out.println("No such file or directory");	
+		           return null;
+		       }
+		       return keys;
+	  }
 
 }
 

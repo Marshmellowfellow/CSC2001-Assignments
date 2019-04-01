@@ -1,6 +1,10 @@
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 public class HashProbe {
@@ -38,7 +42,7 @@ public class HashProbe {
 	  					System.out.println("checking " + args[i+1]);
 		  				if (args[i+1].contains("Q")) {
 		  					set = 1;
-		  					hashImplementation.quadraticProbe(dataSet, hashImplementation.theArray, setSize);
+		  					hashImplementation.quadraticProbe(dataSet, HashProbe.theArray, setSize);
 		  					//hashImplementation.displayTheStack(setSize);
 		  					System.out.println("Quadratic Probe");
 		  				}
@@ -48,35 +52,38 @@ public class HashProbe {
 	  		
     	}
     	if(set ==0) {
-			hashImplementation.linearProbe(dataSet, hashImplementation.theArray, setSize);
+			hashImplementation.linearProbe(dataSet, HashProbe.theArray, setSize);
 			//hashImplementation.displayTheStack(setSize);
 			System.out.println("Linear Probe");
     	}
 
 		//Searching through the input arguments and running necessary functionality
-    	if(args.length > 1) {
+    	if(args.length > 0) {
 	  		for(int i = 0; i < (args.length) ; i++) {
-	  			if(("-s" .contains(args[i])) && (args[i+1]) != null ) {
-	  				HashProbe.search(args[i+1],setSize);
+	  			if(("-s" .contains(args[i]))) {
+	  				System.out.println("Boooom");
+	  				List<String> keys = KEYread("keys.txt");
+	  				for(int j = 0; j<keys.size();j++) {
+	  					search(keys.get(j), setSize);
+	  				}
 	  			}
 //				}else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
 //					hashImplementation.opCount();
 //				}
-	  			 else if(("-k" .contains(args[i])) && (args[i+1]) != null ) {
+	  			 else if(("-keys" .contains(args[i])) && (args[i+1]) != null ) {
 	  				int size = Integer.parseInt(args[i+1]);
-	  				ArrayList<String> randomKeys = hashImplementation.randomKeySet(size);
-	  				//System.out.println(randomKeys);
-	  				for(int j = 0; j<size;j++) {
-	  					search(randomKeys.get(j), setSize);
-	  				}
+	  				hashImplementation.randomKeySet(size);
+
 				}
 	  		}
     	}else {
     		for(int i = 0; i<dataSet.size();i++) {
-    			System.out.println(dataSet.get(i));	
+    			//System.out.println(dataSet.get(i));	
     		}
     	}
 	}
+	
+	
 	
 	public ArrayList<String> randomKeySet(int size){
 		String CSVName = "cleaned_data.csv";
@@ -86,10 +93,51 @@ public class HashProbe {
 		ArrayList<String> keyList = new ArrayList<String>();
 		for(int i = 0;i< size;i++) {
 			keyList.add((dataSet.get(i)).getTime());
+			String fileName = "keys.txt";
+			FileWriter fileWriter;
+			if(i == 0) {
+				try {
+					fileWriter = new FileWriter(fileName);
+	  				String text = ((dataSet.get(i)).getTime());
+	  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+	  				textWriter.write(fileWriter, fileName, text);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}else {
+			try {
+				fileWriter = new FileWriter(fileName, true);
+  				String text = ((dataSet.get(i)).getTime());
+  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+  				textWriter.write(fileWriter, fileName, text);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 			//searching for each key in the keyset
 		}
 		return keyList;
 	}
+	  public static List<String> KEYread(String FileName){
+	      String line = "";
+		   List<String> keys = new ArrayList<>();
+		   int lineNo = 0;
+		   
+		   try (BufferedReader br = new BufferedReader(new FileReader(FileName))) {
+		       while ((line = br.readLine()) != null) {
+		    	   	if(lineNo > 0) {
+			           String[] Element = line.split(",");
+			           keys.add(Element[0]);
+		       		}
+		    	   	lineNo ++;
+		       }
+		       } 
+		       catch (IOException e) {
+		           System.out.println("No such file or directory");	
+		           return null;
+		       }
+		       return keys;
+	  }
 	
 	public static int isPrime(int setSize) {
         int prime = 0;  //next prime will be assigned to this var
