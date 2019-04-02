@@ -7,12 +7,15 @@
 1) Run make to produce class files.
 2) Run the bash script(./bashscript)  within bin to repoduce the tests from the report in the results 
 directory..
-3)Run java Hash without any arguments to print all the dates and information.
-  Or optionally run them with any of the additional arguments.
 
-  |Arguments:
-  |    -p <probing method>, Q for Quadratic, C for chaining otherwise set t linear
-  |    -s <search query>, search for the power information for a particular time stamp.
+  |Arguments for HashProbe:
+  |    -p <probing method>, Q for Quadratic, C for chaining otherwise set to linear
   |    -k <number of key>, randomly generate a subset of random keys from the data set.
+  |    -s <search query>, search keys for the power information for a particular time stamp.
   |    -l <size>, adjust the size of the subset of data being searched through.
-  |    -c <optional filename>, display operations completed for that search, with an optional output to a file.    
+  |    -test, Search through keys in keys.txt file and outputs resulst to test folder.    
+
+  |Arguments for HashChain:
+  |    -s <search query>, search keys for the power information for a particular time stamp.
+  |    -l <size>, adjust the size of the subset of data being searched through.
+  |    -test, Search through keys in keys.txt file and outputs resulst to test folder. 

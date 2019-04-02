@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,8 +13,9 @@ class HashChain {
 	int itemsInArray = 0;
 	public List<timeStamp> elementsToAdd;
 
-	opCount insertCount = new opCount(0);
-	opCount searchCount = new opCount(0);
+	static opCount insertCount = new opCount(0);
+	static opCount searchCount = new opCount(0);
+	
 	
 	public static void main(String[] args) {
 		String CSVName = "cleaned_data.csv";
@@ -48,20 +50,7 @@ class HashChain {
 	  				for(int j = 0; j<keys.size();j++) {
 	  					String stringKey = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
 	  					int intKey = Integer.parseInt(stringKey);
-	  					System.out.println(find(intKey));
-	  				}
-				}
-				//else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
-//					hashImplementation.opCount();
-//				}
-	  			 else if(("-k" .contains(args[i])) && (args[i+1]) != null ) {
-	  				int size = Integer.parseInt(args[i+1]);
-	  				ArrayList<String> randomKeys = hashTable.randomKeySet(size);
-	  				//System.out.println(randomKeys);
-	  				for(int j = 0; j<size;j++) {
-	  					String stringKey = (randomKeys.get(j)).replaceAll("[/:.,]|12/2006/", "");
-	  					int intKey = Integer.parseInt(stringKey);
-	  					System.out.println(find(intKey));
+	  					System.out.println(find(intKey, searchCount));
 	  				}
 				}
 	  		}
@@ -70,11 +59,41 @@ class HashChain {
     			System.out.println(dataSet.get(i));	
     		}
     	}
+    	
+    	
+    	for(int i = 0; i < (args.length) ; i++) {	
+	  		if("-test" .equals(args[i])) {
+	  			
+  				List<String> keys = KEYread("keys.txt");
+  				for(int j = 0; j<keys.size();j++) {
+  					String stringKey = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
+  					int intKey = Integer.parseInt(stringKey);
+  					find(intKey, searchCount);
+  				}
+	  			
+    			String fileName = ("test/chaining.txt");
+  				FileWriter fileWriter;
+				try {
+					fileWriter = new FileWriter(fileName, true);
+	  				String text = (String.valueOf(insertCount.opCount) + "," + String.valueOf(searchCount.opCount));
+	  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+	  				textWriter.write(fileWriter, fileName, text);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	  			
+	  		}
+    	}
+		
+    	System.out.println("insertCount : " + insertCount.opCount);
+    	System.out.println("searchCount : " + searchCount.opCount);
+    	
+    	
 	}
 
 	HashChain(List<timeStamp> elements,int size) {
 
-		this.arraySize = size;
+		HashChain.arraySize = size;
 		this.elementsToAdd = elements;
 		theArray = new dataList[size];
 
@@ -110,20 +129,20 @@ class HashChain {
 
 		// Add the new timeData to the array and set
 		// the key for the timeData
-
-		theArray[hashKey].insert(newWord, hashKey);
+		insertCount.opCount = insertCount.opCount + 1;
+		theArray[hashKey].insert(newWord, hashKey, insertCount);
 
 	}
 
-	public static timeData find(int dataToFind) {
+	public static timeData find(int dataToFind, opCount searchCount) {
 
 		// Calculate the hash key for the timeData
 
 		int hashKey = dataToFind % arraySize;
 
 		// NEW
-
-		timeData timeStampData = theArray[hashKey].find(dataToFind, arraySize);
+		searchCount.opCount = searchCount.opCount + 1;
+		timeData timeStampData = theArray[hashKey].find(dataToFind, arraySize, searchCount);
 
 		return timeStampData;
 
@@ -233,15 +252,15 @@ class dataList {
 
 	public timeData firstData = null;
 
-	public void insert(timeData newWord, int hashKey) {
+	public void insert(timeData newWord, int hashKey, opCount insertCount) {
 
 		timeData previous = null;
 		timeData current = firstData;
 
 		newWord.key = hashKey;
-
+		insertCount.opCount = insertCount.opCount + 1;
 		while (current != null && newWord.key > current.key) {
-
+			
 			previous = current; 
 			current = current.next;
 
@@ -270,7 +289,7 @@ class dataList {
 
 	}
 
-	public timeData find(int dataToFind, int arraySize) {
+	public timeData find(int dataToFind, int arraySize, opCount searchCount) {
 
 		timeData current = firstData;
 
@@ -280,7 +299,7 @@ class dataList {
 		// us to avoid searching the whole list
 		int hashKey = dataToFind % arraySize;;
 		while (current != null && current.key <= hashKey) {
-
+			searchCount.opCount = searchCount.opCount + 1;
 			// NEW
 			if (Integer.parseInt((current.timeStampData).getTime().replaceAll("[/:.,]|12/2006/", "")) == dataToFind)
 				return current;

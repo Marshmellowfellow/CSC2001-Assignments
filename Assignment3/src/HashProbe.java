@@ -97,6 +97,34 @@ public class HashProbe {
     	System.out.println("searchQ : " + searchQ.opCount);
     	System.out.println("insertL : " + insertL.opCount);
     	System.out.println("searchL : " + searchL.opCount);
+    	
+    	for(int i = 0; i < (args.length) ; i++) {	
+	  		if("-test" .equals(args[i])) {
+	    		if(set == 1) {
+	    			String fileName = ("test/qudratic.txt");
+	  				FileWriter fileWriter;
+					try {
+						fileWriter = new FileWriter(fileName, true);
+		  				String text = (String.valueOf(insertQ.opCount) + "," + String.valueOf(searchQ.opCount));
+		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+		  				textWriter.write(fileWriter, fileName, text);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	    		}else {
+	  				String fileName = ("test/linear.txt");
+	  				FileWriter fileWriter;
+					try {
+						fileWriter = new FileWriter(fileName, true);
+		  				String text = (String.valueOf(insertL.opCount) + "," + String.valueOf(searchL.opCount));
+		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
+		  				textWriter.write(fileWriter, fileName, text);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+	    		}	
+	  		}
+    	}
 	}
 	
 	
