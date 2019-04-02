@@ -15,10 +15,13 @@ class HashChain {
 
 	static opCount insertCount = new opCount(0);
 	static opCount searchCount = new opCount(0);
+
 	
 	
 	public static void main(String[] args) {
 		String CSVName = "cleaned_data.csv";
+		opCount maxC = new opCount(0);
+		opCount tempMaxC = new opCount(0);
 		
 		//Setting the size of the table based on closest prime number
 		int setSize = 500;
@@ -45,12 +48,15 @@ class HashChain {
 		if(args.length > 0) {
 			for(int i = 0; i < (args.length) ; i++) {
 				if(("-s" .contains(args[i]))) {
-	  				List<String> keys = KEYread("keys.txt");
-	  				for(int j = 0; j<keys.size();j++) {
-	  					String stringKey = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
+					System.out.println("------Search Start------");
+					System.out.println("Seperate Chaining");
+					System.out.println("");
+					if((args[i+1]).replaceAll("[/:.,]|12/2006/", "") != null) {
+	  					String stringKey = (args[i+1]).replaceAll("[/:.,]|12/2006/", "");
 	  					int intKey = Integer.parseInt(stringKey);
-	  					System.out.println(find(intKey, searchCount));
-	  				}
+	  					System.out.println(find(intKey, searchCount, tempMaxC));
+	  					System.out.println("");
+					}
 				}
 	  		}
     	}else {
@@ -67,7 +73,11 @@ class HashChain {
   				for(int j = 0; j<keys.size();j++) {
   					String stringKey = (keys.get(j)).replaceAll("[/:.,]|12/2006/", "");
   					int intKey = Integer.parseInt(stringKey);
-  					find(intKey, searchCount);
+  					find(intKey, searchCount, tempMaxC);
+  					if(tempMaxC.opCount > maxC.opCount) {
+  						maxC.opCount = tempMaxC.opCount;
+  					}
+  					tempMaxC.opCount = 0;
   				}
 	  			
     			String fileName = ("test/chaining.csv");
@@ -75,7 +85,8 @@ class HashChain {
 				try {
 					fileWriter = new FileWriter(fileName, true);
                     double loadFactor = 500/((double)setSize);
-	  				String text = (String.valueOf(insertCount.opCount) + "," + loadFactor + "," + String.valueOf(searchCount.opCount));
+                    double averageProbeSearch = (searchCount.opCount)/((double)400);
+	  				String text = (String.valueOf(insertCount.opCount) + "," + String.valueOf(insertCount.opCount)  + "," + String.valueOf(averageProbeSearch) + "," + String.valueOf(maxC.opCount) + "," + loadFactor);
 	  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 	  				textWriter.write(fileWriter, fileName, text);
 				} catch (IOException e) {
@@ -134,14 +145,14 @@ class HashChain {
 
 	}
 
-	public static timeData find(int dataToFind, opCount searchCount) {
+	public static timeData find(int dataToFind, opCount searchCount, opCount tempMaxC) {
 
 		// Calculate the hash key for the timeData
 
 		int hashKey = dataToFind % arraySize;
 
 		// NEW
-		timeData timeStampData = theArray[hashKey].find(dataToFind, arraySize, searchCount);
+		timeData timeStampData = theArray[hashKey].find(dataToFind, arraySize, searchCount, tempMaxC);
 
 		return timeStampData;
 
@@ -238,8 +249,7 @@ class timeData {
 
 	public String toString() {
 
-		return "Found at index : " + intKey +" "+ timeStampData;
-
+		return ("Search for " + timeStampData.getTime() + " found at index : "+ intKey + " "+timeStampData);
 	}
 
 }
@@ -287,7 +297,7 @@ class dataList {
 
 	}
 
-	public timeData find(int dataToFind, int arraySize, opCount searchCount) {
+	public timeData find(int dataToFind, int arraySize, opCount searchCount, opCount tempMaxC) {
 
 		timeData current = firstData;
 
@@ -298,6 +308,7 @@ class dataList {
 		int hashKey = dataToFind % arraySize;;
 		while (current != null) {
 			searchCount.opCount = searchCount.opCount + 1;
+			tempMaxC.opCount = tempMaxC.opCount + 1;
 			// NEW
 			if (Integer.parseInt((current.timeStampData).getTime().replaceAll("[/:.,]|12/2006/", "")) == dataToFind)
 				return current;

@@ -1,7 +1,7 @@
 
----CSC2001 Assignment 3
----Nicholas Anotoniades
----ANTNIC008
+---CSC2001 Assignment 3----
+---Nicholas Anotoniades----
+---------ANTNIC008---------
 
 
 1) Run make to produce class files.
@@ -14,8 +14,13 @@ directory..
   |    -s <search query>, search keys for the power information for a particular time stamp.
   |    -l <size>, adjust the size of the subset of data being searched through.
   |    -test, Search through keys in keys.txt file and outputs resulst to test folder.    
+    example:
+        java HashProbe -p -Q -s 16/12/2006/19:00:00, will use Qudratic Probing to build and search for 16/12/2006/19:00:00.
+        java HashProbe -s 16/12/2006/19:00:00, will use Linear Probing to build and search for 16/12/2006/19:00:00.
 
   |Arguments for HashChain:
   |    -s <search query>, search keys for the power information for a particular time stamp.
   |    -l <size>, adjust the size of the subset of data being searched through.
   |    -test, Search through keys in keys.txt file and outputs resulst to test folder. 
+    example:
+        java HashChain -s 16/12/2006/19:00:00, will use Seperate Chaining to build and search for 16/12/2006/19:00:00.

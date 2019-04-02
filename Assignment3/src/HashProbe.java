@@ -20,6 +20,10 @@ public class HashProbe {
 		opCount insertL = new opCount(0);
 		opCount searchQ = new opCount(0);
 		opCount searchL = new opCount(0);
+		opCount maxQ = new opCount(0);
+		opCount maxL = new opCount(0);
+		opCount tempMaxQ = new opCount(0);
+		opCount tempMaxL = new opCount(0);
 
 		
 		String CSVName = "cleaned_data.csv";
@@ -52,6 +56,7 @@ public class HashProbe {
 		  					hashImplementation.quadraticProbe(dataSet, HashProbe.theArray, setSize, insertQ);
 		  					//hashImplementation.displayTheStack(setSize);
 		  					System.out.println("Quadratic Probe");
+		  					System.out.println("");
 		  				}
 	  				}
 				}
@@ -62,20 +67,29 @@ public class HashProbe {
 			hashImplementation.linearProbe(dataSet, HashProbe.theArray, setSize, insertL);
 			//hashImplementation.displayTheStack(setSize);
 			System.out.println("Linear Probe");
+			System.out.println("");
     	}
 
 		//Searching through the input arguments and running necessary functionality
+
+		List<String> keys = KEYread("keys.txt");
     	if(args.length > 0) {
 	  		for(int i = 0; i < (args.length) ; i++) {
 	  			if(("-s" .contains(args[i]))) {
-	  				List<String> keys = KEYread("keys.txt");
-	  				if(set == 0) {
-		  				for(int j = 0; j<keys.size();j++) {
-		  					searchLinear(keys.get(j), setSize, searchL);
-		  				}
-	  				}else {
-		  				for(int j = 0; j<keys.size();j++) {
-		  					searchQuadratic(keys.get(j), setSize, searchQ);
+	  				System.out.println("------Search Start------");
+	  				if(args.length >= i+1) {
+		  				if(set == 0) {
+			  					searchLinear(args[i+1], setSize, searchL, tempMaxL);
+			  					if(tempMaxL.opCount > maxL.opCount) {
+			  						maxL.opCount = tempMaxL.opCount;
+			  					}
+			  					tempMaxL.opCount = 0;
+		  				}else {
+			  					searchQuadratic(args[i+1], setSize, searchQ, tempMaxQ);
+			  					if(tempMaxQ.opCount > maxQ.opCount) {
+			  						maxQ.opCount = tempMaxQ.opCount;
+			  					}
+			  					tempMaxQ.opCount = 0;
 		  				}
 	  				}
 	  			}
@@ -84,41 +98,69 @@ public class HashProbe {
 //				}
 	  			 else if(("-keys" .contains(args[i])) && (args[i+1]) != null ) {
 	  				int size = Integer.parseInt(args[i+1]);
-	  				hashImplementation.randomKeySet(size);
-
+	  				hashImplementation.randomKeySet(size);	
 				}
 	  		}
     	}else {
-    		for(int i = 0; i<dataSet.size();i++) {
-    			//System.out.println(dataSet.get(i));	
-    		}
+			if(set == 0) {
+				for(int j = 0; j<keys.size();j++) {
+					searchLinear(keys.get(j), setSize, searchL, tempMaxL);
+					if(tempMaxL.opCount > maxL.opCount) {
+						maxL.opCount = tempMaxL.opCount;
+					}
+					tempMaxL.opCount = 0;
+				}
+			}else {
+				for(int j = 0; j<keys.size();j++) {
+					searchQuadratic(keys.get(j), setSize, searchQ, tempMaxQ);
+					if(tempMaxQ.opCount > maxQ.opCount) {
+						maxQ.opCount = tempMaxQ.opCount;
+					}
+					tempMaxQ.opCount = 0;
+				}
+			}
     	}
-    	System.out.println("insertQ : " + insertQ.opCount);
-    	System.out.println("searchQ : " + searchQ.opCount);
-    	System.out.println("insertL : " + insertL.opCount);
-    	System.out.println("searchL : " + searchL.opCount);
     	
+
+    	
+    
     	for(int i = 0; i < (args.length) ; i++) {	
 	  		if("-test" .equals(args[i])) {
 	    		if(set == 1) {
+    				for(int j = 0; j<keys.size();j++) {
+    					searchQuadratic(keys.get(j), setSize, searchQ, tempMaxQ);
+    					if(tempMaxQ.opCount > maxQ.opCount) {
+    						maxQ.opCount = tempMaxQ.opCount;
+    					}
+    					tempMaxQ.opCount = 0;
+    				}
 	    			String fileName = ("test/qudratic.csv");
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
                         double loadFactor = 500/((double)setSize);
-		  				String text = (String.valueOf(insertQ.opCount) + "," + loadFactor+ "," + String.valueOf(searchQ.opCount));
+                        double averageProbeSearch = (searchQ.opCount)/((double)400);
+		  				String text = (String.valueOf(insertQ.opCount) + "," + String.valueOf(searchQ.opCount)  + "," + String.valueOf(averageProbeSearch) + "," + String.valueOf(maxQ.opCount) + "," + loadFactor);
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 	    		}else {
+    				for(int j = 0; j<keys.size();j++) {
+    					searchLinear(keys.get(j), setSize, searchL, tempMaxL);
+    					if(tempMaxL.opCount > maxL.opCount) {
+    						maxL.opCount = tempMaxL.opCount;
+    					}
+    					tempMaxL.opCount = 0;
+    				}
 	  				String fileName = ("test/linear.csv");
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
                         double loadFactor = 500/((double)setSize);
-		  				String text = (String.valueOf(insertL.opCount) + "," +  loadFactor + "," + String.valueOf(searchL.opCount));
+                        double averageProbeSearch = (searchL.opCount)/((double)400);
+		  				String text = (String.valueOf(insertL.opCount)  + "," + String.valueOf(searchL.opCount)  + "," + String.valueOf(averageProbeSearch) + "," + String.valueOf(maxL.opCount) + "," +  loadFactor);
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {
@@ -127,6 +169,13 @@ public class HashProbe {
 	    		}	
 	  		}
     	}
+    	System.out.println("");
+    	System.out.println("-----Probe counts-----");
+    	System.out.println("1) Quadratic Probe Insertion : " + insertQ.opCount);
+    	System.out.println("2) Quadratic Probe Search : " + searchQ.opCount);
+    	System.out.println("3) Linear Insertion : " + insertL.opCount);
+    	System.out.println("4) Linear Search : " + searchL.opCount);
+    	
 	}
 	
 	
@@ -232,6 +281,7 @@ public class HashProbe {
 		for (int n = 1; n < dataSet.size(); n++) {
 			timeStamp newElementVal = ((dataSet.get(n)));
 			insertQ.opCount = insertQ.opCount + 1;
+			
 			// Create an index to store the value in by taking the modulus
 			int arrayIndex = Integer.parseInt((newElementVal.getTime()).replaceAll("[/:.,]|12/2006/", "")) % setSize;
 
@@ -251,20 +301,20 @@ public class HashProbe {
 		}
 	}
 
-	public static timeStamp searchLinear(String key, int setSize, opCount searchL) {
+	public static timeStamp searchLinear(String key, int setSize, opCount searchL, opCount tempMaxL) {
 		// Find the keys original HashProbe key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);
 		int arrayIndexHash = intKey % setSize;
 		while (theArray[arrayIndexHash].getTime() != "-1") {
 			searchL.opCount = searchL.opCount + 1;
-			
+			tempMaxL.opCount = tempMaxL.opCount + 1;
 			String hashElement = theArray[arrayIndexHash].getTime();
 			String stringhashKey = hashElement.replaceAll("[/:.,]|12/2006/", "");
 			int inthashKey = Integer.parseInt(stringhashKey); 
 			if (inthashKey == intKey) {
 				// Found the key so return it
-				System.out.print("Found at index : "+ arrayIndexHash + " ");
+				System.out.print("Search for " +key + " found at index : "+ arrayIndexHash + " ");
 				System.out.println(theArray[arrayIndexHash]);
 				return theArray[arrayIndexHash];
 			}
@@ -278,7 +328,7 @@ public class HashProbe {
 		return null;
 	}
 	// Returns the value stored in the HashProbe Table
-	public static timeStamp searchQuadratic(String key, int setSize, opCount searchQ) {
+	public static timeStamp searchQuadratic(String key, int setSize, opCount searchQ, opCount tempMaxQ) {
 		// Find the keys original HashProbe key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);
@@ -287,13 +337,14 @@ public class HashProbe {
 		int factor =0;
 		while (theArray[arrayIndexHash].getTime() != "-1") {
 			searchQ.opCount = searchQ.opCount + 1;
-			
+			tempMaxQ.opCount = tempMaxQ.opCount + 1;			
 			String hashElement = theArray[arrayIndexHash].getTime();
 			String stringhashKey = hashElement.replaceAll("[/:.,]|12/2006/", "");
 			int inthashKey = Integer.parseInt(stringhashKey); 
 			if (inthashKey == intKey) {
 				// Found the key so return it
-				System.out.print("Found at index : "+ arrayIndexHash + " ");
+				
+				System.out.print("Search for " +key + " found at index : "+ arrayIndexHash + " ");
 				System.out.println(theArray[arrayIndexHash]);
 				return theArray[arrayIndexHash];
 			}
