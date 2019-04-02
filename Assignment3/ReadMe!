@@ -4,23 +4,32 @@
 ---------ANTNIC008---------
 
 
+
 1) Run make to produce class files.
-2) Run the bash script(./bashscript)  within bin to repoduce the tests from the report in the results 
+2) Run the bash script(./bashscript) within the bin directory to repoduce the tests from the report in the results 
 directory..
 
+
+
   |Arguments for HashProbe:
-  |    -p <probing method>, Q for Quadratic, C for chaining otherwise set to linear
+  |    -p <probing method>, Q for Quadratic probing,set to default set to linear probing.
   |    -k <number of key>, randomly generate a subset of random keys from the data set.
   |    -s <search query>, search keys for the power information for a particular time stamp.
-  |    -l <size>, adjust the size of the subset of data being searched through.
+  |    -l <size>, adjust the size of the subset of data being searched through, set to default 500.
   |    -test, Search through keys in keys.txt file and outputs resulst to test folder.    
-    example:
+   
+     example:
         java HashProbe -p -Q -s 16/12/2006/19:00:00, will use Qudratic Probing to build and search for 16/12/2006/19:00:00.
         java HashProbe -s 16/12/2006/19:00:00, will use Linear Probing to build and search for 16/12/2006/19:00:00.
 
+
+
+
   |Arguments for HashChain:
+  |    -data <data set>, choose .csv file of power values to be read in, set to default cleaned_data.csv. 
   |    -s <search query>, search keys for the power information for a particular time stamp.
-  |    -l <size>, adjust the size of the subset of data being searched through.
+  |    -l <size>, adjust the size of the subset of data being searched through, set to default 500.
   |    -test, Search through keys in keys.txt file and outputs resulst to test folder. 
-    example:
+  
+      example:
         java HashChain -s 16/12/2006/19:00:00, will use Seperate Chaining to build and search for 16/12/2006/19:00:00.

@@ -27,7 +27,11 @@ public class HashProbe {
 
 		
 		String CSVName = "cleaned_data.csv";
-		
+  		for(int i = 0; i < (args.length) ; i++) {
+  			if(("-data" .contains(args[i])) ) {
+  				 CSVName = args[i+1];
+			}
+  		}
 		//Setting the size of the table based on closest prime number
 		int setSize = 500;
     	if(args.length > 1) {
@@ -47,7 +51,7 @@ public class HashProbe {
 		
 		//Input command determining type of probing to use to build the table.
 		
-    	if(args.length > 1) {
+    	if(args.length > 0) {
 	  		for(int i = 0; i < (args.length) -1 ; i++) {
 	  			if(("-p" .contains(args[i]))) {
 	  				if(i < args.length){
@@ -59,6 +63,9 @@ public class HashProbe {
 		  					System.out.println("");
 		  				}
 	  				}
+				} else if(("-keys" .contains(args[i])) && (args[i+1]) != null ) {
+	  				int size = Integer.parseInt(args[i+1]);
+	  				hashImplementation.randomKeySet(size);	
 				}
 	  		}
 	  		
@@ -93,13 +100,6 @@ public class HashProbe {
 		  				}
 	  				}
 	  			}
-//				}else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
-//					hashImplementation.opCount();
-//				}
-	  			 else if(("-keys" .contains(args[i])) && (args[i+1]) != null ) {
-	  				int size = Integer.parseInt(args[i+1]);
-	  				hashImplementation.randomKeySet(size);	
-				}
 	  		}
     	}else {
 			if(set == 0) {

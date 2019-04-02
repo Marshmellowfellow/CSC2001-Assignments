@@ -22,6 +22,13 @@ class HashChain {
 		String CSVName = "cleaned_data.csv";
 		opCount maxC = new opCount(0);
 		opCount tempMaxC = new opCount(0);
+    	if(args.length > 0) {
+	  		for(int i = 0; i < (args.length) ; i++) {
+	  			if(("-data" .contains(args[i])) ) {
+	  				 CSVName = args[i+1];
+				}
+	  		}
+    	}		
 		
 		//Setting the size of the table based on closest prime number
 		int setSize = 500;

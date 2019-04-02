@@ -10,8 +10,8 @@ java HashProbe -k 400
 
 for i in {650..2000..80}
     do
-        java HashProbe -l $i -s -p -test
-        java HashProbe -l $i -s -p Q -test
+        java HashProbe -l $i -test
+        java HashProbe -l $i -p Q -test
         java HashChain -l $i -test
 
 done;
