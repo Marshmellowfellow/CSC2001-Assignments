@@ -30,7 +30,6 @@ class HashChain {
 	  		}
     	}
 		setSize = isPrime(setSize);
-        System.out.println("Set size = " + setSize);
         
         //Reading the CSV
 		CSVread dataArray = new CSVread(CSVName, setSize);
@@ -75,7 +74,7 @@ class HashChain {
   				FileWriter fileWriter;
 				try {
 					fileWriter = new FileWriter(fileName, true);
-	  				String text = (String.valueOf(insertCount.opCount) + "," + String.valueOf(searchCount.opCount));
+	  				String text = (setSize + "," + String.valueOf(insertCount.opCount) + "," + String.valueOf(searchCount.opCount));
 	  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 	  				textWriter.write(fileWriter, fileName, text);
 				} catch (IOException e) {
@@ -175,7 +174,7 @@ class HashChain {
 	}
 	public static int isPrime(int setSize) {
     int prime = 0;  //next prime will be assigned to this var
-    for(int j = setSize; j<1000; j++){  //outer loop
+    for(int j = setSize; j<10000; j++){  //outer loop
 
           int count = 0;
           for(int i=2; i<=j/2; i++){  //inner loop

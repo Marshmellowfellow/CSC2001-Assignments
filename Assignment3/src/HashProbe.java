@@ -105,7 +105,7 @@ public class HashProbe {
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
-		  				String text = (String.valueOf(insertQ.opCount) + "," + String.valueOf(searchQ.opCount));
+		  				String text = (setSize + "," + String.valueOf(insertQ.opCount) + "," + String.valueOf(searchQ.opCount));
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {
@@ -116,7 +116,7 @@ public class HashProbe {
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
-		  				String text = (String.valueOf(insertL.opCount) + "," + String.valueOf(searchL.opCount));
+		  				String text = (setSize + "," + String.valueOf(insertL.opCount) + "," + String.valueOf(searchL.opCount));
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {

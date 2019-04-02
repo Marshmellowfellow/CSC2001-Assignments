@@ -1,5 +1,6 @@
 SRCDIR = src
 BINDIR = bin
+TEST = bin/test
 
 JFLAGS = -g -d $(BINDIR) -cp $(BINDIR)
 JC = javac
@@ -7,24 +8,23 @@ JC = javac
 .java.class:
 	$(JC) $(JFLAGS) $<
 
-CLASSES = TreePrinter.java\
-          textWrite.java\
+CLASSES = textWrite.java\
           opCount.java\
           timeStamp.java\
-          Node.java\
-          BinaryTree.java\
-	      PowerBSTApp.java\
-          PowerAVLApp.java\
+          CSVread.java\
+          HashProbe.java\
+          HashChain.java\
 
 
-vpath %.java $(SRCDIR) /textWrite:$(SRCDIR)/Node:$(SRCDIR)/opCount:$(SRCDIR) /BinaryTree:$(SRCDIR)/PowerAVLApp:$(SRCDIR) /PowerBSTApp:$(SRCDIR)/timeStamp:$(SRCDIR)/TreePrinter:$(SRCDIR)
-vpath %.class $(BINDIR) /textWrite:$(BINDIR)/Node:$(BINDIR) /opCount:$(BINDIR) /BinaryTree:$(BINDIR) /PowerAVLApp:$(BINDIR)/PowerBSTApp:$(BINDIR)/timeStamp:$(BINDIR)/TreePrinter:$(BINDIR)
+vpath %.java $(SRCDIR) /textWrite:$(SRCDIR)/opCount:$(SRCDIR)/timeStamp:$(SRCDIR)/CSVread:$(SRCDIR)/HashProbe:$(SRCDIR)/HashChain:$(SRCDIR)
+vpath %.class $(BINDIR) /textWrite:$(BINDIR)/opCount:$(BINDIR) /timeStamp:$(BINDIR)/CSVread:$(BINDIR)/HashProbe:$(BINDIR)/HashChain:$(BINDIR)
 
 default: classes
 
 classes: $(CLASSES:.java=.class)
 
 clean:
-	$(RM) -f  $(BINDIR)/*.class 
-	$(RM) -f  $(BINDIR)/*.test
-	$(RM) -f  $(BINDIR)/*.test?
+	$(RM) -f  $(BINDIR)/*.class
+
+cleanresults:
+	$(RM) -f  $(TEST)/*.txt 
