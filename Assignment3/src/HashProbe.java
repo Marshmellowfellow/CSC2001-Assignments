@@ -101,22 +101,24 @@ public class HashProbe {
     	for(int i = 0; i < (args.length) ; i++) {	
 	  		if("-test" .equals(args[i])) {
 	    		if(set == 1) {
-	    			String fileName = ("test/qudratic.txt");
+	    			String fileName = ("test/qudratic.csv");
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
-		  				String text = (setSize + "," + String.valueOf(insertQ.opCount) + "," + String.valueOf(searchQ.opCount));
+                        double loadFactor = 500/((double)setSize);
+		  				String text = (String.valueOf(insertQ.opCount) + "," + loadFactor+ "," + String.valueOf(searchQ.opCount));
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
 	    		}else {
-	  				String fileName = ("test/linear.txt");
+	  				String fileName = ("test/linear.csv");
 	  				FileWriter fileWriter;
 					try {
 						fileWriter = new FileWriter(fileName, true);
-		  				String text = (setSize + "," + String.valueOf(insertL.opCount) + "," + String.valueOf(searchL.opCount));
+                        double loadFactor = 500/((double)setSize);
+		  				String text = (String.valueOf(insertL.opCount) + "," +  loadFactor + "," + String.valueOf(searchL.opCount));
 		  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 		  				textWriter.write(fileWriter, fileName, text);
 					} catch (IOException e) {

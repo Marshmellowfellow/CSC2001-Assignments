@@ -70,11 +70,12 @@ class HashChain {
   					find(intKey, searchCount);
   				}
 	  			
-    			String fileName = ("test/chaining.txt");
+    			String fileName = ("test/chaining.csv");
   				FileWriter fileWriter;
 				try {
 					fileWriter = new FileWriter(fileName, true);
-	  				String text = (setSize + "," + String.valueOf(insertCount.opCount) + "," + String.valueOf(searchCount.opCount));
+                    double loadFactor = 500/((double)setSize);
+	  				String text = (String.valueOf(insertCount.opCount) + "," + loadFactor + "," + String.valueOf(searchCount.opCount));
 	  				textWrite textWriter = new textWrite(fileWriter, fileName,  text);
 	  				textWriter.write(fileWriter, fileName, text);
 				} catch (IOException e) {
@@ -140,7 +141,6 @@ class HashChain {
 		int hashKey = dataToFind % arraySize;
 
 		// NEW
-		searchCount.opCount = searchCount.opCount + 1;
 		timeData timeStampData = theArray[hashKey].find(dataToFind, arraySize, searchCount);
 
 		return timeStampData;
@@ -154,9 +154,9 @@ class HashChain {
 			// Create the timeData with the timeData name and
 			// intKey-
 
-			timeData newWord = new timeData(timestampData, arraySize);
+			timeData newdata = new timeData(timestampData, arraySize);
 			// Add the timeData to theArray
-			insert(newWord);
+			insert(newdata);
 		}
 
 	}
@@ -257,9 +257,8 @@ class dataList {
 		timeData current = firstData;
 
 		newWord.key = hashKey;
-		insertCount.opCount = insertCount.opCount + 1;
-		while (current != null && newWord.key > current.key) {
-			
+		while (current != null) {
+			insertCount.opCount = insertCount.opCount + 1;
 			previous = current; 
 			current = current.next;
 
@@ -297,7 +296,7 @@ class dataList {
 		// Because the list is sorted this allows
 		// us to avoid searching the whole list
 		int hashKey = dataToFind % arraySize;;
-		while (current != null && current.key <= hashKey) {
+		while (current != null) {
 			searchCount.opCount = searchCount.opCount + 1;
 			// NEW
 			if (Integer.parseInt((current.timeStampData).getTime().replaceAll("[/:.,]|12/2006/", "")) == dataToFind)
