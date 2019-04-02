@@ -12,7 +12,7 @@ public class HashProbe {
 	static timeStamp[] theArray;
 	static int arraySize;
 	int itemsInArray = 0;
-	
+	static int set = 0;
 
 	
 	public static void main(String[] args) {
@@ -21,10 +21,6 @@ public class HashProbe {
 		opCount searchQ = new opCount(0);
 		opCount searchL = new opCount(0);
 
-		
-		//insertQ.opCount = insertQ.opCount + 1;
-		//insertL.opCount = insertL.opCount + 1;
-		//searchL.opCount = searchL.opCount + 1;
 		
 		String CSVName = "cleaned_data.csv";
 		
@@ -46,7 +42,7 @@ public class HashProbe {
 		HashProbe hashImplementation = new HashProbe(setSize);
 		
 		//Input command determining type of probing to use to build the table.
-		int set = 0;
+		
     	if(args.length > 1) {
 	  		for(int i = 0; i < (args.length) -1 ; i++) {
 	  			if(("-p" .contains(args[i]))) {
@@ -79,7 +75,7 @@ public class HashProbe {
 		  				}
 	  				}else {
 		  				for(int j = 0; j<keys.size();j++) {
-		  					searchQuadratic(keys.get(j), setSize, searchL);
+		  					searchQuadratic(keys.get(j), setSize, searchQ);
 		  				}
 	  				}
 	  			}
@@ -97,6 +93,10 @@ public class HashProbe {
     			//System.out.println(dataSet.get(i));	
     		}
     	}
+    	System.out.println("insertQ : " + insertQ.opCount);
+    	System.out.println("searchQ : " + searchQ.opCount);
+    	System.out.println("insertL : " + insertL.opCount);
+    	System.out.println("searchL : " + searchL.opCount);
 	}
 	
 	
@@ -220,13 +220,8 @@ public class HashProbe {
 			theArray[arrayIndex] = newElementVal;
 		}
 	}
-//	public static timeStamp[] hashChaining(List<timeStamp> dataSet, timeStamp[] theArray, int setSize) {
-//		seperateChaining hashTable = new seperateChaining(dataSet, setSize);
-//		hashTable.displayTheArray();
-//		theArray = hashTable.getTheArray();
-//		return theArray;
-//	}
-	public static timeStamp searchQuadratic(String key, int setSize, opCount searchL) {
+
+	public static timeStamp searchLinear(String key, int setSize, opCount searchL) {
 		// Find the keys original HashProbe key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);
@@ -253,7 +248,7 @@ public class HashProbe {
 		return null;
 	}
 	// Returns the value stored in the HashProbe Table
-	public static timeStamp searchLinear(String key, int setSize, opCount searchL) {
+	public static timeStamp searchQuadratic(String key, int setSize, opCount searchQ) {
 		// Find the keys original HashProbe key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);
@@ -261,7 +256,7 @@ public class HashProbe {
 		int tempIndex = arrayIndexHash;
 		int factor =0;
 		while (theArray[arrayIndexHash].getTime() != "-1") {
-			searchL.opCount = searchL.opCount + 1;
+			searchQ.opCount = searchQ.opCount + 1;
 			
 			String hashElement = theArray[arrayIndexHash].getTime();
 			String stringhashKey = hashElement.replaceAll("[/:.,]|12/2006/", "");
