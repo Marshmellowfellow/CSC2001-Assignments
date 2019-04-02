@@ -13,7 +13,19 @@ public class HashProbe {
 	static int arraySize;
 	int itemsInArray = 0;
 	
+
+	
 	public static void main(String[] args) {
+		opCount insertQ = new opCount(0);
+		opCount insertL = new opCount(0);
+		opCount searchQ = new opCount(0);
+		opCount searchL = new opCount(0);
+
+		
+		//insertQ.opCount = insertQ.opCount + 1;
+		//insertL.opCount = insertL.opCount + 1;
+		//searchL.opCount = searchL.opCount + 1;
+		
 		String CSVName = "cleaned_data.csv";
 		
 		//Setting the size of the table based on closest prime number
@@ -39,10 +51,9 @@ public class HashProbe {
 	  		for(int i = 0; i < (args.length) -1 ; i++) {
 	  			if(("-p" .contains(args[i]))) {
 	  				if(i < args.length){
-	  					System.out.println("checking " + args[i+1]);
 		  				if (args[i+1].contains("Q")) {
 		  					set = 1;
-		  					hashImplementation.quadraticProbe(dataSet, HashProbe.theArray, setSize);
+		  					hashImplementation.quadraticProbe(dataSet, HashProbe.theArray, setSize, insertQ);
 		  					//hashImplementation.displayTheStack(setSize);
 		  					System.out.println("Quadratic Probe");
 		  				}
@@ -52,7 +63,7 @@ public class HashProbe {
 	  		
     	}
     	if(set ==0) {
-			hashImplementation.linearProbe(dataSet, HashProbe.theArray, setSize);
+			hashImplementation.linearProbe(dataSet, HashProbe.theArray, setSize, insertL);
 			//hashImplementation.displayTheStack(setSize);
 			System.out.println("Linear Probe");
     	}
@@ -61,10 +72,15 @@ public class HashProbe {
     	if(args.length > 0) {
 	  		for(int i = 0; i < (args.length) ; i++) {
 	  			if(("-s" .contains(args[i]))) {
-	  				System.out.println("Boooom");
 	  				List<String> keys = KEYread("keys.txt");
-	  				for(int j = 0; j<keys.size();j++) {
-	  					search(keys.get(j), setSize);
+	  				if(set == 0) {
+		  				for(int j = 0; j<keys.size();j++) {
+		  					searchLinear(keys.get(j), setSize, searchL);
+		  				}
+	  				}else {
+		  				for(int j = 0; j<keys.size();j++) {
+		  					searchQuadratic(keys.get(j), setSize, searchL);
+		  				}
 	  				}
 	  			}
 //				}else if(("-c" .contains(args[i])) && (args[i+1]) != null ) {
@@ -161,8 +177,9 @@ public class HashProbe {
 
 	// The goal is to make the array big enough to avoid
 	// collisions, but not so big that we waste memory
-	public void linearProbe(List<timeStamp> dataSet, timeStamp[] theArray, int setSize) {
+	public void linearProbe(List<timeStamp> dataSet, timeStamp[] theArray, int setSize, opCount insertL) {
 		for (int n = 1; n < dataSet.size(); n++) {
+			insertL.opCount = insertL.opCount + 1;
 			timeStamp newElementVal = ((dataSet.get(n)));
 			
 			// Create an index to store the value in by taking the modulus
@@ -171,6 +188,7 @@ public class HashProbe {
 			// This is where linear/quadratic and chaining  probing makes a difference
 			// Cycle through the array until we find an empty space
 			while (theArray[arrayIndex].getTime() != "-1") {
+				insertL.opCount = insertL.opCount + 1;
 				++arrayIndex;
 				//System.out.println("Collision Try " + arrayIndex + " Instead");
 				// If we get to the end of the array go back to index 0
@@ -180,18 +198,20 @@ public class HashProbe {
 		}
 	}
 	
-	public void quadraticProbe(List<timeStamp> dataSet, timeStamp[] theArray, int setSize) {
+	public void quadraticProbe(List<timeStamp> dataSet, timeStamp[] theArray, int setSize, opCount insertQ) {
 		for (int n = 1; n < dataSet.size(); n++) {
 			timeStamp newElementVal = ((dataSet.get(n)));
-			
+			insertQ.opCount = insertQ.opCount + 1;
 			// Create an index to store the value in by taking the modulus
 			int arrayIndex = Integer.parseInt((newElementVal.getTime()).replaceAll("[/:.,]|12/2006/", "")) % setSize;
 
 			// This is where linear/quadratic and chaining  probing makes a difference
 			// Cycle through the array until we find an empty space
 			int factor = 0;
+			int tempIndex =arrayIndex;
 			while (theArray[arrayIndex].getTime() != "-1") {
-				arrayIndex = arrayIndex + factor^2;
+				insertQ.opCount = insertQ.opCount + 1;
+				arrayIndex = tempIndex + factor^2;
 				factor++;
 				//System.out.println("Collision Try " + arrayIndex + " Instead");
 				// If we get to the end of the array go back to index 0
@@ -206,27 +226,55 @@ public class HashProbe {
 //		theArray = hashTable.getTheArray();
 //		return theArray;
 //	}
-
-	
-	// Returns the value stored in the HashProbe Table
-	public static timeStamp search(String key, int setSize) {
+	public static timeStamp searchQuadratic(String key, int setSize, opCount searchL) {
 		// Find the keys original HashProbe key
 		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
 		int intKey = Integer.parseInt(stringKey);
 		int arrayIndexHash = intKey % setSize;
 		while (theArray[arrayIndexHash].getTime() != "-1") {
+			searchL.opCount = searchL.opCount + 1;
 			
 			String hashElement = theArray[arrayIndexHash].getTime();
 			String stringhashKey = hashElement.replaceAll("[/:.,]|12/2006/", "");
 			int inthashKey = Integer.parseInt(stringhashKey); 
 			if (inthashKey == intKey) {
 				// Found the key so return it
-				System.out.println(key + " was found in index "+ arrayIndexHash);
+				System.out.print("Found at index : "+ arrayIndexHash + " ");
 				System.out.println(theArray[arrayIndexHash]);
 				return theArray[arrayIndexHash];
 			}
 			// Look in the next index
 			++arrayIndexHash;
+			// If we get to the end of the array go back to index 0
+			arrayIndexHash %= arraySize;
+		}
+		// Couldn't locate the key
+		System.out.println(key + " was not found");
+		return null;
+	}
+	// Returns the value stored in the HashProbe Table
+	public static timeStamp searchLinear(String key, int setSize, opCount searchL) {
+		// Find the keys original HashProbe key
+		String stringKey = key.replaceAll("[/:.,]|12/2006/", "");
+		int intKey = Integer.parseInt(stringKey);
+		int arrayIndexHash = intKey % setSize;
+		int tempIndex = arrayIndexHash;
+		int factor =0;
+		while (theArray[arrayIndexHash].getTime() != "-1") {
+			searchL.opCount = searchL.opCount + 1;
+			
+			String hashElement = theArray[arrayIndexHash].getTime();
+			String stringhashKey = hashElement.replaceAll("[/:.,]|12/2006/", "");
+			int inthashKey = Integer.parseInt(stringhashKey); 
+			if (inthashKey == intKey) {
+				// Found the key so return it
+				System.out.print("Found at index : "+ arrayIndexHash + " ");
+				System.out.println(theArray[arrayIndexHash]);
+				return theArray[arrayIndexHash];
+			}
+			// Look in the next index
+			arrayIndexHash = tempIndex + factor^2;
+			factor++;
 			// If we get to the end of the array go back to index 0
 			arrayIndexHash %= arraySize;
 		}

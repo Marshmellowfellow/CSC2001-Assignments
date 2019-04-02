@@ -12,6 +12,9 @@ class HashChain {
 	int itemsInArray = 0;
 	public List<timeStamp> elementsToAdd;
 
+	opCount insertCount = new opCount(0);
+	opCount searchCount = new opCount(0);
+	
 	public static void main(String[] args) {
 		String CSVName = "cleaned_data.csv";
 		
