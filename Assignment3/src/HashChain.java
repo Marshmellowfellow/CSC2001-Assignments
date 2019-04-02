@@ -40,7 +40,9 @@ class HashChain {
 	  		}
     	}
 		setSize = isPrime(setSize);
-        
+        System.out.println("Set size = " + setSize);
+		System.out.println("Seperate Chaining");
+        System.out.println("");
         //Reading the CSV
 		CSVread dataArray = new CSVread(CSVName, setSize);
 		List<timeStamp> dataSet = dataArray.read();
@@ -56,7 +58,6 @@ class HashChain {
 			for(int i = 0; i < (args.length) ; i++) {
 				if(("-s" .contains(args[i]))) {
 					System.out.println("------Search Start------");
-					System.out.println("Seperate Chaining");
 					System.out.println("");
 					if((args[i+1]).replaceAll("[/:.,]|12/2006/", "") != null) {
 	  					String stringKey = (args[i+1]).replaceAll("[/:.,]|12/2006/", "");
@@ -102,7 +103,7 @@ class HashChain {
 	  			
 	  		}
     	}
-		
+    	System.out.println("-----Probe counts-----");
     	System.out.println("insertCount : " + insertCount.opCount);
     	System.out.println("searchCount : " + searchCount.opCount);
     	
