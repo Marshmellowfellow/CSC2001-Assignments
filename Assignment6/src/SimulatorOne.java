@@ -284,15 +284,23 @@ public class SimulatorOne
                    			int element2 = 0;
                    			int location = 0;
                 			System.out.println("Driver locations");
-    	                	while(count1 < length1) {
+    	                	while(count1 < NumDrivers) {
     	                		location = Integer.parseInt( st.nextToken( ) ); 
-    	                		System.out.println(location);
-    	                		count1 = count1 + 1;
-    	                		driverLocation[element] = location;
+    	                		driverLocation[count1] = location;
+    	                		System.out.println(driverLocation[count1]);
     	                		element2++;
+    	                		count1++;
+    	                		
     	                	}
     	                	System.out.println("");
+    	                	
+    	                	int j = 0;
+                    		while(j<NumDrivers) {
+                    			System.out.println(driverLocation[j]);
+                    			j++;
+                    		}
                 		}
+                		
                 		
                 		//Number of requests 
                 		if(lineNo == NumNodes + 3) {
@@ -332,34 +340,39 @@ public class SimulatorOne
             
         	System.out.println("Running requests...");
         	int count2 = 0;
-        	int[][] closestDriver = new int[element][2];
-        	while(count2 < element) {
+        	
+        	while(count2 < NumRequests) {
         		
-        		System.out.print(requests[count2][0] + " ");
-        		System.out.println(requests[count2][1]);
+        		int[][] closestDriver = new int[element][2];
+        		int count3 = 0;
+        		while(count3<NumDrivers) {
+            		
+            		g.dijkstra(Integer.toString(driverLocation[count3]));
+            		closestDriver[count3][0] = driverLocation[count3];
+            		closestDriver[count3][1] = g.printPath(Integer.toString(requests[count2][0]));
+            		System.out.println("Count = " + count3 + " Driver Node = " + closestDriver[count3][0] + " what " +  driverLocation[count3] + ", Cost = " + closestDriver[count3][1] );
+            		count3++;
+        		}
         		
-        		g.dijkstra(Integer.toString(requests[count2][0]));
-        		closestDriver[count2][0] = requests[count2][0];
-        		closestDriver[count2][1] = g.printPath(Integer.toString(requests[count2][1]));
-        		
-        		//System.out.println("Driver Node = " + closestDriver[count2][0] + ", Cost = " + closestDriver[count2][1] );
-        		
-        		
-        		
-                count2 ++ ;
+  	          //Calculating the closest driver.
+  	  		  int minValue = 100;
+  	  		  int minDriver = 100;
+  	  		  for(int i=0;i < element;i++){
+  	  		    if(closestDriver[i][1] < minValue){
+  	  			  minValue = closestDriver[i][1];
+  	  			  minDriver = closestDriver[i][0];
+  	  			}
+  	  		  }
+  	  		  
+  	  		  System.out.println("MinDriver = " + minDriver + " MinValue = " +minValue);
+  	  		  System.out.println( "");
+    	  	  System.out.println( "");
+  	  		  count2 ++ ;
         	}
         	
-          //Calculating the closest driver.
-  		  int minValue = closestDriver[0][1];
-  		  int minDriver = closestDriver[0][0];
-  		  for(int i=1;i < closestDriver.length;i++){
-  		    if(closestDriver[i][1] < minValue){
-  			  minValue = closestDriver[i][1];
-  			  minDriver = closestDriver[i][0];
-  			}
-  		  }
+
   		  
-  		  System.out.println("MinDriver = " + minDriver + " MinValue = " +minValue);
+  		
         	/*
         	 *             //Running the reuests
         	System.out.println("Running requests...");
