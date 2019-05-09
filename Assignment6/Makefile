@@ -9,10 +9,11 @@ JC = javac
 	$(JC) $(JFLAGS) $<
 
 CLASSES = Graph.java\
+          SimulatorOne.java\
 
 
-vpath %.java $(SRCDIR) /textWrite:$(SRCDIR)/opCount:$(SRCDIR)/timeStamp:$(SRCDIR)/CSVread:$(SRCDIR)/HashProbe:$(SRCDIR)/HashChain:$(SRCDIR)
-vpath %.class $(BINDIR) /textWrite:$(BINDIR)/opCount:$(BINDIR) /timeStamp:$(BINDIR)/CSVread:$(BINDIR)/HashProbe:$(BINDIR)/HashChain:$(BINDIR)
+vpath %.java $(SRCDIR) /Graph:$(SRCDIR)/SimulatorOne:$(SRCDIR)
+vpath %.class $(BINDIR) /Graph:$(BINDIR)/SimulatorOne:$(BINDIR)
 
 default: classes
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 
 import java.io.FileReader;
@@ -20,8 +15,70 @@ import java.util.StringTokenizer;
 
 // Used to signal violations of preconditions for
 // various shortest path algorithms.
+class GraphException extends RuntimeException
+{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-// Graph class: evaluate shortest paths.
+	public GraphException( String name )
+    {
+        super( name );
+    }
+}
+
+// Represents an edge in the graph.
+class Edge
+{
+    public Vertex     dest;   // Second vertex in Edge
+    public double     cost;   // Edge cost
+    
+    public Edge( Vertex d, double c )
+    {
+        dest = d;
+        cost = c;
+    }
+}
+
+// Represents an entry in the priority queue for Dijkstra's algorithm.
+class Path implements Comparable<Path>
+{
+    public Vertex     dest;   // w
+    public double     cost;   // d(w)
+    
+    public Path( Vertex d, double c )
+    {
+        dest = d;
+        cost = c;
+    }
+    
+    public int compareTo( Path rhs )
+    {
+        double otherCost = rhs.cost;
+        
+        return cost < otherCost ? -1 : cost > otherCost ? 1 : 0;
+    }
+}
+
+// Represents a vertex in the graph.
+class Vertex
+{
+    public String     name;   // Vertex name
+    public List<Edge> adj;    // Adjacent vertices
+    public double     dist;   // Cost
+    public Vertex     prev;   // Previous vertex on shortest path
+    public int        scratch;// Extra variable used in algorithm
+
+    public Vertex( String nm )
+      { name = nm; adj = new LinkedList<Edge>( ); reset( ); }
+
+    public void reset( )
+    //  { dist = Graph.INFINITY; prev = null; pos = null; scratch = 0; }    
+    { dist = Graph.INFINITY; prev = null; scratch = 0; }
+      
+   // public PairingHeap.Position<Path> pos;  // Used for dijkstra2 (Chapter 23)
+}
 //
 // CONSTRUCTION: with no parameters.
 //
@@ -58,7 +115,7 @@ public class SimulatorOne
      * It calls recursive routine to print shortest path to
      * destNode after a shortest path algorithm has run.
      */
-    public void printPath( String destName )
+    public int printPath( String destName )
     {
         Vertex w = vertexMap.get( destName );
         if( w == null )
@@ -67,10 +124,10 @@ public class SimulatorOne
             System.out.println( destName + " is unreachable" );
         else
         {
-            System.out.print( "(Cost is: " + w.dist + ") " );
-            printPath( w );
-            System.out.println( );
+            //System.out.print( "(Cost is: " + w.dist + ") " );
+            //printPath( w );
         }
+        return (int) w.dist;
     }
 
     /**
@@ -112,38 +169,6 @@ public class SimulatorOne
         for( Vertex v : vertexMap.values( ) )
             v.reset( );
     }
-
-    /**
-     * Single-source unweighted shortest-path algorithm.
-     */
-    public void unweighted( String startName )
-    {
-        clearAll( ); 
-
-        Vertex start = vertexMap.get( startName );
-        if( start == null )
-            throw new NoSuchElementException( "Start vertex not found" );
-
-        Queue<Vertex> q = new LinkedList<Vertex>( );
-        q.add( start ); start.dist = 0;
-
-        while( !q.isEmpty( ) )
-        {
-            Vertex v = q.remove( );
-
-            for( Edge e : v.adj )
-            {
-                Vertex w = e.dest;
-                if( w.dist == INFINITY )
-                {
-                    w.dist = v.dist + 1;
-                    w.prev = v;
-                    q.add( w );
-                }
-            }
-        }
-    }
-
     /**
      * Single-source weighted shortest-path algorithm. (Dijkstra) 
      * using priority queues based on the binary heap
@@ -188,98 +213,6 @@ public class SimulatorOne
         }
     }
 
-    /**
-     * Single-source negative-weighted shortest-path algorithm.
-     * Bellman-Ford Algorithm
-     */
-    public void negative( String startName )
-    {
-        clearAll( ); 
-
-        Vertex start = vertexMap.get( startName );
-        if( start == null )
-            throw new NoSuchElementException( "Start vertex not found" );
-
-        Queue<Vertex> q = new LinkedList<Vertex>( );
-        q.add( start ); start.dist = 0; start.scratch++;
-
-        while( !q.isEmpty( ) )
-        {
-            Vertex v = q.remove( );
-            if( v.scratch++ > 2 * vertexMap.size( ) )
-                throw new GraphException( "Negative cycle detected" );
-
-            for( Edge e : v.adj )
-            {
-                Vertex w = e.dest;
-                double cvw = e.cost;
-                
-                if( w.dist > v.dist + cvw )
-                {
-                    w.dist = v.dist + cvw;
-                    w.prev = v;
-                      // Enqueue only if not already on the queue
-                    if( w.scratch++ % 2 == 0 )
-                        q.add( w );
-                    else
-                        w.scratch--;  // undo the enqueue increment    
-                }
-            }
-        }
-    }
-
-    /**
-     * Single-source negative-weighted acyclic-graph shortest-path algorithm.
-     */
-    public void acyclic( String startName )
-    {
-        Vertex start = vertexMap.get( startName );
-        if( start == null )
-            throw new NoSuchElementException( "Start vertex not found" );
-
-        clearAll( ); 
-        Queue<Vertex> q = new LinkedList<Vertex>( );
-        start.dist = 0;
-        
-          // Compute the indegrees
-		Collection<Vertex> vertexSet = vertexMap.values( );
-        for( Vertex v : vertexSet )
-            for( Edge e : v.adj )
-                e.dest.scratch++;
-            
-          // Enqueue vertices of indegree zero
-        for( Vertex v : vertexSet )
-            if( v.scratch == 0 )
-                q.add( v );
-       
-        int iterations;
-        for( iterations = 0; !q.isEmpty( ); iterations++ )
-        {
-            Vertex v = q.remove( );
-
-            for( Edge e : v.adj )
-            {
-                Vertex w = e.dest;
-                double cvw = e.cost;
-                
-                if( --w.scratch == 0 )
-                    q.add( w );
-                
-                if( v.dist == INFINITY )
-                    continue;    
-                
-                if( w.dist > v.dist + cvw )
-                {
-                    w.dist = v.dist + cvw;
-                    w.prev = v;
-                }
-            }
-        }
-        
-        if( iterations != vertexMap.size( ) )
-            throw new GraphException( "Graph has a cycle!" );
-    }
-
     public static void main( String [ ] args )
     {
         SimulatorOne g = new SimulatorOne( );
@@ -302,7 +235,9 @@ public class SimulatorOne
             int NumDrivers = 0;
             int[] driverLocation = new int[100]; 
             int NumRequests = 0;
+            int element = 0;
             
+                        
             while( graphFile.hasNextLine( ) )
             {
                 line = graphFile.nextLine( );
@@ -314,20 +249,24 @@ public class SimulatorOne
                 	//Number of nodes in graph
                 	if(lineNo == 0) {
                 		NumNodes = Integer.parseInt(st.nextToken()); 
+                		System.out.println("");
+                		System.out.println("Number of nodes");	
+                		System.out.println(NumNodes);
+                		System.out.println("");
                 	}
                 	
                 	//Adding all the vertices for each node
                 	if(lineNo>0 && lineNo<NumNodes) {
-                		System.out.println("Vertices");
+                		//System.out.println("Vertices");
                 		source  = st.nextToken( );
 	                	while(count1 < length1) {
 	                		dest = st.nextToken( );
 	                		cost  = Integer.parseInt( st.nextToken( ) ); 
-	                		System.out.println(source + " " + dest + "  " + cost);
+	                		//System.out.println(source + " " + dest + "  " + cost);
 	                		count1 = count1 + 3;
 	                		g.addEdge( source, dest, cost );
 	                	}
-	                	System.out.println("");
+	                	//System.out.println("");
                 	}
                 	
                 	if(lineNo > NumNodes) {
@@ -342,7 +281,7 @@ public class SimulatorOne
                 		
                 		//Driver address nodes
                 		if(lineNo == NumNodes + 2) {
-                   			int element = 0;
+                   			int element2 = 0;
                    			int location = 0;
                 			System.out.println("Driver locations");
     	                	while(count1 < length1) {
@@ -350,7 +289,7 @@ public class SimulatorOne
     	                		System.out.println(location);
     	                		count1 = count1 + 1;
     	                		driverLocation[element] = location;
-    	                		element++;
+    	                		element2++;
     	                	}
     	                	System.out.println("");
                 		}
@@ -367,8 +306,7 @@ public class SimulatorOne
                 		if(lineNo == NumNodes + 4) {
                 			int pickUp;
                 			int dropOff;
-                			int element = 0;
-                			System.out.println("pickUp " + " dropOff");
+                			System.out.println("Requests");
     	                	while(count1 < length1) {
     	                		pickUp = Integer.parseInt( st.nextToken( ) ); 
     	                		dropOff  = Integer.parseInt( st.nextToken( ) ); 
@@ -380,31 +318,89 @@ public class SimulatorOne
     	                	}
     	                	System.out.println("");
     	                	
-    	                	System.out.println("Requests");
-    	                	int count2 = 0;
-    	                	while(count2 < element) {
-    	                		System.out.print(requests[count2][0]);
-    	                		System.out.println(requests[count2][1]);
-    	                		count2++;
-    	                	}
-    	                	
     	                	
                 		}
                 		
                 	}
-                	
-                    //Sets the variables based on the line and calls method to add edge.
-//                    String source  = st.nextToken( );
-//                    String dest    = st.nextToken( );
-//                    int    cost    = Integer.parseInt( st.nextToken( ) );                 
-//                    g.addEdge( source, dest, cost );
-                	
                 	lineNo ++;
 
                 }
                 catch( NumberFormatException e )
                   { System.err.println( "Skipping ill-formatted line " + line ); }
              }
+            
+            
+        	System.out.println("Running requests...");
+        	int count2 = 0;
+        	int[][] closestDriver = new int[element][2];
+        	while(count2 < element) {
+        		
+        		System.out.print(requests[count2][0] + " ");
+        		System.out.println(requests[count2][1]);
+        		
+        		g.dijkstra(Integer.toString(requests[count2][0]));
+        		closestDriver[count2][0] = requests[count2][0];
+        		closestDriver[count2][1] = g.printPath(Integer.toString(requests[count2][1]));
+        		
+        		//System.out.println("Driver Node = " + closestDriver[count2][0] + ", Cost = " + closestDriver[count2][1] );
+        		
+        		
+        		
+                count2 ++ ;
+        	}
+        	
+          //Calculating the closest driver.
+  		  int minValue = closestDriver[0][1];
+  		  int minDriver = closestDriver[0][0];
+  		  for(int i=1;i < closestDriver.length;i++){
+  		    if(closestDriver[i][1] < minValue){
+  			  minValue = closestDriver[i][1];
+  			  minDriver = closestDriver[i][0];
+  			}
+  		  }
+  		  
+  		  System.out.println("MinDriver = " + minDriver + " MinValue = " +minValue);
+        	/*
+        	 *             //Running the reuests
+        	System.out.println("Running requests...");
+        	int[][] closestDriver = new int[element][2];
+        	int count3 = 0;
+        	
+        	
+        	//Finding closest driver to first node
+        	int count2 = 0;
+        	while(count2 < element) {
+        		g.dijkstra(Integer.toString(requests[count2][0]));
+        		closestDriver[count2][0] = driverLocation[count2][0];
+        		closestDriver[count2][1] = g.printPath(Integer.toString(requests[count2][0]));	
+                count2 ++ ;
+        	}
+        	
+            //Calculating the closest driver.
+    		  int minValue = closestDriver[0][1];
+    		  int minDriver = closestDriver[0][0];
+    		  for(int i=1;i < closestDriver.length;i++){
+    		    if(closestDriver[i][1] < minValue){
+    			  minValue = closestDriver[i][1];
+    			  minDriver = closestDriver[i][0];
+    			}
+    		  }
+        	
+        	//Finding shortest delivery path
+        	
+        	
+        	//Find shortest path home
+        	
+        	
+        	//Total path route
+        	
+        	//
+
+        	 */
+        	
+  		  
+  		  
+  		  
          }
         catch( IOException e )
         { System.err.println( e ); }

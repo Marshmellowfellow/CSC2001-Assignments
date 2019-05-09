@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Graphs;
+
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -396,7 +396,7 @@ public class Graph
         try
         {   	
             //FileReader fin = new FileReader(args[0]);
-        	FileReader fin = new FileReader("Graph1.txt");
+        	FileReader fin = new FileReader("Graph2.txt");
             Scanner graphFile = new Scanner( fin );
 
             // Read the edges and insert
