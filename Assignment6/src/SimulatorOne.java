@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.PriorityQueue;
 import java.util.Scanner;
+import java.io.*; 
+import java.util.*; 	
 import java.util.StringTokenizer;
 
 // Used to signal violations of preconditions for
@@ -61,6 +63,15 @@ class Path implements Comparable<Path>
     }
 }
 
+//Class representing path 
+class totalPath
+{
+	public ArrayList<String> driverPath;
+	public totalPath() {
+		driverPath = new ArrayList<String>(); 
+	}
+}
+
 // Represents a vertex in the graph.
 class Vertex
 {
@@ -68,7 +79,7 @@ class Vertex
     public List<Edge> adj;    // Adjacent vertices
     public double     dist;   // Cost
     public Vertex     prev;   // Previous vertex on shortest path
-    public int        scratch;// Extra variable used in algorithm
+    public int        scratch;// Extra variable used	 in algorithm
 
     public Vertex( String nm )
       { name = nm; adj = new LinkedList<Edge>( ); reset( ); }
@@ -82,7 +93,7 @@ class Vertex
 //
 // CONSTRUCTION: with no parameters.
 //
-// ******************PUBLIC OPERATIONS**********************
+// ******************PUBLIC OPERATIONS*****	*****************
 // void addEdge( String v, String w, double cvw )
 //                              --> Add additional edge
 // void printPath( String w )   --> Print path after alg is run
@@ -115,7 +126,7 @@ public class SimulatorOne
      * It calls recursive routine to print shortest path to
      * destNode after a shortest path algorithm has run.
      */
-    public int printPath( String destName )
+    public int printPath(totalPath path, String destName)
     {
         Vertex w = vertexMap.get( destName );
         if( w == null )
@@ -126,7 +137,8 @@ public class SimulatorOne
         else
         {
             //System.out.print( "(Cost is: " + w.dist + ") " );
-            //printPath( w );
+        	//System.out.println((printPath( path, w )).driverPath);
+        	printPath( path, w );
         }
         return (int) w.dist;
     }
@@ -151,14 +163,16 @@ public class SimulatorOne
      * after running shortest path algorithm. The path
      * is known to exist.
      */
-    private void printPath( Vertex dest )
+    private totalPath printPath(totalPath path, Vertex dest )
     {
+    	String string ="";
         if( dest.prev != null )
         {
-            printPath( dest.prev );
-            System.out.print( " to " );
+            printPath(path,  dest.prev );
+         //System.out.print( path.driverPath);
         }
-        System.out.print( dest.name );
+        (path.driverPath).add(dest.name);	
+        return path;
     }
     
     /**
@@ -338,70 +352,91 @@ public class SimulatorOne
             
             
         	System.out.println("Running requests...");
+        	System.out.println(" ");
         	int count2 = 0;
         	
 			while(count2 < NumRequests) {
+				System.out.println("client " +  requests[count2][0] + " " + requests[count2][1]);
+				
+				totalPath path = new totalPath();
+	        	totalPath pickPath = new totalPath();
+	        	totalPath dropPath = new totalPath();
+	        	totalPath returnPath = new totalPath();
 				int[][] closestDriver = new int[element][2];
 				int count3 = 0;
 				while(count3<NumDrivers) {
-		    		
-		    		g.dijkstra(Integer.toString(driverLocation[count3]));
-		    		closestDriver[count3][0] = driverLocation[count3];
-		    		closestDriver[count3][1] = g.printPath(Integer.toString(requests[count2][0]));
-		    		//System.out.println("Driver Node = " + closestDriver[count3][0] + " Pickup Node " + requests[count2][0] + ", Cost = " + closestDriver[count3][1] );
-		    		count3++;
-				} 	
-				
-				
-  	          //Calculating the driver closest to the pick up point.
-  	  		  int minValue = 999;
-  	  		  int minDriver = 999;
-  	  		  int length2;
-  	  		  for(int i=0;i < element;i++){
-  		    	 g.dijkstra(Integer.toString(requests[count2][1]));
-  		    	 length2 = g.printPath(Integer.toString(closestDriver[i][0]));
-	  	  		    if(closestDriver[i][1] < minValue){
-	  	  		    	if(length2 != -1) {
-	  	  	  			  minValue = closestDriver[i][1];
-	  	  	  			  minDriver = closestDriver[i][0];
-	  	  		    	}
-	  	  			}
-  	  		  }
-  	  		  costPickup = minValue;
-  	  		  System.out.println("");
-  	  		  if((minValue != 999) && (minDriver != 999)) {  	  
-  	    	  	  
-  	    	  	  //Calculate the shortest route from pick up to the drop off
-  		    	  	int length =0;
-  		    	    g.dijkstra(Integer.toString(requests[count2][0]));
-  		    	    length = g.printPath(Integer.toString(requests[count2][1])); 
-  		    	    if(length != -1) {
-						System.out.println("Optimal driver at " + minDriver + ", Cost = " +minValue); 
-						System.out.println("Pick up at " + requests[count2][0] + ", Dropp off at " + requests[count2][1] + ", Cost = " + length );
-						costDropoff = length;
-						//Calculate shortest route from the drop off back to the drivers home
-						g.dijkstra(Integer.toString(requests[count2][1]));
-						length = g.printPath(Integer.toString(minDriver));
-						costReturn = length;
-						System.out.println("Drop off " + requests[count2][1] + ", Drivers home " + minDriver + ", Cost = " + length );
-						totalCost = costPickup + costDropoff + costReturn;
-						System.out.println("Total Trip Cost " + totalCost);
-						System.out.println("");  
-	  		    		
-	  		    		
-	  		    	}else {
-	  	  	  			System.out.println("Unable to deliver, no available return route");  
-	  	  	  		}
-  	  		  }else {
-  	  			System.out.println("Unable to deliver, no available return route");  
-  	  		  }
-  	  		  
-
-	    		
-  	  		  count2 ++ ;
-  	  		  
-  	  		  
-  	  		  
+					
+					g.dijkstra(Integer.toString(driverLocation[count3]));
+					closestDriver[count3][0] = driverLocation[count3];
+					closestDriver[count3][1] = g.printPath(path, Integer.toString(requests[count2][0]));
+					//System.out.println("Driver Node = " + closestDriver[count3][0] + " Pickup Node " + requests[count2][0] + ", Cost = " + closestDriver[count3][1] );
+						count3++;
+					} 	 	
+					
+					
+				  //Calculating the driver closest to the pick up point.
+				  int minValue = 999;
+				  int minDriver = 999;
+				  int length2;
+				  for(int i=0;i < element;i++){
+					 g.dijkstra(Integer.toString(requests[count2][1]));
+					 length2 = g.printPath(path, Integer.toString(closestDriver[i][0]));
+					    if(closestDriver[i][1] < minValue){
+					    	if(length2 != -1) {
+				  			  minValue = closestDriver[i][1];
+				  			  minDriver = closestDriver[i][0];
+					    	}
+						}
+				  }
+				  
+				  if(minDriver != 999) {
+					  g.dijkstra(Integer.toString(minDriver));
+					  length2 = g.printPath(pickPath, Integer.toString(requests[count2][0])); 
+				  }
+				  
+				  
+				  costPickup = minValue;
+				  if((minValue != 999) && (minDriver != 999)) {  	  
+				  	  
+				  	  //Calculate the shortest route from pick up to the drop off
+				int length =0;
+				g.dijkstra(Integer.toString(requests[count2][0]));
+				length = g.printPath(dropPath, Integer.toString(requests[count2][1])); 
+				if(length != -1) {
+					System.out.println("");
+					System.out.println("truck " + minDriver); 
+					System.out.println("pickup " + requests[count2][0]);
+					costDropoff = length;
+					//Calculate shortest route from the drop off back to the drivers home
+					g.dijkstra(Integer.toString(requests[count2][1]));
+					length = g.printPath(returnPath, Integer.toString(minDriver));
+					costReturn = length;
+					//System.out.println("Drop off " + requests[count2][1] + ", Drivers home " + minDriver + ", Cost = " + length );
+					totalCost = costPickup + costDropoff + costReturn;
+					System.out.println("solotion cost " + totalCost);
+					System.out.println("dropoff " + requests[count2][1]);
+					System.out.println("");  
+					
+					
+					System.out.println("Pick path = " + pickPath.driverPath);
+					System.out.println("Drop path = " + dropPath.driverPath);
+					System.out.println("Return path = " + returnPath.driverPath);
+					System.out.println("");
+				}else {
+					System.out.println("Unable to deliver, no available return route");
+					System.out.println("");
+				  	}
+				  }else {
+					System.out.println("Unable to deliver, no available return route"); 
+					System.out.println("");
+				  }
+				  
+					
+				  
+				  count2 ++ ;
+				  
+				  
+				  
         	}
         	
 
@@ -452,9 +487,9 @@ public class SimulatorOne
         catch( IOException e )
         { System.err.println( e ); }
 
-	  System.out.println("");
-      System.out.println( "File read..." );
-      System.out.println( g.vertexMap.size( ) + " vertices" );
+//	  System.out.println("");
+//      System.out.println( "File read..." );
+//      System.out.println( g.vertexMap.size( ) + " vertices" );
 
       Scanner in = new Scanner( System.in );
  }
