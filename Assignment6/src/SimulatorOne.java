@@ -66,8 +66,12 @@ class Path implements Comparable<Path>
 class totalPath
 {
 	public ArrayList<String> driverPath;
+	public ArrayList<String> nodeNum;
+	public ArrayList<String> nodeVal;
 	public int thisCost; 
 	public totalPath() {
+        nodeNum = new ArrayList<String>();
+        nodeVal = new ArrayList<String>();
 		driverPath = new ArrayList<String>(); 
 		thisCost = 0;
 	}
@@ -191,10 +195,11 @@ public class SimulatorOne
      * Single-source weighted shortest-path algorithm. (Dijkstra) 
      * using priority queues based on the binary heap
      */
-    public void dijkstra( String startName , String end)
+    public totalPath dijkstra( String startName, totalPath thePath)
     {
         PriorityQueue<Path> pq = new PriorityQueue<Path>( );
-        int[][] requests = new int[100][2];
+        ArrayList<String> nodeNum = thePath.nodeNum;
+        ArrayList<String> nodeVal = thePath.nodeVal;
         Vertex start = vertexMap.get( startName );
         if( start == null )
             throw new NoSuchElementException( "Start vertex not found" );
@@ -228,7 +233,10 @@ public class SimulatorOne
                 if( w.dist >= v.dist + cvw )
                 {
                 	
-                	System.out.println(v.name + "    " + w.name  + "    " +  total  + "   " + w.dist );
+                	//System.out.println(v.name + "    " + w.name  + "    " +  total  + "   " + w.dist );
+                	nodeNum.add(w.name);
+                	nodeVal.add(Integer.toString(total));
+               
                     w.dist = v.dist +cvw;
                     w.prev = v;
                     if( w.dist == v.dist + cvw ) {
@@ -245,6 +253,7 @@ public class SimulatorOne
                 
             }
         }
+        return thePath;
     }
 
     public static void main( String [ ] args )
@@ -386,7 +395,7 @@ public class SimulatorOne
 				int count3 = 0;
 				while(count3<NumDrivers) {
 				 System.out.println("Driver Number" + count3);
-			  	 g.dijkstra(Integer.toString(driverLocation[count3]),Integer.toString(requests[count2][0]));
+			  	 g.dijkstra(Integer.toString(driverLocation[count3]),path);
 				 closestDriver[count3][0] = driverLocation[count3];
 				 closestDriver[count3][1] = g.printPath(path, Integer.toString(requests[count2][0]));
 				 //System.out.println("Driver Node = " + closestDriver[count3][0] + " Pickup Node " + requests[count2][0] + ", Cost = " + closestDriver[count3][1] );
@@ -401,7 +410,7 @@ public class SimulatorOne
 				 
 				
 				 for(int i=0;i < element;i++){
-					 g.dijkstra(Integer.toString(requests[count2][1]), Integer.toString(closestDriver[i][0]));
+					 path = g.dijkstra(Integer.toString(requests[count2][1]), path);
 					 length2 = g.printPath(path, Integer.toString(closestDriver[i][0]));
 					   if(closestDriver[i][1] < minValue){
 					   	if(length2 != -1) {
@@ -420,7 +429,7 @@ public class SimulatorOne
 				  
 				  
 				if(minDriver != 999) {
-				  g.dijkstra(Integer.toString(minDriver), Integer.toString(requests[count2][0]));
+				  pickPath = g.dijkstra(Integer.toString(minDriver), pickPath);
 				  length2 = g.printPath(pickPath, Integer.toString(requests[count2][0])); 
 				}
 				  
@@ -435,7 +444,7 @@ public class SimulatorOne
 				System.out.println("pickup " + requests[count2][0]);	
 					
 				int length =0;
-				g.dijkstra(Integer.toString(requests[count2][0]), Integer.toString(requests[count2][1]));
+				dropPath = g.dijkstra(Integer.toString(requests[count2][0]), dropPath);
 				length = g.printPath(dropPath, Integer.toString(requests[count2][1])); 
 				if(length != -1) {
 					costDropoff = length;
@@ -443,7 +452,7 @@ public class SimulatorOne
 					//Calculate shortest route from the drop off back to the drivers home
 					
 					System.out.println("Return Path");
-					g.dijkstra(Integer.toString(requests[count2][1]), Integer.toString(minDriver));
+					returnPath = g.dijkstra(Integer.toString(requests[count2][1]), returnPath);
 					length = g.printPath(returnPath, Integer.toString(minDriver));
 					costReturn = length;
 					//System.out.println("Drop off " + requests[count2][1] + ", Drivers home " + minDriver + ", Cost = " + length );
@@ -452,7 +461,7 @@ public class SimulatorOne
 					
 					
 					for(int i=0;i<(pickPath.driverPath).size() - 1;i++) {
-						//ultimatePath.add((pickPath.driverPath).get(i));
+						ultimatePath.add((pickPath.driverPath).get(i));
 					}
 					for(int i=0;i<(dropPath.driverPath).size() - 1;i++) {
 						ultimatePath.add((dropPath.driverPath).get(i));		
@@ -467,6 +476,25 @@ public class SimulatorOne
 //					System.out.println("Drop path cost = " + dropPath.thisCost);
 //					System.out.println("Return path cost= " + returnPath.thisCost);
 					//System.out.println("Driver path cost= " + pickPath.thisCost + dropPath.thisCost + returnPath.thisCost);
+					
+					System.out.println("Pickpath " +" Node num  " + " Node Value  " );
+					for(int i=0;i<(pickPath.nodeNum).size();i++) {
+						System.out.println((pickPath.nodeNum).get(i) + "  " + (pickPath.nodeVal).get(i));
+					}
+					System.out.println("");
+					
+					System.out.println("Droppath " + " Node num  " + " Node Value  " );
+					for(int i=0;i<(dropPath.nodeNum).size();i++) {
+						System.out.println((dropPath.nodeNum).get(i) + "  " + (dropPath.nodeVal).get(i));
+					}
+					System.out.println("");
+					
+					System.out.println("Returnpath	" + " Node num  " + " Node Value  " );
+					for(int i=0;i<(returnPath.nodeNum).size();i++) {
+						System.out.println((returnPath.nodeNum).get(i) + "  " + (returnPath.nodeVal).get(i));
+					}
+					System.out.println("");
+					
 					
 					for(int i=0;i<ultimatePath.size();i++) {
 						if(i == ultimatePath.size() - 1) {
