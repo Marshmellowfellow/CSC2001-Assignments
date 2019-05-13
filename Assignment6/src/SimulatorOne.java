@@ -134,8 +134,10 @@ public class SimulatorOne
     public int printPath(totalPath path, String destName)
     {
         Vertex w = vertexMap.get( destName );
-        if( w == null )
-            throw new NoSuchElementException( "Destination vertex not found" );
+        if( w == null ) {
+        	//System.out.println( "cannot be helped" );
+        	return -1;
+        }
         else if( w.dist == INFINITY ) {
         	return -1;
         }
@@ -201,8 +203,9 @@ public class SimulatorOne
         ArrayList<String> nodeNum = thePath.nodeNum;
         ArrayList<String> nodeVal = thePath.nodeVal;
         Vertex start = vertexMap.get( startName );
-        if( start == null )
-            throw new NoSuchElementException( "Start vertex not found" );
+        if( start == null ) {
+            //System.out.println( "cannot be helped" );
+        }else {
 
         clearAll( );
         pq.add( new Path( start, 0 ) ); 
@@ -253,16 +256,22 @@ public class SimulatorOne
                 
             }
         }
+        }
         return thePath;
     }
 
     public static void main( String [ ] args )
     {
+    	String fileName = "Graph1.txt";
         SimulatorOne g = new SimulatorOne( );
+        if(args.length > 0) {
+        	//System.out.println("Poop " + args[0]);
+            fileName = args[0];
+        }
         try
         {   	
             //FileReader fin = new FileReader(args[0]);
-        	FileReader fin = new FileReader("Graph1.txt");
+        	FileReader fin = new FileReader(fileName);
             Scanner graphFile = new Scanner( fin );
 
             // Variables
@@ -279,7 +288,8 @@ public class SimulatorOne
             int[] driverLocation = new int[100]; 
             int NumRequests = 0;
             int element = 0;
-            
+            int count11 = 0;
+             
             int totalCost = 0;
             int costPickup = 0;
             int costDropoff = 0;
@@ -291,7 +301,7 @@ public class SimulatorOne
                 StringTokenizer st = new StringTokenizer( line , " ");
                 int length1 = st.countTokens();
                 int count1 = 0;
-            	
+                
                 try{ 
                 	//Number of nodes in graph
                 	if(lineNo == 0) {
@@ -303,15 +313,23 @@ public class SimulatorOne
                 	}
                 	
                 	//Adding all the vertices for each node
-                	if(lineNo>0 && lineNo<NumNodes) {
+                	if(lineNo>0 && lineNo<=NumNodes) {
                 		//System.out.println("Vertices");
                 		source  = st.nextToken( );
+                		//System.out.println("Length1 " + length1);
 	                	while(count1 < length1) {
-	                		dest = st.nextToken( );
-	                		cost  = Integer.parseInt( st.nextToken( ) ); 
-	                		//System.out.println(source + " " + dest + "  " + cost);
-	                		count1 = count1 + 3;
-	                		g.addEdge( source, dest, cost );
+	                		if(st.hasMoreTokens()) {
+	                			
+		                		dest = st.nextToken( );
+		                		cost  = Integer.parseInt( st.nextToken( ) ); 
+		                		//System.out.println(source + " " + dest + "  " + cost);
+		                		g.addEdge( source, dest, cost );
+		                		count1 = count1 + 3;
+	                		}else {
+	                			count1 = count1 + 3;
+	                		}
+	                		
+	                		
 	                	}
 	                	//System.out.println("");
                 	}
@@ -330,13 +348,14 @@ public class SimulatorOne
                 		if(lineNo == NumNodes + 2) {
                    			int element2 = 0;
                    			int location = 0;
+                   			
                 			//System.out.println("Driver locations");
-    	                	while(count1 < NumDrivers) {
+    	                	while(count11 < NumDrivers) {
     	                		location = Integer.parseInt( st.nextToken( ) ); 
-    	                		driverLocation[count1] = location;
-    	                		//System.out.println(driverLocation[count1]);	
+    	                		driverLocation[count11] = location;
+    	                		//System.out.println(driverLocation[count11]);	
     	                		element2++;
-    	                		count1++;
+    	                		count11++;
     	                		
     	                	}
     	                	//System.out.println("");
@@ -393,7 +412,7 @@ public class SimulatorOne
 	        	totalPath returnPath = new totalPath();
 				int[][] closestDriver = new int[element][2];
 				int count3 = 0;
-				while(count3<NumDrivers) {
+				while(count3<count11) {
 			  	 g.dijkstra(Integer.toString(driverLocation[count3]),path);
 				 closestDriver[count3][0] = driverLocation[count3];
 				 closestDriver[count3][1] = g.printPath(path, Integer.toString(requests[count2][0]));
@@ -438,7 +457,7 @@ public class SimulatorOne
 				  	  
 				//Calculate the shortest route from pick up to the drop off
 					
-				System.out.println("truck " + minDriver); 
+				
 				int pickpathCounter = 0;
 				for(int i=0;i<(pickPath.nodeNum).size();i++) {
 					if(((pickPath.nodeNum).get(i)).contains(Integer.toString(requests[count2][0]))) {
@@ -450,13 +469,7 @@ public class SimulatorOne
 				}
 				//System.out.println("Pick Path Counter " + pickpathCounter);
 				
-				if(pickpathCounter < 2) {
-					System.out.println(minDriver + " " + requests[count2][0]); 
-					System.out.println("pickup " + requests[count2][0]);
-				}else {
-					System.out.println("pickup " + requests[count2][0]);
-					System.out.println("multiple solutions cost " + pickPath.thisCost);
-				}
+			
 				
 				
 				
@@ -466,13 +479,33 @@ public class SimulatorOne
 //					System.out.println((pickPath.nodeNum).get(i) + "  " + (pickPath.nodeVal).get(i));
 //				}
 //				System.out.println("");
-					
+				
 				int length =0;
 				int droppathCounter = 0;
 				int returnpathCounter = 0;
 				dropPath = g.dijkstra(Integer.toString(requests[count2][0]), dropPath);
 				length = g.printPath(dropPath, Integer.toString(requests[count2][1])); 
 				if(length != -1) {
+					System.out.println("truck " + minDriver); 
+					if(pickpathCounter < 2) {
+						System.out.println(minDriver + " " + requests[count2][0]); 
+						
+						
+						
+						
+						//System.out.println("pickup " + requests[count2][0]);
+						for(int i=1;i<(pickPath.driverPath).size() - 1;i++) {
+							System.out.print((pickPath.driverPath).get(i) + " ");
+						}
+						
+						
+						
+						
+						
+					}else {
+						System.out.println("multiple solutions cost " + pickPath.thisCost);
+						System.out.println("pickup " + requests[count2][0]);
+					}
 					costDropoff = length;
 					
 //					System.out.println("Node num  " + " Node Value  " );
@@ -484,6 +517,9 @@ public class SimulatorOne
 						}
 						//System.out.println((dropPath.nodeNum).get(i) + "  " + Integer.toString(requests[count2][1])) ;
 					}
+					
+					
+					
 					
 					//System.out.println("Drop Path Counter " + droppathCounter);
 					if(droppathCounter < 2) {
@@ -499,8 +535,8 @@ public class SimulatorOne
 						int totCost = dropPath.thisCost;
 						System.out.println("multiple solutions cost " + totCost);
 						System.out.println("dropoff " + requests[count2][1]);
-						for(int i=1;i<(pickPath.driverPath).size() - 1;i++) {
-							System.out.print((pickPath.driverPath).get(i) + " ");
+						for(int i=1;i<(returnPath.driverPath).size() - 1;i++) {
+							System.out.print((returnPath.driverPath).get(i) + " ");
 						}
 					}
 					
@@ -530,9 +566,9 @@ public class SimulatorOne
 					}else {
 						int totCost = returnPath.thisCost;
 						System.out.println("multiple solutions cost " + totCost);
-						System.out.println("returnPath " + requests[count2][1]);
+						//System.out.println("returnPath " + requests[count2][1]);
 						for(int i=0;i<(returnPath.driverPath).size() - 1;i++) {
-							System.out.println((returnPath.driverPath).get(i) + " ");
+							//System.out.println((returnPath.driverPath).get(i) + " ");
 						}
 					}
 					
