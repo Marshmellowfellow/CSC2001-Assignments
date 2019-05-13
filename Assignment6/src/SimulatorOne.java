@@ -488,18 +488,20 @@ public class SimulatorOne
 				if(length != -1) {
 					System.out.println("truck " + minDriver); 
 					if(pickpathCounter < 2) {
-						System.out.println(minDriver + " " + requests[count2][0]); 
+						//.out.println(minDriver + " " + requests[count2][0]); 
 						
 						
-						
-						
+					
 						//System.out.println("pickup " + requests[count2][0]);
-						for(int i=1;i<(pickPath.driverPath).size() - 1;i++) {
+						for(int i=0;i<(pickPath.driverPath).size();i++) {
+							if((pickPath.driverPath).get(i)==(pickPath.driverPath).get(0)) {
+								//System.out.print(i + " woopooop " + (pickPath.driverPath).get(0));
+							}
 							System.out.print((pickPath.driverPath).get(i) + " ");
 						}
 						
-						
-						
+						System.out.println("");
+						System.out.println("pickup " + requests[count2][0]);
 						
 						
 					}else {
